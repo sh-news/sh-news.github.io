@@ -140,6 +140,9 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
 .meta span{font-size:.72rem;border:1px solid var(--line);padding:4px 10px;border-radius:999px;color:var(--mute)}
 .hs{margin-top:12px;padding:9px 13px;font-size:.85rem}
+.kbox{border:1px solid var(--line);border-radius:14px;padding:4px 14px 14px;margin-top:14px}
+.kst{font-size:.85rem;padding:9px 12px;border-radius:10px;background:var(--card2);margin-bottom:10px;word-break:break-all;color:var(--mute)}
+.kst.ok{color:var(--lime)}.kst.bad{color:#ff7b7b}
 .hint{color:var(--mute);font-size:.78rem;line-height:1.5;margin-top:12px}
 .pin{letter-spacing:.5em;text-align:center;font-weight:700}
 .foot{position:relative;z-index:5;text-align:center;padding:26px 20px 34px;color:var(--mute);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;border-top:1px solid var(--line)}
@@ -178,7 +181,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
     <div class="f"><em>🗂️</em><h3>Personal archive</h3><p>Every story is stored under your username so you can reopen it any time.</p></div>
   </div>
 <div class="steps"><h2 class="d">Three steps. That's it.</h2>
-    <div class="sg"><div><b>01</b><h3>Add your key</h3><p>Paste your Gemini API key once; it stays in your browser.</p></div><div><b>02</b><h3>Pick your language</h3><p>English, Hindi or Malayalam.</p></div><div><b>03</b><h3>Read and keep</h3><p>Your briefing is saved to your archive. Copy it or download it.</p></div></div></div>
+    <div class="sg"><div><b>01</b><h3>Sign in or go guest</h3><p>Create a username and PIN, or jump in as a guest. No setup needed.</p></div><div><b>02</b><h3>Pick your language</h3><p>English, Hindi or Malayalam.</p></div><div><b>03</b><h3>Read and keep</h3><p>Your briefing is saved to your archive. Copy it or download it.</p></div></div></div>
   <div style="height:70px"></div>
   <footer class="foot">Made for <b>Sacred Heart CMI Public School</b></footer>
 </section>
@@ -204,6 +207,10 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
   <div class="mbox abox">
     <div class="ahead"><h2>Admin panel</h2><span class="tag" id="acount"></span></div>
     <p>Manage people, roles and archives.</p>
+    <div class="kbox"><label style="margin-top:14px">Gemini API key (shared)</label>
+      <div class="kst" id="kst">Loading…</div>
+      <div style="display:flex;gap:8px"><input id="newkey" type="password" placeholder="Paste new key (AIza…)" autocomplete="off"><button class="btn sm" id="ksave">Save</button></div>
+      <div style="display:flex;gap:8px;margin-top:8px"><button class="btn o sm" id="ktest">Check status</button><button class="btn o sm dg" id="kdel">Remove</button></div></div>
     <div class="ulist" id="ulist"></div>
     <button class="btn o" id="aclose" style="width:100%;margin-top:16px">Close</button>
   </div>
@@ -220,7 +227,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
         <label style="margin-top:14px">Focus (optional)</label><input id="topic" placeholder="e.g. education, technology">
         <div class="sugs" id="sugs"></div>
         <label>Language</label><select id="lang"><option>English</option><option>Hindi</option><option>Malayalam</option></select>
-        <label>Gemini API key</label><input id="key" type="password" placeholder="Stays in this browser only">
+        
         <button class="btn" id="make" style="width:100%;margin-top:20px">Generate briefing</button>
       </div>
       <div class="panel"><div class="ahead"><h3 class="d" id="atitle">Archive</h3><button class="btn o sm hidden" id="aback">My archive</button></div><input class="hs" id="hsearch" placeholder="Search archive…"><div class="hist" id="hist"></div></div>
@@ -329,7 +336,7 @@ function show(){
   $("#home").classList.add("hidden");$("#app").classList.remove("hidden");$("#glow").classList.add("hidden");
   $("#uname").textContent=guest?"Guest":"@"+name;$("#av").textContent=name[0].toUpperCase();
   $("#badge").classList.toggle("hidden",!isAdmin);$("#adminBtn").classList.toggle("hidden",!isAdmin);$("#logout").textContent=guest?"Sign in":"Leave";
-  $("#key").value=localStorage.getItem("hl_key")||"";loadHistory();
+  localStorage.removeItem("hl_key");loadHistory();
 }
 function goHome(){
   name=null;target=null;current=null;isAdmin=false;guest=false;session=[];
@@ -352,12 +359,12 @@ Format exactly:
 Keep the whole thing short (about 200 words), neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
 }
 $("#make").onclick=async()=>{
-  const topic=$("#topic").value.trim(), key=$("#key").value.trim();
-  if(!key) return toast("Add your Gemini API key");
-  localStorage.setItem("hl_key",key);
+  const topic=$("#topic").value.trim();
   const b=$("#make"); b.disabled=true; b.textContent="Writing…";
   $("#read").innerHTML='<div class="empty"><div class="d ld">Preparing your briefing…</div>This takes a few seconds.</div>';
   try{
+    const ks=await db.collection("config").doc("gemini").get(), key=ks.exists?(ks.data().key||""):"";
+    if(!key) throw new Error("No API key is set up yet. Please ask an admin to add one.");
     const call=async live=>{
       const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`,
         {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:buildPrompt()}]}],...(live?{tools:[{google_search:{}}]}:{})})});
@@ -365,7 +372,7 @@ $("#make").onclick=async()=>{
     };
     let {r,j}=await call(true);
     if(!r.ok){ ({r,j}=await call(false)); if(r.ok) toast("Live search unavailable — news may not be current") }
-    if(!r.ok) throw new Error(j.error?.message||"Gemini request failed");
+    if(!r.ok){ const m=j.error?.message||"Gemini request failed"; throw new Error(/api key|api_key|permission|quota/i.test(m)?"The shared API key isn't working. Please tell an admin.":m) }
     const text=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text).join("");
     if(!text) throw new Error("Empty response");
     const label=topic||"Daily briefing", lang=$("#lang").value;
@@ -453,8 +460,44 @@ async function del(){
 /* ---------- admin panel ---------- */
 // Access is enforced by Firestore rules (see firestore.rules), not just by hiding buttons.
 const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-$("#adminBtn").onclick=()=>{$("#adm").classList.remove("hidden");loadUsers()};
+$("#adminBtn").onclick=()=>{$("#adm").classList.remove("hidden");loadUsers();loadKey()};
 $("#aclose").onclick=()=>$("#adm").classList.add("hidden");
+
+/* shared Gemini key (admin only to change; rules enforce it) */
+const KREF=()=>db.collection("config").doc("gemini"), mask=k=>k.slice(0,4)+"••••••••"+k.slice(-4);
+let curKey="";
+function setKst(t,c){const e=$("#kst");e.textContent=t;e.className="kst "+(c||"")}
+async function pingKey(k){
+  try{const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=1&key="+encodeURIComponent(k));
+    if(r.ok) return {ok:true};
+    const j=await r.json().catch(()=>({})); return {ok:false,msg:j.error?.message||"HTTP "+r.status}
+  }catch(e){return {ok:false,msg:"Network error"}}
+}
+async function testKey(k){
+  setKst(mask(k)+" · checking…");
+  const res=await pingKey(k);
+  setKst(mask(k)+" · "+(res.ok?"Active ✓":"Not working: "+res.msg),res.ok?"ok":"bad");
+}
+async function loadKey(){
+  setKst("Loading…");
+  try{
+    const sn=await KREF().get(); curKey=sn.exists?(sn.data().key||""):"";
+    $("#ktest").disabled=$("#kdel").disabled=!curKey;
+    if(!curKey) return setKst("No key set. Users can't generate briefings.","bad");
+    testKey(curKey);
+  }catch(e){ setKst("Couldn't read the key. Check Firestore rules.","bad") }
+}
+$("#ksave").onclick=async()=>{
+  const k=$("#newkey").value.trim();
+  if(!/^AIza[\w-]{20,}$/.test(k)) return toast("That doesn't look like a Gemini API key");
+  try{await KREF().set({key:k,updatedAt:ts(),updatedBy:name});$("#newkey").value="";toast("Key saved");await loadKey()}
+  catch(e){toast("Couldn't save — check Firestore rules")}
+};
+$("#ktest").onclick=()=>curKey&&testKey(curKey);
+$("#kdel").onclick=async()=>{
+  if(!confirm("Remove the shared API key? Nobody can generate briefings until a new one is added.")) return;
+  try{await KREF().delete();toast("Key removed");loadKey()}catch(e){toast("Couldn't remove — check Firestore rules")}
+};
 
 async function loadUsers(){
   const box=$("#ulist"); box.replaceChildren(mk("small","","Loading…"));
