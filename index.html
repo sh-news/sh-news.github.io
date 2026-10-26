@@ -102,6 +102,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 .read p{line-height:1.8;color:#cfd3de;margin-bottom:13px}
 .read ul{margin:0 0 13px 18px;line-height:1.8;color:#cfd3de}
 .read li::marker{color:var(--lime)}
+.sec{margin:0 0 14px}
 .read b{color:#fff}
 .empty{text-align:center;color:var(--mute);padding:110px 10px}
 .empty .d{font-size:1.8rem;color:var(--text);letter-spacing:-.03em;margin-bottom:8px}
@@ -435,23 +436,29 @@ $("#ndate").value=todayStr();
 ["input","change"].forEach(ev=>$("#ndate").addEventListener(ev,checkDate));
 
 function buildPrompt(){
-  const f=$("#topic").value.trim(), d=dateLabel(), isToday=$("#ndate").value===todayStr();
-  return `You are a news editor writing a short briefing for school students covering the news of ${d}${isToday?" (today)":""}. Write everything in ${$("#lang").value}.
-${f?`Where it fits, lean toward this focus: "${f}".\n`:""}Use Google Search so the news is real. Report only what happened on or was reported on ${d}, not events from other days. If little is available for that day, use the closest reliable reports and never invent anything.
-Format exactly:
-- First line: "# " followed by a short title in ${$("#lang").value} meaning "News briefing", then the date ${d} written in ${$("#lang").value}.
-- Then exactly four sections, each starting with "## ", named in ${$("#lang").value}, in this order, with exactly this many items:
-  1. Headlines: 2 items (the biggest stories of the day).
-  2. International: 2 items.
-  3. National & State: 2 items in total, under this ONE heading. The first item is a national (India) story, the second is a Kerala state story.
-  4. Sports: 2 items. The first is about football, the second is about any other sport.
-- Each item is a line starting with "### " and a short headline, followed by one line of 1-2 plain sentences.
-Keep the whole thing short (about 130 words), neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
+  const f=$("#topic").value.trim(), d=dateLabel(), isToday=$("#ndate").value===todayStr(), L=$("#lang").value;
+  return `You are a news editor writing a very short briefing for school students covering the news of ${d}${isToday?" (today)":""}. Write everything in ${L}.
+${f?`Focus topic: "${f}". At least one of the Headlines items MUST be about this focus (its biggest real story of the day).\n`:""}Use Google Search so the news is real. Report only what happened on or was reported on ${d}. If little is available, use the closest reliable reports and never invent anything.
+Format exactly, nothing before or after:
+# [short title in ${L} meaning "News briefing"] ${d}
+## [Headlines, in ${L}]
+### [headline of the single most important story of the day]
+[2 plain sentences]
+### [headline 2]
+[1 plain sentence]
+### [headline 3]
+[1 plain sentence]
+## [Sports, in ${L}]
+### [headline of the biggest sports story]
+[1 plain sentence]
+### [headline of the second biggest sports story, ideally a different sport]
+[1 plain sentence]
+Exactly 5 stories in total: 3 under Headlines (the first one is the most important of the day), 2 under Sports. About 90 words overall, neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
 }
 /* ---------- shared cache: same date + language + focus = same briefing for everyone ---------- */
 const FRESH_TODAY=20*60*1000, FRESH_PAST=12*3600*1000;
 const hashStr=t=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
-const cacheId=()=>"v2_"+($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase());
+const cacheId=()=>"v4_"+($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase());
 const cacheRef=id=>db.collection("newsCache").doc(id);
 async function cacheGet(id){ try{ const sn=await withTimeout(cacheRef(id).get(),3000,"cache timeout"); return sn.exists?sn.data():null }catch(e){ return null } }
 const cachePut=(id,text)=>{ cacheRef(id).set({text,at:Date.now()}).catch(()=>{}) };
@@ -466,8 +473,8 @@ $("#make").onclick=async()=>{
   }
   const topic=$("#topic").value.trim();
   const b=$("#make"); b.disabled=true; b.textContent="Writing…";
-  $("#read").innerHTML='<div class="empty"><div class="d ld">Preparing your briefing…</div><span id="wait">This takes a few seconds.</span></div>';
-  const t0=Date.now(), tick=setInterval(()=>{const w=$("#wait");if(w){const n=Math.round((Date.now()-t0)/1000);w.textContent=n<8?"This takes a few seconds.":"Still working… "+n+"s"}},1000);
+  $("#read").innerHTML='<div class="empty"><div class="d ld">Preparing your briefing…</div><span id="wait">Only 5 stories, just a moment.</span></div>';
+  const t0=Date.now(), tick=setInterval(()=>{const w=$("#wait");if(w){const n=Math.round((Date.now()-t0)/1000);w.textContent=n<8?"Only 5 stories, just a moment.":"Still working… "+n+"s"}},1000);
   try{
     const cid=cacheId(), hit=await cacheGet(cid), isToday=!$("#ndate").value||$("#ndate").value===todayStr();
     let text;
@@ -510,18 +517,20 @@ function render(md,topic){
   const k=document.createElement("div"); k.className="tag"; k.textContent=topic; p.append(k);
   const wc=md.trim().split(/\s+/).length, mt=document.createElement("div"); mt.className="meta";
   [wc+" words",Math.max(1,Math.round(wc/200))+" min read"].forEach(t=>{const s=document.createElement("span");s.textContent=t;mt.append(s)});
-  let ul=null;
+  let ul=null, cur=null, secN=0;
+  const host=()=>cur||p;
   const inl=(el,t)=>t.split(/(\*\*[^*]+\*\*)/).forEach(s=>{
     if(/^\*\*[^*]+\*\*$/.test(s)){const b=document.createElement("b");b.textContent=s.slice(2,-2);el.append(b)}else el.append(s)});
   md.split("\n").forEach(line=>{
     line=line.trim(); if(!line){ul=null;return}
     let el;
     if(line.startsWith("### ")){el=document.createElement("h4");inl(el,line.slice(4))}
-    else if(line.startsWith("## ")){el=document.createElement("h3");inl(el,line.slice(3))}
+    else if(line.startsWith("## ")){el=document.createElement("h3");inl(el,line.slice(3));
+      cur=document.createElement("section");cur.className="sec";p.append(cur);cur.append(el);ul=null;return}
     else if(line.startsWith("# ")){el=document.createElement("h2");inl(el,line.slice(2))}
-    else if(/^[-*] /.test(line)){if(!ul){ul=document.createElement("ul");p.append(ul)}const li=document.createElement("li");inl(li,line.slice(2));ul.append(li);return}
+    else if(/^[-*] /.test(line)){if(!ul){ul=document.createElement("ul");host().append(ul)}const li=document.createElement("li");inl(li,line.slice(2));ul.append(li);return}
     else{el=document.createElement("p");inl(el,line)}
-    ul=null;p.append(el);
+    ul=null;host().append(el);
   });
   p.querySelectorAll("h4,p,li").forEach(wrapWords);
   const hd=p.querySelector("h2"); hd?hd.after(mt):p.append(mt);
@@ -754,7 +763,7 @@ async function tryOnce(key,model,prompt,search,json,ms=40000){
   finally{ clearTimeout(to) }
 }
 /* ---------- speed: try models in parallel, stagger the starts, first good answer wins ---------- */
-const G_MS=30000, HEDGE_MS=8000, CAP_MS=55000;
+const G_MS=20000, HEDGE_MS=4000, CAP_MS=40000;
 let kc=null, kcAt=0;
 async function getKeys(){
   if(kc&&Date.now()-kcAt<60000) return kc;
@@ -802,10 +811,10 @@ async function fetchFallback(){
   fbAt=Date.now(); return fbCache;
 }
 async function claudeOnce(fb,prompt,search,json){
-  const ctrl=new AbortController(), to=setTimeout(()=>ctrl.abort(),50000);
+  const ctrl=new AbortController(), to=setTimeout(()=>ctrl.abort(),35000);
   try{
-    const body={model:fb.model||FALLBACK_MODEL,max_tokens:1500,messages:[{role:"user",content:prompt}]};
-    if(search) body.tools=[{type:"web_search_20250305",name:"web_search",max_uses:3}];
+    const body={model:fb.model||FALLBACK_MODEL,max_tokens:700,messages:[{role:"user",content:prompt}]};
+    if(search) body.tools=[{type:"web_search_20250305",name:"web_search",max_uses:1}];
     const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",signal:ctrl.signal,
       headers:{"content-type":"application/json","x-api-key":fb.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
       body:JSON.stringify(body)});
