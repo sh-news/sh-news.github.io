@@ -324,7 +324,7 @@ firebase.initializeApp({
   measurementId:"G-3H57DCLMZX"
 });
 const auth=firebase.auth(), db=firebase.firestore();
-const MODELS=["gemini-3.8-flash","gemini-flash-latest","gemini-2.5-flash"];  // tried in order
+const MODELS=["gemini-3.8-flash","gemini-flash-latest"];  // tried in order
 const $=s=>document.querySelector(s);
 let name=null, current=null, guest=false, session=[];
 
@@ -730,7 +730,7 @@ async function geminiCall(prompt,{search=false,json=false}={}){
   const keys=(await fetchKeys()).filter(k=>k.on!==false&&k.key);
   if(!keys.length) throw new Error("No API key is set up yet. Please ask an admin to add one.");
   const models=goodModel?[goodModel,...MODELS.filter(m=>m!==goodModel)]:MODELS;
-  let last="", failedKeys=0; const deadline=Date.now()+90000;
+  let last="", failedKeys=0, errs=[]; const deadline=Date.now()+90000;
   for(const k of keys){
     let keyFailed=false;
     for(const m of models){
@@ -738,12 +738,12 @@ async function geminiCall(prompt,{search=false,json=false}={}){
       let res=await tryOnce(k.key,m,prompt,search,json), live=search;
       if(!res.ok&&search&&res.kind!=="model"){ res=await tryOnce(k.key,m,prompt,false,json); live=false }
       if(res.ok){ goodModel=m; return {text:res.text,live,model:m} }
-      last=res.msg;
+      last=res.msg; errs.push(m+": "+res.msg); console.warn("Gemini fail",m,res.kind,res.msg);
       if(res.kind==="key"){ keyFailed=true; break }
     }
     if(keyFailed) failedKeys++;
   }
-  throw new Error(failedKeys===keys.length?"All API keys failed ("+last+"). Please tell an admin.":(last||"Gemini request failed"));
+  const detail=errs.length?errs.join(" | "):last; throw new Error(failedKeys===keys.length?"All API keys failed ("+detail+"). Please tell an admin.":(detail||"Gemini request failed"));
 }
 
 async function pingKey(k){
