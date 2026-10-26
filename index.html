@@ -328,7 +328,7 @@ firebase.initializeApp({
   measurementId:"G-3H57DCLMZX"
 });
 const auth=firebase.auth(), db=firebase.firestore();
-const MODELS=["gemini-3.8-flash","gemini-3.5-flash-lite","gemini-flash-latest"];  // tried in order
+const MODELS=["gemini-3.5-flash-lite","gemini-3.8-flash","gemini-flash-latest"];  // tried in order
 const $=s=>document.querySelector(s);
 let name=null, current=null, guest=false, session=[];
 
@@ -440,16 +440,20 @@ function buildPrompt(){
 ${f?`Where it fits, lean toward this focus: "${f}".\n`:""}Use Google Search so the news is real. Report only what happened on or was reported on ${d}, not events from other days. If little is available for that day, use the closest reliable reports and never invent anything.
 Format exactly:
 - First line: "# " followed by a short title in ${$("#lang").value} meaning "News briefing", then the date ${d} written in ${$("#lang").value}.
-- Then five sections, each starting with "## ", named in ${$("#lang").value}: Headlines, International, National, State (Kerala), Sports.
-- Under each section write exactly 2 items. Each item is a line starting with "### " and a short headline, followed by one line of 1-2 plain sentences.
-Keep the whole thing short (about 200 words), neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
+- Then exactly four sections, each starting with "## ", named in ${$("#lang").value}, in this order, with exactly this many items:
+  1. Headlines: 2 items (the biggest stories of the day).
+  2. International: 2 items.
+  3. National & State: 2 items in total, under this ONE heading. The first item is a national (India) story, the second is a Kerala state story.
+  4. Sports: 2 items. The first is about football, the second is about any other sport.
+- Each item is a line starting with "### " and a short headline, followed by one line of 1-2 plain sentences.
+Keep the whole thing short (about 130 words), neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
 }
 /* ---------- shared cache: same date + language + focus = same briefing for everyone ---------- */
 const FRESH_TODAY=20*60*1000, FRESH_PAST=12*3600*1000;
 const hashStr=t=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
-const cacheId=()=>($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase());
+const cacheId=()=>"v2_"+($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase());
 const cacheRef=id=>db.collection("newsCache").doc(id);
-async function cacheGet(id){ try{ const sn=await withTimeout(cacheRef(id).get(),6000,"cache timeout"); return sn.exists?sn.data():null }catch(e){ return null } }
+async function cacheGet(id){ try{ const sn=await withTimeout(cacheRef(id).get(),3000,"cache timeout"); return sn.exists?sn.data():null }catch(e){ return null } }
 const cachePut=(id,text)=>{ cacheRef(id).set({text,at:Date.now()}).catch(()=>{}) };
 const agoStr=ms=>{const m=Math.round(ms/60000);return m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"};
 let voiceRun=false;
@@ -723,7 +727,7 @@ async function fetchKeys(){
 async function saveKeys(list){
   const first=list.find(k=>k.on!==false);
   await KREF().set({keys:list,key:first?first.key:"",updatedAt:ts(),updatedBy:name});
-  keyList=list;
+  keyList=list; kcAt=0;
 }
 const errKind=(status,m)=>{
   if(status===404||/no longer available|not found|not supported|deprecated|unknown model/i.test(m)) return "model";
@@ -749,34 +753,41 @@ async function tryOnce(key,model,prompt,search,json,ms=40000){
   }catch(e){ return {ok:false,kind:"other",msg:e.name==="AbortError"?"Timed out. Try again.":"Network error. Check your connection."} }
   finally{ clearTimeout(to) }
 }
-async function geminiCall0(prompt,{search=false,json=false,fast=false}={}){
-  const keys=(await fetchKeys()).filter(k=>k.on!==false&&k.key);
-  if(!keys.length) throw new Error("No API key is set up yet. Please ask an admin to add one.");
-  const models=goodModel?[goodModel,...MODELS.filter(m=>m!==goodModel)]:MODELS;
-  let last="", failedKeys=0, errs=[]; const deadline=Date.now()+(fast?70000:150000), MS=fast?25000:40000, MAXA=fast?1:3;
+/* ---------- speed: try models in parallel, stagger the starts, first good answer wins ---------- */
+const G_MS=30000, HEDGE_MS=8000, CAP_MS=55000;
+let kc=null, kcAt=0;
+async function getKeys(){
+  if(kc&&Date.now()-kcAt<60000) return kc;
+  kc=(await fetchKeys()).filter(k=>k.on!==false&&k.key); kcAt=kc.length?Date.now():0; return kc;
+}
+async function runModel(keys,m,prompt,search,json){
+  let last="";
   for(const k of keys){
-    let keyFailed=false;
-    for(const m of models){
-      if(Date.now()>deadline) throw new Error(last||"Timed out. Try again.");
-      let res, live=search;
-      for(let a=0;a<MAXA;a++){
-        if(Date.now()>deadline) break;
-        if(a===0){
-          res=await tryOnce(k.key,m,prompt,search,json,MS); live=search;
-          if(!res.ok&&search&&res.kind!=="model"){ res=await tryOnce(k.key,m,prompt,false,json,MS); live=false }
-        }else{
-          res=await tryOnce(k.key,m,prompt,false,json,MS); live=false;   // retry lighter (no live search)
-        }
-        if(res.ok||res.kind!=="other"||a+1>=MAXA) break;
-        await new Promise(r=>setTimeout(r,2000*(a+1)));   // back off: 2s, 4s
-      }
-      if(res.ok){ goodModel=m; return {text:res.text,live,model:m} }
-      last=res.msg; errs.push(m+": "+res.msg); console.warn("Gemini fail",m,res.kind,res.msg);
-      if(res.kind==="key"){ keyFailed=true; break }
-    }
-    if(keyFailed) failedKeys++;
+    let res=await tryOnce(k.key,m,prompt,search,json,G_MS), live=search;
+    if(!res.ok&&search&&res.kind!=="model"){ res=await tryOnce(k.key,m,prompt,false,json,G_MS); live=false }   // no live search
+    if(res.ok){ goodModel=m; return {text:res.text,live,model:m} }
+    last=m+": "+res.msg;
+    if(res.kind!=="key") break;          // overloaded / wrong model: a different key won't help, move on
   }
-  const detail=errs.length?errs.join(" | "):last; throw new Error(failedKeys===keys.length?"All API keys failed ("+detail+"). Please tell an admin.":(detail||"Gemini request failed"));
+  throw new Error(last);
+}
+function hedge(tasks,delay,cap){
+  return new Promise((resolve,reject)=>{
+    let started=0, failed=0, done=false, timer=null; const errs=[];
+    const fin=(f,v)=>{ if(done) return; done=true; clearTimeout(timer); clearTimeout(capT); f(v) };
+    const capT=setTimeout(()=>fin(reject,new Error("Timed out"+(errs.length?" ("+errs.join(" | ")+")":""))),cap);
+    const next=()=>{
+      if(done||started>=tasks.length) return;
+      const i=started++; clearTimeout(timer);
+      tasks[i]().then(r=>fin(resolve,r),e=>{
+        errs.push(e.message); failed++;
+        if(failed>=tasks.length) fin(reject,new Error(errs.join(" | "))); else next();   // failed → start the next one right away
+      });
+      if(started<tasks.length) timer=setTimeout(next,delay);                            // slow → start the next one anyway
+    };
+    if(!tasks.length) return fin(reject,new Error("No AI available"));
+    next();
+  });
 }
 
 /* ---------- backup AI (Claude) ---------- */
@@ -816,14 +827,14 @@ async function claudeCall(fb,prompt,{search=false,json=false}={}){
     return {text:await claudeOnce(fb,p,false,json),live:false,model:"claude"};   // search unavailable → plain answer
   }
 }
-async function geminiCall(prompt,opts={}){
+async function geminiCall(prompt,{search=false,json=false}={}){
   const fb=await fetchFallback();
-  try{ return await geminiCall0(prompt,{...opts,fast:!!fb}) }
-  catch(e){
-    if(!fb) throw e;
-    try{ return await claudeCall(fb,prompt,opts) }
-    catch(e2){ throw new Error(e.message+" | backup AI: "+e2.message) }
-  }
+  let keys=[]; try{ keys=await getKeys() }catch(e){ if(!fb) throw e }
+  if(!keys.length&&!fb) throw new Error("No API key is set up yet. Please ask an admin to add one.");
+  const order=goodModel?[goodModel,...MODELS.filter(m=>m!==goodModel)]:MODELS;
+  const tasks=keys.length?order.map(m=>()=>runModel(keys,m,prompt,search,json)):[];
+  if(fb) tasks.splice(Math.min(2,tasks.length),0,()=>claudeCall(fb,prompt,{search,json}).catch(e=>{throw new Error("backup AI: "+e.message)}));
+  return hedge(tasks,HEDGE_MS,CAP_MS);
 }
 async function pingClaude(k){
   try{ const r=await fetch("https://api.anthropic.com/v1/models?limit=1",{headers:{"x-api-key":k,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"}});
