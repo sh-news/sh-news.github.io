@@ -63,8 +63,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 .chips{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .chips span{font-size:.72rem;border:1px solid var(--line);padding:5px 11px;border-radius:999px;color:var(--mute)}
 
-.feats{position:relative;z-index:5;max-width:1120px;margin:30px auto 0;padding:0 20px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-@media(max-width:800px){.feats{grid-template-columns:1fr}}
+.feats{position:relative;z-index:5;max-width:1120px;margin:30px auto 0;padding:0 20px 80px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
 .f{background:linear-gradient(180deg,#ffffff08,transparent);border:1px solid var(--line);border-radius:var(--r);padding:26px;transition:.3s}
 .f:hover{transform:translateY(-6px);border-color:#c6ff3d55;box-shadow:0 24px 60px -30px rgba(198,255,61,.35)}
 .f em{font-style:normal;font-size:1.6rem}
@@ -148,6 +147,16 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 .foot{position:relative;z-index:5;text-align:center;padding:26px 20px 34px;color:var(--mute);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;border-top:1px solid var(--line)}
 .foot b{color:var(--lime);font-weight:600}
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+.acts{flex-wrap:wrap}
+.quiz{margin-top:22px}
+.qq{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:12px}
+.qq h4{margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;background:transparent;border:1px solid var(--line);border-radius:10px;padding:10px 13px;margin-top:7px;color:var(--text);transition:.2s}
+.opt:hover:not(:disabled){border-color:var(--lime)}
+.opt.ok{border-color:var(--lime);background:#c6ff3d18}
+.opt.no{border-color:#ff7b7b;background:#ff7b7b14}
+.why{font-size:.85rem;color:var(--mute);margin:10px 0 0!important}
+.qres{margin-top:14px;font-family:Sora,sans-serif;font-size:1.05rem}
 </style>
 </head>
 <body>
@@ -160,7 +169,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
   <nav><div class="logo">head<i>line</i></div><div class="navr"><button class="btn o sm" data-enter="in">Sign in</button><button class="btn sm" data-enter="up">Register</button></div></nav>
   <div class="hero">
     <div>
-      <div class="pill"><b></b> AI newsroom · live on Gemini</div>
+      <div class="pill"><b></b> AI newsroom · with built-in quiz mode</div>
       <h1>News, written <span class="grad">the second you ask.</span></h1>
       <p>Get a short daily briefing with headlines, international, national, Kerala and sports news, in English, Hindi or Malayalam. Every briefing is saved to your personal archive.</p>
       <div class="cta"><button class="btn" data-enter="up">Start writing →</button><button class="btn o" data-guest>Try as guest</button><a href="#feats" class="btn o" style="text-decoration:none;display:inline-block">How it works</a></div>
@@ -171,13 +180,15 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
       <div class="tag">Briefing · English</div>
       <h3>Latest briefing</h3>
       <div class="type" id="type"></div>
-      <div class="chips"><span>⚡ 3.2s</span><span>~200 words</span><span>Saved to archive</span></div>
+      <div class="chips"><span>⚡ 3.2s</span><span>~200 words</span><span>Quiz included</span></div>
     </div></div>
   </div>
   <div class="ticker" aria-hidden="true"><div class="tk"><span>Kerala monsoon: what the forecast models say</span><span>AI chips explained in plain language</span><span>How UPI changed everyday payments</span><span>Why the Western Ghats matter for rainfall</span><span>Space missions to watch this year</span><span>The rise of electric two-wheelers in India</span><span>Explained: how interest rates move prices</span><span>Climate tech startups worth knowing</span><span>Kerala monsoon: what the forecast models say</span><span>AI chips explained in plain language</span><span>How UPI changed everyday payments</span><span>Why the Western Ghats matter for rainfall</span><span>Space missions to watch this year</span><span>The rise of electric two-wheelers in India</span><span>Explained: how interest rates move prices</span><span>Climate tech startups worth knowing</span></div></div>
   <div class="feats" id="feats">
     <div class="f"><em>⚡</em><h3>Instant briefing</h3><p>Five sections of short, current news generated in one go — ready to read or copy.</p></div>
     <div class="f"><em>🌍</em><h3>Your language</h3><p>English, Hindi or Malayalam — pick whichever you read best.</p></div>
+    <div class="f"><em>🧠</em><h3>Quiz me</h3><p>Every briefing can turn into a 3-question quiz in your language, with a daily streak to keep you reading.</p></div>
+    <div class="f"><em>🔊</em><h3>Listen</h3><p>Have your briefing read aloud in English, Hindi or Malayalam — handy for revision on the go.</p></div>
     <div class="f"><em>🗂️</em><h3>Personal archive</h3><p>Every story is stored under your username so you can reopen it any time.</p></div>
   </div>
 <div class="steps"><h2 class="d">Three steps. That's it.</h2>
@@ -209,7 +220,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
     <p>Manage people, roles and archives.</p>
     <div class="kbox"><label style="margin-top:14px">Gemini API key (shared)</label>
       <div class="kst" id="kst">Loading…</div>
-      <div style="display:flex;gap:8px"><input id="newkey" type="password" placeholder="Paste new key (AIza…)" autocomplete="off"><button class="btn sm" id="ksave">Save</button></div>
+      <div style="display:flex;gap:8px"><input id="newkey" type="password" placeholder="Paste new key (AIza… or AQ.…)" autocomplete="off"><button class="btn sm" id="ksave">Save</button></div>
       <div style="display:flex;gap:8px;margin-top:8px"><button class="btn o sm" id="ktest">Check status</button><button class="btn o sm dg" id="kdel">Remove</button></div></div>
     <div class="ulist" id="ulist"></div>
     <button class="btn o" id="aclose" style="width:100%;margin-top:16px">Close</button>
@@ -389,6 +400,7 @@ $("#make").onclick=async()=>{
 
 /* safe markdown → DOM (model text never goes through innerHTML) */
 function render(md,topic){
+  if(window.speechSynthesis) speechSynthesis.cancel();
   const p=$("#read"); p.replaceChildren();
   const k=document.createElement("div"); k.className="tag"; k.textContent=topic; p.append(k);
   const wc=md.trim().split(/\s+/).length, mt=document.createElement("div"); mt.className="meta";
@@ -412,13 +424,74 @@ function render(md,topic){
   const x=document.createElement("button");x.className="btn o sm";x.textContent="Delete";x.onclick=del;
   const dl=document.createElement("button");dl.className="btn o sm";dl.textContent="Download";
   dl.onclick=()=>{const u=URL.createObjectURL(new Blob([current.text],{type:"text/plain"})),l=document.createElement("a");l.href=u;l.download=(topic||"story").replace(/[^\w]+/g,"-").slice(0,40)+".txt";l.click();URL.revokeObjectURL(u)};
-  a.append(c,dl,x);p.append(a);
+  const q=document.createElement("button");q.className="btn sm";q.textContent="Quiz me";q.onclick=()=>quiz(q);
+  const l=document.createElement("button");l.className="btn o sm";l.textContent="Listen";l.onclick=()=>listen(l);
+  const qb=document.createElement("div");qb.id="quizbox";qb.className="quiz hidden";
+  a.append(q,l,c,dl,x);p.append(a,qb);
 }
 
 /* topic suggestions + archive search */
 ["Education","Technology","Cricket","Environment"].forEach(t=>{
   const b=document.createElement("button");b.textContent=t;b.onclick=()=>{$("#topic").value=t;$("#topic").focus()};$("#sugs").append(b)});
 $("#hsearch").addEventListener("input",e=>{const q=e.target.value.toLowerCase();document.querySelectorAll("#hist button").forEach(b=>b.classList.toggle("hidden",!b.textContent.toLowerCase().includes(q)))});
+
+/* ---------- quiz me + listen (Headline-only) ---------- */
+async function gemText(prompt,json){
+  const ks=await db.collection("config").doc("gemini").get(), key=ks.exists?(ks.data().key||""):"";
+  if(!key) throw new Error("No API key is set up yet. Please ask an admin to add one.");
+  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`,
+    {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],...(json?{generationConfig:{responseMimeType:"application/json"}}:{})})});
+  const j=await r.json();
+  if(!r.ok) throw new Error(j.error?.message||"Gemini request failed");
+  return (j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("");
+}
+async function quiz(btn){
+  if(!current) return;
+  btn.disabled=true; btn.textContent="Making quiz…";
+  try{
+    const raw=await gemText(`Create a 3-question multiple-choice quiz for school students based ONLY on this news briefing. Write in the same language as the briefing. Return JSON only: [{"q":"question","options":["a","b","c","d"],"answer":0,"why":"one short sentence"}] with exactly 4 options each and "answer" as the 0-based index of the correct option.\n\n${current.text}`,true);
+    const qs=JSON.parse(raw.replace(/```json|```/g,"").trim()).slice(0,3);
+    if(!qs.length) throw new Error("empty");
+    runQuiz(qs);
+  }catch(e){ toast("Couldn't make a quiz — try again") }
+  btn.disabled=false; btn.textContent="Quiz me";
+}
+function runQuiz(qs){
+  const box=$("#quizbox"); box.replaceChildren(); box.classList.remove("hidden");
+  box.append(mk("div","tag","Quick quiz"));
+  let score=0, done=0; const res=mk("div","qres hidden");
+  qs.forEach((q,qi)=>{
+    const card=mk("div","qq"), why=mk("p","why hidden",q.why||"");
+    card.append(mk("h4","",(qi+1)+". "+q.q));
+    q.options.forEach((o,oi)=>{
+      const b=mk("button","opt",o);
+      b.onclick=()=>{
+        card.querySelectorAll(".opt").forEach((x,xi)=>{x.disabled=true;if(xi===q.answer)x.classList.add("ok")});
+        if(oi===q.answer) score++; else b.classList.add("no");
+        why.classList.remove("hidden");
+        if(++done===qs.length){
+          const day=new Date().toDateString(), y=new Date(Date.now()-864e5).toDateString();
+          let st={n:0,last:""}; try{st=JSON.parse(localStorage.getItem("hl_streak"))||st}catch(_){}
+          if(st.last!==day){ st={n:st.last===y?st.n+1:1,last:day}; try{localStorage.setItem("hl_streak",JSON.stringify(st))}catch(_){} }
+          res.textContent=(score===qs.length?"Perfect — you're fully up to date! ":score+"/"+qs.length+" — read it once more and try again. ")+"🔥 "+st.n+"-day streak";
+          res.classList.remove("hidden");
+        }
+      };
+      card.append(b);
+    });
+    card.append(why); box.append(card);
+  });
+  box.append(res); box.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function listen(btn){
+  const sy=window.speechSynthesis; if(!sy) return toast("Listening isn't supported on this browser");
+  if(sy.speaking){ sy.cancel(); btn.textContent="Listen"; return }
+  const t=current.text.replace(/^#+\s*/gm,"").replace(/\*\*/g,"");
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang=/[\u0D00-\u0D7F]/.test(t)?"ml-IN":/[\u0900-\u097F]/.test(t)?"hi-IN":"en-IN";
+  u.onend=u.onerror=()=>{btn.textContent="Listen"};
+  btn.textContent="Stop"; sy.speak(u);
+}
 
 /* ---------- archive ---------- */
 async function loadHistory(){
@@ -489,7 +562,7 @@ async function loadKey(){
 }
 $("#ksave").onclick=async()=>{
   const k=$("#newkey").value.trim();
-  if(!/^AIza[\w-]{20,}$/.test(k)) return toast("That doesn't look like a Gemini API key");
+  if(!/^[\w.-]{20,}$/.test(k)) return toast("That doesn't look like a Gemini API key");
   try{await KREF().set({key:k,updatedAt:ts(),updatedBy:name});$("#newkey").value="";toast("Key saved");await loadKey()}
   catch(e){toast("Couldn't save — check Firestore rules")}
 };
