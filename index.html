@@ -279,6 +279,10 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
       <div id="klist"></div>
       <div class="kadd"><input id="newlabel" placeholder="Label (optional), e.g. Backup key" maxlength="30"><input id="newkey" type="password" placeholder="Paste a key (AIza… or AQ.…)" autocomplete="off"><button class="btn sm" id="kadd">Add key</button></div>
       <div class="hint">Keys are tried in order. If one fails or hits its limit, the next one is used automatically.</div></div>
+    <div class="kbox"><label style="margin-top:14px">Backup AI key (Claude, used when Gemini is busy)</label>
+      <div id="fbstat" class="kst"></div>
+      <div class="kadd"><input id="fbkey" type="password" placeholder="Paste an Anthropic API key (sk-ant-…)" autocomplete="off"><button class="btn sm" id="fbsave">Save</button><button class="btn o sm dg" id="fbdel">Remove</button></div>
+      <div class="hint">If Gemini is overloaded or fails, the app automatically switches to this backup so users still get their briefing.</div></div>
     <div class="ulist" id="ulist"></div>
     <button class="btn o" id="aclose" style="width:100%;margin-top:16px">Close</button>
   </div>
@@ -324,7 +328,7 @@ firebase.initializeApp({
   measurementId:"G-3H57DCLMZX"
 });
 const auth=firebase.auth(), db=firebase.firestore();
-const MODELS=["gemini-3.8-flash","gemini-flash-latest"];  // tried in order
+const MODELS=["gemini-3.8-flash","gemini-3.5-flash-lite","gemini-flash-latest"];  // tried in order
 const $=s=>document.querySelector(s);
 let name=null, current=null, guest=false, session=[];
 
@@ -440,6 +444,14 @@ Format exactly:
 - Under each section write exactly 2 items. Each item is a line starting with "### " and a short headline, followed by one line of 1-2 plain sentences.
 Keep the whole thing short (about 200 words), neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
 }
+/* ---------- shared cache: same date + language + focus = same briefing for everyone ---------- */
+const FRESH_TODAY=20*60*1000, FRESH_PAST=12*3600*1000;
+const hashStr=t=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
+const cacheId=()=>($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase());
+const cacheRef=id=>db.collection("newsCache").doc(id);
+async function cacheGet(id){ try{ const sn=await withTimeout(cacheRef(id).get(),6000,"cache timeout"); return sn.exists?sn.data():null }catch(e){ return null } }
+const cachePut=(id,text)=>{ cacheRef(id).set({text,at:Date.now()}).catch(()=>{}) };
+const agoStr=ms=>{const m=Math.round(ms/60000);return m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"};
 let voiceRun=false;
 $("#make").onclick=async()=>{
   if(!checkDate()){
@@ -453,9 +465,20 @@ $("#make").onclick=async()=>{
   $("#read").innerHTML='<div class="empty"><div class="d ld">Preparing your briefing…</div><span id="wait">This takes a few seconds.</span></div>';
   const t0=Date.now(), tick=setInterval(()=>{const w=$("#wait");if(w){const n=Math.round((Date.now()-t0)/1000);w.textContent=n<8?"This takes a few seconds.":"Still working… "+n+"s"}},1000);
   try{
-    const out=await geminiCall(buildPrompt(),{search:true});
-    if(!out.live) toast("Live search unavailable — news may not be current");
-    const text=out.text;
+    const cid=cacheId(), hit=await cacheGet(cid), isToday=!$("#ndate").value||$("#ndate").value===todayStr();
+    let text;
+    if(hit&&Date.now()-hit.at<(isToday?FRESH_TODAY:FRESH_PAST)) text=hit.text;     // fresh copy: skip the AI entirely
+    else{
+      try{
+        const out=await geminiCall(buildPrompt(),{search:true});
+        if(!out.live) toast("Live search unavailable — news may not be current"); else cachePut(cid,out.text);
+        if(out.model==="claude") toast("Main AI was busy — used the backup AI");
+        text=out.text;
+      }catch(err){
+        if(!hit) throw err;
+        text=hit.text; toast("AI is busy — showing a saved copy from "+agoStr(Date.now()-hit.at));   // stale beats an error
+      }
+    }
     const label=(topic||"Daily briefing")+" · "+dateLabel(true), lang=$("#lang").value;
     let id="g"+Date.now();
     current={id,text,topic:label}; render(text,label);
@@ -683,7 +706,7 @@ async function del(){
 /* ---------- admin panel ---------- */
 // Access is enforced by Firestore rules (see firestore.rules), not just by hiding buttons.
 const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-$("#adminBtn").onclick=()=>{$("#adm").classList.remove("hidden");loadUsers();loadKey()};
+$("#adminBtn").onclick=()=>{$("#adm").classList.remove("hidden");loadUsers();loadKey();loadFb()};
 $("#aclose").onclick=()=>$("#adm").classList.add("hidden");
 
 /* ---------- Gemini keys: several keys, tried in order ---------- */
@@ -707,8 +730,8 @@ const errKind=(status,m)=>{
   if(status===401||status===403||status===429||/api key|api_key|permission|quota|exhausted|billing|denied|expired/i.test(m)) return "key";
   return "other";
 };
-async function tryOnce(key,model,prompt,search,json){
-  const ctrl=new AbortController(), to=setTimeout(()=>ctrl.abort(),30000);
+async function tryOnce(key,model,prompt,search,json,ms=40000){
+  const ctrl=new AbortController(), to=setTimeout(()=>ctrl.abort(),ms);
   try{
     const body={contents:[{parts:[{text:prompt}]}]};
     if(search) body.tools=[{google_search:{}}];
@@ -726,17 +749,27 @@ async function tryOnce(key,model,prompt,search,json){
   }catch(e){ return {ok:false,kind:"other",msg:e.name==="AbortError"?"Timed out. Try again.":"Network error. Check your connection."} }
   finally{ clearTimeout(to) }
 }
-async function geminiCall(prompt,{search=false,json=false}={}){
+async function geminiCall0(prompt,{search=false,json=false,fast=false}={}){
   const keys=(await fetchKeys()).filter(k=>k.on!==false&&k.key);
   if(!keys.length) throw new Error("No API key is set up yet. Please ask an admin to add one.");
   const models=goodModel?[goodModel,...MODELS.filter(m=>m!==goodModel)]:MODELS;
-  let last="", failedKeys=0, errs=[]; const deadline=Date.now()+90000;
+  let last="", failedKeys=0, errs=[]; const deadline=Date.now()+(fast?70000:150000), MS=fast?25000:40000, MAXA=fast?1:3;
   for(const k of keys){
     let keyFailed=false;
     for(const m of models){
       if(Date.now()>deadline) throw new Error(last||"Timed out. Try again.");
-      let res=await tryOnce(k.key,m,prompt,search,json), live=search;
-      if(!res.ok&&search&&res.kind!=="model"){ res=await tryOnce(k.key,m,prompt,false,json); live=false }
+      let res, live=search;
+      for(let a=0;a<MAXA;a++){
+        if(Date.now()>deadline) break;
+        if(a===0){
+          res=await tryOnce(k.key,m,prompt,search,json,MS); live=search;
+          if(!res.ok&&search&&res.kind!=="model"){ res=await tryOnce(k.key,m,prompt,false,json,MS); live=false }
+        }else{
+          res=await tryOnce(k.key,m,prompt,false,json,MS); live=false;   // retry lighter (no live search)
+        }
+        if(res.ok||res.kind!=="other"||a+1>=MAXA) break;
+        await new Promise(r=>setTimeout(r,2000*(a+1)));   // back off: 2s, 4s
+      }
       if(res.ok){ goodModel=m; return {text:res.text,live,model:m} }
       last=res.msg; errs.push(m+": "+res.msg); console.warn("Gemini fail",m,res.kind,res.msg);
       if(res.kind==="key"){ keyFailed=true; break }
@@ -745,6 +778,81 @@ async function geminiCall(prompt,{search=false,json=false}={}){
   }
   const detail=errs.length?errs.join(" | "):last; throw new Error(failedKeys===keys.length?"All API keys failed ("+detail+"). Please tell an admin.":(detail||"Gemini request failed"));
 }
+
+/* ---------- backup AI (Claude) ---------- */
+const FALLBACK_MODEL="claude-haiku-5-5";
+const FBREF=()=>db.collection("config").doc("fallback");
+let fbCache=null, fbAt=0;
+async function fetchFallback(){
+  if(Date.now()-fbAt<300000) return fbCache;
+  try{ const sn=await withTimeout(FBREF().get(),8000,"fallback config timeout"), d=sn.exists?sn.data():null;
+       fbCache=d&&d.key&&d.on!==false?d:null }
+  catch(e){ fbCache=null }
+  fbAt=Date.now(); return fbCache;
+}
+async function claudeOnce(fb,prompt,search,json){
+  const ctrl=new AbortController(), to=setTimeout(()=>ctrl.abort(),50000);
+  try{
+    const body={model:fb.model||FALLBACK_MODEL,max_tokens:1500,messages:[{role:"user",content:prompt}]};
+    if(search) body.tools=[{type:"web_search_20250305",name:"web_search",max_uses:3}];
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",signal:ctrl.signal,
+      headers:{"content-type":"application/json","x-api-key":fb.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify(body)});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){ const e=new Error(j.error?.message||("HTTP "+r.status)); e.status=r.status; throw e }
+    let text=(j.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("").trim();
+    if(json){ const a=text.indexOf("["), z=text.lastIndexOf("]"); if(a>=0&&z>a) text=text.slice(a,z+1) }
+    else{ const i=text.search(/^# /m); if(i>0) text=text.slice(i) }   // drop any "let me search…" chatter
+    if(!text) throw new Error("Empty response");
+    return text;
+  }catch(e){ if(e.name==="AbortError") throw new Error("Timed out"); throw e }
+  finally{ clearTimeout(to) }
+}
+async function claudeCall(fb,prompt,{search=false,json=false}={}){
+  const p=prompt.replace(/Google Search/g,"web search");
+  try{ return {text:await claudeOnce(fb,p,search,json),live:search,model:"claude"} }
+  catch(e){
+    if(!search||e.status===401||e.status===403) throw e;
+    return {text:await claudeOnce(fb,p,false,json),live:false,model:"claude"};   // search unavailable → plain answer
+  }
+}
+async function geminiCall(prompt,opts={}){
+  const fb=await fetchFallback();
+  try{ return await geminiCall0(prompt,{...opts,fast:!!fb}) }
+  catch(e){
+    if(!fb) throw e;
+    try{ return await claudeCall(fb,prompt,opts) }
+    catch(e2){ throw new Error(e.message+" | backup AI: "+e2.message) }
+  }
+}
+async function pingClaude(k){
+  try{ const r=await fetch("https://api.anthropic.com/v1/models?limit=1",{headers:{"x-api-key":k,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"}});
+       if(r.ok) return {ok:true};
+       const j=await r.json().catch(()=>({})); return {ok:false,msg:j.error?.message||"HTTP "+r.status}
+  }catch(e){ return {ok:false,msg:"Network error"} }
+}
+async function loadFb(){
+  const st=$("#fbstat"); st.className="kst"; st.textContent="Loading…";
+  try{
+    const sn=await FBREF().get(), d=sn.exists?sn.data():null;
+    if(!d||!d.key){ st.textContent="Not set. Users have no backup if Gemini is busy."; st.className="kst bad"; return }
+    st.textContent="Saved ("+mask(d.key)+"), checking…";
+    const r=await pingClaude(d.key);
+    st.textContent=r.ok?"Backup active ✓ ("+mask(d.key)+")":"Not working: "+r.msg; st.className="kst "+(r.ok?"ok":"bad");
+  }catch(e){ st.textContent="Couldn't read the backup key. Check Firestore rules."; st.className="kst bad" }
+}
+$("#fbsave").onclick=async()=>{
+  const k=$("#fbkey").value.trim();
+  if(!/^sk-ant-[\w-]{20,}$/.test(k)) return toast("That doesn't look like an Anthropic API key");
+  try{ await FBREF().set({key:k,model:FALLBACK_MODEL,on:true,updatedAt:ts(),updatedBy:name});
+       $("#fbkey").value=""; fbAt=0; toast("Backup key saved"); loadFb() }
+  catch(e){ toast("Couldn't save. Check Firestore rules.") }
+};
+$("#fbdel").onclick=async()=>{
+  if(!confirm("Remove the backup AI key?")) return;
+  try{ await FBREF().delete(); fbAt=0; fbCache=null; toast("Backup key removed"); loadFb() }
+  catch(e){ toast("Couldn't remove. Check Firestore rules.") }
+};
 
 async function pingKey(k){
   try{const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=1&key="+encodeURIComponent(k));
