@@ -184,6 +184,15 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
 .cav{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--ice));color:#000;font-family:Sora;font-weight:800;font-size:1.3rem;display:grid;place-items:center}
 .cbox h2{margin:6px 0 4px}
 .cbox .sub{color:var(--mute);font-size:.88rem;line-height:1.6}
+.mbox.abox{max-height:92vh;overflow:auto}
+.krow{background:var(--card2);border-radius:12px;padding:12px;margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.khead{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.khead b{font-size:.92rem}
+.kk{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;color:var(--mute);word-break:break-all}
+.kbtns{display:flex;gap:6px;flex-wrap:wrap}
+.kp{font-size:.72rem;color:var(--mute)}.kp.ok{color:var(--lime)}.kp.bad{color:#ff7b7b}
+.badge.off{background:#2a2e3a;color:var(--mute)}
+.kadd{display:grid;gap:8px;margin-top:14px}
 </style>
 </head>
 <body>
@@ -266,10 +275,10 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
   <div class="mbox abox">
     <div class="ahead"><h2>Admin panel</h2><span class="tag" id="acount"></span></div>
     <p>Manage people, roles and archives.</p>
-    <div class="kbox"><label style="margin-top:14px">Gemini API key (shared)</label>
-      <div class="kst" id="kst">Loading…</div>
-      <div style="display:flex;gap:8px"><input id="newkey" type="password" placeholder="Paste new key (AIza… or AQ.…)" autocomplete="off"><button class="btn sm" id="ksave">Save</button></div>
-      <div style="display:flex;gap:8px;margin-top:8px"><button class="btn o sm" id="ktest">Check status</button><button class="btn o sm dg" id="kdel">Remove</button></div></div>
+    <div class="kbox"><label style="margin-top:14px">Gemini API keys (shared)</label>
+      <div id="klist"></div>
+      <div class="kadd"><input id="newlabel" placeholder="Label (optional), e.g. Backup key" maxlength="30"><input id="newkey" type="password" placeholder="Paste a key (AIza… or AQ.…)" autocomplete="off"><button class="btn sm" id="kadd">Add key</button></div>
+      <div class="hint">Keys are tried in order. If one fails or hits its limit, the next one is used automatically.</div></div>
     <div class="ulist" id="ulist"></div>
     <button class="btn o" id="aclose" style="width:100%;margin-top:16px">Close</button>
   </div>
@@ -315,7 +324,7 @@ firebase.initializeApp({
   measurementId:"G-3H57DCLMZX"
 });
 const auth=firebase.auth(), db=firebase.firestore();
-const MODEL="gemini-3.8-flash";
+const MODELS=["gemini-3.8-flash","gemini-flash-latest","gemini-2.5-flash"];  // tried in order
 const $=s=>document.querySelector(s);
 let name=null, current=null, guest=false, session=[];
 
@@ -441,31 +450,29 @@ $("#make").onclick=async()=>{
   }
   const topic=$("#topic").value.trim();
   const b=$("#make"); b.disabled=true; b.textContent="Writing…";
-  $("#read").innerHTML='<div class="empty"><div class="d ld">Preparing your briefing…</div>This takes a few seconds.</div>';
+  $("#read").innerHTML='<div class="empty"><div class="d ld">Preparing your briefing…</div><span id="wait">This takes a few seconds.</span></div>';
+  const t0=Date.now(), tick=setInterval(()=>{const w=$("#wait");if(w){const n=Math.round((Date.now()-t0)/1000);w.textContent=n<8?"This takes a few seconds.":"Still working… "+n+"s"}},1000);
   try{
-    const ks=await db.collection("config").doc("gemini").get(), key=ks.exists?(ks.data().key||""):"";
-    if(!key) throw new Error("No API key is set up yet. Please ask an admin to add one.");
-    const call=async live=>{
-      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`,
-        {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:buildPrompt()}]}],...(live?{tools:[{google_search:{}}]}:{})})});
-      return {r,j:await r.json()};
-    };
-    let {r,j}=await call(true);
-    if(!r.ok){ ({r,j}=await call(false)); if(r.ok) toast("Live search unavailable — news may not be current") }
-    if(!r.ok){ const m=j.error?.message||"Gemini request failed"; throw new Error(/api key|api_key|permission|quota/i.test(m)?"The shared API key isn't working. Please tell an admin.":m) }
-    const text=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text).join("");
-    if(!text) throw new Error("Empty response");
+    const out=await geminiCall(buildPrompt(),{search:true});
+    if(!out.live) toast("Live search unavailable — news may not be current");
+    const text=out.text;
     const label=(topic||"Daily briefing")+" · "+dateLabel(true), lang=$("#lang").value;
-    let id;
-    if(guest){ id="g"+Date.now(); session.unshift({id,topic:label,text,at:new Date()}) }
-    else{ id=(await db.collection("users").doc(name).collection("stories").add({topic:label,text,style:"Briefing",lang,createdAt:firebase.firestore.FieldValue.serverTimestamp()})).id; target=name }
-    current={id,text,topic:label}; render(text,label); loadHistory();
+    let id="g"+Date.now();
+    current={id,text,topic:label}; render(text,label);
+    if(guest){ session.unshift({id,topic:label,text,at:new Date()}); loadHistory() }
+    else{
+      // show the briefing right away; save to the archive in the background so a slow database can't block it
+      target=name; const mine=current;
+      db.collection("users").doc(name).collection("stories").add({topic:label,text,style:"Briefing",lang,createdAt:firebase.firestore.FieldValue.serverTimestamp()})
+        .then(ref=>{ mine.id=ref.id; loadHistory() })
+        .catch(()=>toast("Couldn't save to your archive. Check Firestore rules."));
+    }
     if(voiceRun||$("#autoread").checked) setTimeout(()=>{const lb=$("#read [data-listen]");if(lb)lb.click()},250);
   }catch(e){
     $("#read").innerHTML='<div class="empty"><div class="d">Something went wrong</div></div>';
     $("#read .empty").append(e.message);
   }
-  voiceRun=false; b.disabled=false; b.textContent="Generate briefing";
+  clearInterval(tick); voiceRun=false; b.disabled=false; b.textContent="Generate briefing";
 };
 
 /* safe markdown → DOM (model text never goes through innerHTML) */
@@ -508,15 +515,7 @@ function render(md,topic){
 $("#hsearch").addEventListener("input",e=>{const q=e.target.value.toLowerCase();document.querySelectorAll("#hist button").forEach(b=>b.classList.toggle("hidden",!b.textContent.toLowerCase().includes(q)))});
 
 /* ---------- quiz me + listen (Headline-only) ---------- */
-async function gemText(prompt,json){
-  const ks=await db.collection("config").doc("gemini").get(), key=ks.exists?(ks.data().key||""):"";
-  if(!key) throw new Error("No API key is set up yet. Please ask an admin to add one.");
-  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`,
-    {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],...(json?{generationConfig:{responseMimeType:"application/json"}}:{})})});
-  const j=await r.json();
-  if(!r.ok) throw new Error(j.error?.message||"Gemini request failed");
-  return (j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("");
-}
+async function gemText(prompt,json){ return (await geminiCall(prompt,{json})).text }
 async function quiz(btn){
   if(!current) return;
   btn.disabled=true; btn.textContent="Making quiz…";
@@ -687,40 +686,133 @@ const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=nu
 $("#adminBtn").onclick=()=>{$("#adm").classList.remove("hidden");loadUsers();loadKey()};
 $("#aclose").onclick=()=>$("#adm").classList.add("hidden");
 
-/* shared Gemini key (admin only to change; rules enforce it) */
-const KREF=()=>db.collection("config").doc("gemini"), mask=k=>k.slice(0,4)+"••••••••"+k.slice(-4);
-let curKey="";
-function setKst(t,c){const e=$("#kst");e.textContent=t;e.className="kst "+(c||"")}
+/* ---------- Gemini keys: several keys, tried in order ---------- */
+const KREF=()=>db.collection("config").doc("gemini"), mask=k=>k.length>10?k.slice(0,4)+"••••••••"+k.slice(-4):"••••••••";
+const validKey=k=>/^[\w.-]{20,}$/.test(k);
+let keyList=[], revealed=new Set(), editing=null, kstat={}, goodModel=null;
+
+const withTimeout=(p,ms,msg)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error(msg)),ms))]);
+async function fetchKeys(){
+  const sn=await withTimeout(KREF().get(),15000,"Couldn't reach the database to load the API keys. Check your internet connection and refresh."), d=sn.exists?sn.data():{};
+  if(Array.isArray(d.keys)) return d.keys.filter(k=>k&&k.key);
+  return d.key?[{id:"k1",label:"Key 1",key:d.key,on:true}]:[];   // older single-key setup
+}
+async function saveKeys(list){
+  const first=list.find(k=>k.on!==false);
+  await KREF().set({keys:list,key:first?first.key:"",updatedAt:ts(),updatedBy:name});
+  keyList=list;
+}
+const errKind=(status,m)=>{
+  if(status===404||/no longer available|not found|not supported|deprecated|unknown model/i.test(m)) return "model";
+  if(status===401||status===403||status===429||/api key|api_key|permission|quota|exhausted|billing|denied|expired/i.test(m)) return "key";
+  return "other";
+};
+async function tryOnce(key,model,prompt,search,json){
+  const ctrl=new AbortController(), to=setTimeout(()=>ctrl.abort(),30000);
+  try{
+    const body={contents:[{parts:[{text:prompt}]}]};
+    if(search) body.tools=[{google_search:{}}];
+    if(json) body.generationConfig={responseMimeType:"application/json"};
+    const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`,
+      {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body),signal:ctrl.signal});
+    const j=await r.json().catch(()=>({}));
+    if(r.ok){
+      const text=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("");
+      if(text.trim()) return {ok:true,text};
+      return {ok:false,kind:"other",msg:"Empty response"+(j.promptFeedback?.blockReason?" ("+j.promptFeedback.blockReason+")":"")};
+    }
+    const msg=j.error?.message||("HTTP "+r.status);
+    return {ok:false,kind:errKind(r.status,msg),msg};
+  }catch(e){ return {ok:false,kind:"other",msg:e.name==="AbortError"?"Timed out. Try again.":"Network error. Check your connection."} }
+  finally{ clearTimeout(to) }
+}
+async function geminiCall(prompt,{search=false,json=false}={}){
+  const keys=(await fetchKeys()).filter(k=>k.on!==false&&k.key);
+  if(!keys.length) throw new Error("No API key is set up yet. Please ask an admin to add one.");
+  const models=goodModel?[goodModel,...MODELS.filter(m=>m!==goodModel)]:MODELS;
+  let last="", failedKeys=0; const deadline=Date.now()+90000;
+  for(const k of keys){
+    let keyFailed=false;
+    for(const m of models){
+      if(Date.now()>deadline) throw new Error(last||"Timed out. Try again.");
+      let res=await tryOnce(k.key,m,prompt,search,json), live=search;
+      if(!res.ok&&search&&res.kind!=="model"){ res=await tryOnce(k.key,m,prompt,false,json); live=false }
+      if(res.ok){ goodModel=m; return {text:res.text,live,model:m} }
+      last=res.msg;
+      if(res.kind==="key"){ keyFailed=true; break }
+    }
+    if(keyFailed) failedKeys++;
+  }
+  throw new Error(failedKeys===keys.length?"All API keys failed ("+last+"). Please tell an admin.":(last||"Gemini request failed"));
+}
+
 async function pingKey(k){
   try{const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=1&key="+encodeURIComponent(k));
     if(r.ok) return {ok:true};
     const j=await r.json().catch(()=>({})); return {ok:false,msg:j.error?.message||"HTTP "+r.status}
   }catch(e){return {ok:false,msg:"Network error"}}
 }
-async function testKey(k){
-  setKst(mask(k)+" · checking…");
-  const res=await pingKey(k);
-  setKst(mask(k)+" · "+(res.ok?"Active ✓":"Not working: "+res.msg),res.ok?"ok":"bad");
+async function testKeyRow(id){
+  const k=keyList.find(x=>x.id===id); if(!k) return;
+  kstat[id]={t:"checking…",c:""}; if(!editing) renderKeys();
+  const r=await pingKey(k.key);
+  kstat[id]=r.ok?{t:"Active ✓",c:"ok"}:{t:"Not working: "+r.msg,c:"bad"}; if(!editing) renderKeys();
+}
+function renderKeys(){
+  const box=$("#klist"); box.replaceChildren();
+  if(!keyList.length){ box.append(mk("div","kst bad","No keys yet. Users can't generate briefings.")); return }
+  keyList.forEach((k,i)=>{
+    const row=mk("div","krow");
+    if(editing===k.id){
+      const l=mk("input"), v=mk("input");
+      l.value=k.label||""; l.placeholder="Label"; l.maxLength=30;
+      v.value=k.key; v.placeholder="API key"; v.autocomplete="off"; v.spellcheck=false;
+      const bt=mk("div","kbtns"), sv=mk("button","btn sm","Save"), cn=mk("button","btn o sm","Cancel");
+      sv.onclick=async()=>{
+        const nk=v.value.trim();
+        if(!validKey(nk)) return toast("That doesn't look like a Gemini API key");
+        if(keyList.some(x=>x.id!==k.id&&x.key===nk)) return toast("That key is already added");
+        try{
+          await saveKeys(keyList.map(x=>x.id===k.id?{...x,label:l.value.trim()||x.label,key:nk}:x));
+          editing=null; delete kstat[k.id]; renderKeys(); testKeyRow(k.id); toast("Key updated");
+        }catch(e){ toast("Couldn't save. Check Firestore rules.") }
+      };
+      cn.onclick=()=>{editing=null;renderKeys()};
+      bt.append(sv,cn); row.append(l,v,bt); box.append(row); return;
+    }
+    const st=kstat[k.id]||{t:"",c:""}, head=mk("div","khead"), shown=revealed.has(k.id);
+    head.append(mk("b","",k.label||("Key "+(i+1))));
+    if(k.on===false) head.append(mk("span","badge off","OFF"));
+    head.append(mk("span","kp "+st.c,st.t));
+    const kk=mk("div","kk",shown?k.key:mask(k.key)), bt=mk("div","kbtns");
+    const b1=mk("button","btn o sm",shown?"Hide":"Show");
+    b1.onclick=()=>{shown?revealed.delete(k.id):revealed.add(k.id);renderKeys()};
+    const b2=mk("button","btn o sm","Edit"); b2.onclick=()=>{editing=k.id;revealed.add(k.id);renderKeys()};
+    const b3=mk("button","btn o sm","Test"); b3.onclick=()=>testKeyRow(k.id);
+    const b4=mk("button","btn o sm",k.on===false?"Turn on":"Turn off");
+    b4.onclick=async()=>{ try{await saveKeys(keyList.map(x=>x.id===k.id?{...x,on:k.on===false}:x));renderKeys()}catch(e){toast("Couldn't save. Check Firestore rules.")} };
+    const b5=mk("button","btn o sm dg","Delete");
+    b5.onclick=async()=>{
+      if(!confirm("Delete \""+(k.label||"this key")+"\"?")) return;
+      try{await saveKeys(keyList.filter(x=>x.id!==k.id));renderKeys();toast("Key deleted")}catch(e){toast("Couldn't delete. Check Firestore rules.")}
+    };
+    bt.append(b1,b2,b3,b4,b5); row.append(head,kk,bt); box.append(row);
+  });
 }
 async function loadKey(){
-  setKst("Loading…");
-  try{
-    const sn=await KREF().get(); curKey=sn.exists?(sn.data().key||""):"";
-    $("#ktest").disabled=$("#kdel").disabled=!curKey;
-    if(!curKey) return setKst("No key set. Users can't generate briefings.","bad");
-    testKey(curKey);
-  }catch(e){ setKst("Couldn't read the key. Check Firestore rules.","bad") }
+  editing=null; $("#klist").replaceChildren(mk("div","kst","Loading…"));
+  try{ keyList=await fetchKeys(); renderKeys(); keyList.forEach(k=>testKeyRow(k.id)) }
+  catch(e){ $("#klist").replaceChildren(mk("div","kst bad","Couldn't read the keys. Check Firestore rules.")) }
 }
-$("#ksave").onclick=async()=>{
-  const k=$("#newkey").value.trim();
-  if(!/^[\w.-]{20,}$/.test(k)) return toast("That doesn't look like a Gemini API key");
-  try{await KREF().set({key:k,updatedAt:ts(),updatedBy:name});$("#newkey").value="";toast("Key saved");await loadKey()}
-  catch(e){toast("Couldn't save — check Firestore rules")}
-};
-$("#ktest").onclick=()=>curKey&&testKey(curKey);
-$("#kdel").onclick=async()=>{
-  if(!confirm("Remove the shared API key? Nobody can generate briefings until a new one is added.")) return;
-  try{await KREF().delete();toast("Key removed");loadKey()}catch(e){toast("Couldn't remove — check Firestore rules")}
+$("#kadd").onclick=async()=>{
+  const k=$("#newkey").value.trim(), l=$("#newlabel").value.trim();
+  if(!validKey(k)) return toast("That doesn't look like a Gemini API key");
+  if(keyList.some(x=>x.key===k)) return toast("That key is already added");
+  const id="k"+Date.now().toString(36);
+  try{
+    await saveKeys([...keyList,{id,label:l||"Key "+(keyList.length+1),key:k,on:true,addedAt:Date.now()}]);
+    $("#newkey").value=$("#newlabel").value=""; toast("Key added"); renderKeys(); testKeyRow(id);
+  }catch(e){ toast("Couldn't save. Check Firestore rules.") }
 };
 
 async function loadUsers(){
