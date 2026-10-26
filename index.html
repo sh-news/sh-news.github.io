@@ -59,14 +59,23 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 .tag{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);font-weight:700}
 .win h3{font-size:1.2rem;margin:8px 0 10px;line-height:1.25}
 .type{color:var(--mute);font-size:.92rem;line-height:1.7;min-height:120px}
-.type::after{content:"▍";color:var(--lime);animation:pu 1s infinite}
+.type::after{content:"";display:inline-block;width:.5em;height:1.05em;margin-left:2px;vertical-align:-.15em;background:var(--lime);animation:pu 1s infinite}
 .chips{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .chips span{font-size:.72rem;border:1px solid var(--line);padding:5px 11px;border-radius:999px;color:var(--mute)}
 
 .feats{position:relative;z-index:5;max-width:1120px;margin:30px auto 0;padding:0 20px 80px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
 .f{background:linear-gradient(180deg,#ffffff08,transparent);border:1px solid var(--line);border-radius:var(--r);padding:26px;transition:.3s}
 .f:hover{transform:translateY(-6px);border-color:#c6ff3d55;box-shadow:0 24px 60px -30px rgba(198,255,61,.35)}
-.f em{font-style:normal;font-size:1.6rem}
+.f em{font-style:normal;display:block;color:var(--lime)}
+.f em .ic{width:34px;height:34px}
+.ic{width:1.1em;height:1.1em;flex:none;vertical-align:-.2em}
+.btn .ic,.chips .ic,.ld .ic,.stk .ic{margin-right:6px}
+.chips span{display:inline-flex;align-items:center}
+.mic{display:inline-grid;place-items:center}
+.mic .ic{width:22px;height:22px;margin:0}
+#gloss .gh button{font-size:.8rem}
+.stk{display:inline-flex;align-items:center;color:var(--lime)}
+.ld{display:inline-flex;align-items:center}
 .f h3{margin:14px 0 8px;font-size:1.05rem}.f p{color:var(--mute);font-size:.92rem;line-height:1.6}
 
 /* ---------- login modal ---------- */
@@ -125,7 +134,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 /* ticker + steps (home) */
 .ticker{position:relative;z-index:5;overflow:hidden;border-block:1px solid var(--line);background:#ffffff05;margin-top:10px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .tk{display:flex;gap:44px;width:max-content;padding:14px 0;animation:tk 38s linear infinite;color:var(--mute);font-size:.85rem;white-space:nowrap}
-.tk span::before{content:"●";color:var(--lime);margin-right:10px;font-size:.6rem;vertical-align:middle}
+.tk span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--lime);margin-right:10px;vertical-align:middle}
 @keyframes tk{to{transform:translateX(-50%)}}
 .steps{position:relative;z-index:5;max-width:1120px;margin:60px auto 0;padding:0 20px;text-align:center}
 .steps h2{font-size:clamp(1.6rem,3.4vw,2.2rem);letter-spacing:-.035em}
@@ -209,7 +218,7 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
       <div class="pill"><b></b> AI newsroom · with built-in quiz mode</div>
       <h1>News, written <span class="grad">the second you ask.</span></h1>
       <p>Get a short daily briefing with headlines, international, national, Kerala and sports news, in English, Hindi or Malayalam. Every briefing is saved to your personal archive.</p>
-      <div class="cta"><button class="btn" data-enter="up">Start writing →</button><button class="btn o" data-guest>Try as guest</button><a href="#feats" class="btn o" style="text-decoration:none;display:inline-block">How it works</a></div>
+      <div class="cta"><button class="btn" data-enter="up">Start writing</button><button class="btn o" data-guest>Try as guest</button><a href="#feats" class="btn o" style="text-decoration:none;display:inline-block">How it works</a></div>
       <div class="stats"><div><b>3</b><span>languages</span></div><div><b>5</b><span>news sections</span></div><div><b>10</b><span>quick stories</span></div></div>
     </div>
     <div class="demo"><div class="win">
@@ -217,24 +226,24 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
       <div class="tag">Briefing · English</div>
       <h3>Latest briefing</h3>
       <div class="type" id="type"></div>
-      <div class="chips"><span>⚡ 3.2s</span><span>~200 words</span><span>Quiz included</span></div>
+      <div class="chips"><span><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="18" height="7" rx="2.2"></rect><rect x="3" y="13.4" width="18" height="7" rx="2.2"></rect><path d="M14.6 7.1h3.2M14.6 16.9h3.2" stroke-width="1.5"></path><g fill="currentColor" stroke="none"><circle cx="6.9" cy="7.1" r="1.15"><animate attributeName="opacity" values=".18;1;.18" dur="1.6s" begin="0s" repeatCount="indefinite"></animate></circle><circle cx="10.2" cy="7.1" r="1.15"><animate attributeName="opacity" values=".18;1;.18" dur="1.6s" begin="0.35s" repeatCount="indefinite"></animate></circle><circle cx="6.9" cy="16.9" r="1.15"><animate attributeName="opacity" values=".18;1;.18" dur="1.6s" begin="0.7s" repeatCount="indefinite"></animate></circle><circle cx="10.2" cy="16.9" r="1.15"><animate attributeName="opacity" values=".18;1;.18" dur="1.6s" begin="1.05s" repeatCount="indefinite"></animate></circle></g></svg>3.2s</span><span>~200 words</span><span>Quiz included</span></div>
     </div></div>
   </div>
   <div class="ticker" aria-hidden="true"><div class="tk"><span>Kerala monsoon: what the forecast models say</span><span>AI chips explained in plain language</span><span>How UPI changed everyday payments</span><span>Why the Western Ghats matter for rainfall</span><span>Space missions to watch this year</span><span>The rise of electric two-wheelers in India</span><span>Explained: how interest rates move prices</span><span>Climate tech startups worth knowing</span><span>Kerala monsoon: what the forecast models say</span><span>AI chips explained in plain language</span><span>How UPI changed everyday payments</span><span>Why the Western Ghats matter for rainfall</span><span>Space missions to watch this year</span><span>The rise of electric two-wheelers in India</span><span>Explained: how interest rates move prices</span><span>Climate tech startups worth knowing</span></div></div>
   <div class="feats" id="feats">
-    <div class="f"><em>⚡</em><h3>Instant briefing</h3><p>Five sections of short, current news generated in one go — ready to read or copy.</p></div>
-    <div class="f"><em>🌍</em><h3>Your language</h3><p>English, Hindi or Malayalam — pick whichever you read best.</p></div>
-    <div class="f"><em>🧠</em><h3>Quiz me</h3><p>Every briefing can turn into a 3-question quiz in your language, with a daily streak to keep you reading.</p></div>
-    <div class="f"><em>🔊</em><h3>Listen</h3><p>Have your briefing read aloud in English, Hindi or Malayalam — handy for revision on the go.</p></div>
-    <div class="f"><em>📖</em><h3>Tap-a-word glossary</h3><p>Stuck on a word? Tap it in any briefing for a simple meaning in the same language.</p></div>
-    <div class="f"><em>📅</em><h3>Any day's news</h3><p>Pick a date and get that day's briefing. Past days only, no future news.</p></div>
-    <div class="f"><em>🎙️</em><h3>Speak and listen</h3><p>Say your topic out loud and hear the briefing read back to you.</p></div>
-    <div class="f"><em>🗂️</em><h3>Personal archive</h3><p>Every story is stored under your username so you can reopen it any time.</p></div>
+    <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 20.8 12 9.6l2.4 11.2M10.4 17.2h3.2" stroke-width="1.6"></path><circle cx="12" cy="7.2" r="2.1" fill="currentColor" stroke="none"></circle><path d="M7.4 10.4a6.4 6.4 0 0 1 0-6.4"><animate attributeName="opacity" values=".18;1;1;.18" keyTimes="0;0.2;0.6;1" dur="2.2s" repeatCount="indefinite"></animate></path><path d="M16.6 4a6.4 6.4 0 0 1 0 6.4"><animate attributeName="opacity" values=".18;1;1;.18" keyTimes="0;0.2;0.6;1" dur="2.2s" repeatCount="indefinite"></animate></path><path d="M4.4 12.8a10.6 10.6 0 0 1 0-11.2"><animate attributeName="opacity" values=".18;.18;1;1;.18" keyTimes="0;0.24;0.44;0.72;1" dur="2.2s" repeatCount="indefinite"></animate></path><path d="M19.6 1.6a10.6 10.6 0 0 1 0 11.2"><animate attributeName="opacity" values=".18;.18;1;1;.18" keyTimes="0;0.24;0.44;0.72;1" dur="2.2s" repeatCount="indefinite"></animate></path></svg></em><h3>Instant briefing</h3><p>Five sections of short, current news generated in one go — ready to read or copy.</p></div>
+    <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 5.2h14.8a2.2 2.2 0 0 1 2.2 2.2v7.2a2.2 2.2 0 0 1-2.2 2.2h-6.7l-4.8 3.5v-3.5H4.6a2.2 2.2 0 0 1-2.2-2.2V7.4a2.2 2.2 0 0 1 2.2-2.2Z"></path><g fill="currentColor" stroke="none"><circle cx="8.4" cy="11.3" r="1.1"><animate attributeName="cy" values="11.3;9.3;11.3" dur="1.15s" begin="0s" repeatCount="indefinite" calcMode="spline" keySplines="0.32 0 0.2 1;0.32 0 0.2 1"></animate></circle><circle cx="12" cy="11.3" r="1.1"><animate attributeName="cy" values="11.3;9.3;11.3" dur="1.15s" begin="0.16s" repeatCount="indefinite" calcMode="spline" keySplines="0.32 0 0.2 1;0.32 0 0.2 1"></animate></circle><circle cx="15.6" cy="11.3" r="1.1"><animate attributeName="cy" values="11.3;9.3;11.3" dur="1.15s" begin="0.32s" repeatCount="indefinite" calcMode="spline" keySplines="0.32 0 0.2 1;0.32 0 0.2 1"></animate></circle></g></svg></em><h3>Your language</h3><p>English, Hindi or Malayalam — pick whichever you read best.</p></div>
+    <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.6H7.2A2.2 2.2 0 0 0 5 6.8v12A2.2 2.2 0 0 0 7.2 21h9.6a2.2 2.2 0 0 0 2.2-2.2v-12a2.2 2.2 0 0 0-2.2-2.2H15"></path><rect x="9" y="2.8" width="6" height="3.6" rx="1.2"></rect><path d="M8.8 11.4h6.4M8.8 15.4h4.4" stroke-width="1.6"></path></svg></em><h3>Quiz me</h3><p>Every briefing can turn into a 3-question quiz in your language, with a daily streak to keep you reading.</p></div>
+    <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1.8 8.6a15.6 15.6 0 0 1 20.4 0"><animate attributeName="opacity" values=".15;.15;1;1;.15" keyTimes="0;0.3;0.46;0.78;1" dur="2.2s" repeatCount="indefinite"></animate></path><path d="M5.2 12.4a10.6 10.6 0 0 1 13.6 0"><animate attributeName="opacity" values=".15;1;1;.15" keyTimes="0;0.28;0.72;1" dur="2.2s" repeatCount="indefinite"></animate></path><path d="M8.6 16.2a5.4 5.4 0 0 1 6.8 0"><animate attributeName="opacity" values=".15;1;1;.15" keyTimes="0;0.14;0.68;1" dur="2.2s" repeatCount="indefinite"></animate></path><circle cx="12" cy="19.6" r="1.2" fill="currentColor" stroke="none"><animate attributeName="opacity" values=".3;1;1;.3" keyTimes="0;0.08;0.66;1" dur="2.2s" repeatCount="indefinite"></animate></circle></svg></em><h3>Listen</h3><p>Have your briefing read aloud in English, Hindi or Malayalam — handy for revision on the go.</p></div>
+    <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7.6 3.2H5.8a2 2 0 0 0-2 2V7M16.4 3.2h1.8a2 2 0 0 1 2 2V7M7.6 20.8H5.8a2 2 0 0 1-2-2V17M16.4 20.8h1.8a2 2 0 0 0 2-2V17"></path><path d="M3.8 12h16.4" stroke-width="1.9"><animateTransform attributeName="transform" type="translate" values="0 -5;0 5;0 -5" dur="2.6s" repeatCount="indefinite" calcMode="spline" keySplines="0.45 0 0.2 1;0.45 0 0.2 1"></animateTransform><animate attributeName="opacity" values=".3;1;.3;1;.3" keyTimes="0;0.25;0.5;0.75;1" dur="2.6s" repeatCount="indefinite"></animate></path></svg></em><h3>Tap-a-word glossary</h3><p>Stuck on a word? Tap it in any briefing for a simple meaning in the same language.</p></div>
+    <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.8"></circle><g><animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="6s" repeatCount="indefinite"></animateTransform><circle cx="12" cy="7.3" r="1.9"></circle><circle cx="16.1" cy="14.4" r="1.9"></circle><circle cx="7.9" cy="14.4" r="1.9"></circle></g><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg></em><h3>Any day's news</h3><p>Pick a date and get that day's briefing. Past days only, no future news.</p></div>
+    <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="10" r="3.1"></circle><path d="M6.1 18.7a6.6 6.6 0 0 1 11.8 0"></path></svg></em><h3>Speak and listen</h3><p>Say your topic out loud and hear the briefing read back to you.</p></div>
+    <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="18" height="7" rx="2.2"></rect><rect x="3" y="13.4" width="18" height="7" rx="2.2"></rect><path d="M6.8 7.1h.1M6.8 16.9h.1" stroke-width="2.4"></path><path d="M14.6 7.1h3.2M14.6 16.9h3.2" stroke-width="1.5"></path></svg></em><h3>Personal archive</h3><p>Every story is stored under your username so you can reopen it any time.</p></div>
   </div>
 <div class="steps"><h2 class="d">Three steps. That's it.</h2>
     <div class="sg"><div><b>01</b><h3>Sign in or go guest</h3><p>Create a username and PIN, or jump in as a guest. No setup needed.</p></div><div><b>02</b><h3>Pick your language</h3><p>English, Hindi or Malayalam.</p></div><div><b>03</b><h3>Read and keep</h3><p>Your briefing is saved to your archive. Copy it or download it.</p></div></div></div>
   <div style="height:70px"></div>
-  <footer class="foot">Made for <b>Sacred Heart CMI Public School</b> · by Chrisben Martin</footer>
+  <footer class="foot">Made for <b>Sacred Heart CMI Public School</b></footer>
 </section>
 
 <!-- LOGIN / REGISTER -->
@@ -266,9 +275,9 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
 
 <!-- GLOSSARY POPOVER -->
 <div id="gloss" class="hidden" role="dialog" aria-live="polite">
-  <div class="gh"><b id="gw"></b><button id="gx" aria-label="Close">✕</button></div>
+  <div class="gh"><b id="gw"></b><button id="gx" aria-label="Close">Close</button></div>
   <p id="gd"></p>
-  <button class="btn o sm" id="gs">🔊 Hear it</button>
+  <button class="btn o sm" id="gs"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1.8 8.6a15.6 15.6 0 0 1 20.4 0"><animate attributeName="opacity" values=".15;.15;1;1;.15" keyTimes="0;0.3;0.46;0.78;1" dur="2.2s" repeatCount="indefinite"></animate></path><path d="M5.2 12.4a10.6 10.6 0 0 1 13.6 0"><animate attributeName="opacity" values=".15;1;1;.15" keyTimes="0;0.28;0.72;1" dur="2.2s" repeatCount="indefinite"></animate></path><path d="M8.6 16.2a5.4 5.4 0 0 1 6.8 0"><animate attributeName="opacity" values=".15;1;1;.15" keyTimes="0;0.14;0.68;1" dur="2.2s" repeatCount="indefinite"></animate></path><circle cx="12" cy="19.6" r="1.2" fill="currentColor" stroke="none"><animate attributeName="opacity" values=".3;1;1;.3" keyTimes="0;0.08;0.66;1" dur="2.2s" repeatCount="indefinite"></animate></circle></svg>Hear it</button>
 </div>
 
 <!-- ADMIN -->
@@ -298,7 +307,7 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
       <div class="panel">
         <h3 class="d">New briefing</h3>
         <label style="margin-top:14px">Focus (optional)</label>
-        <div class="vrow"><input id="topic" placeholder="Type or tap the mic and speak"><button class="mic" id="mic" type="button" title="Speak your topic" aria-label="Speak your topic">🎙️</button></div>
+        <div class="vrow"><input id="topic" placeholder="Type or tap the mic and speak"><button class="mic" id="mic" type="button" title="Speak your topic" aria-label="Speak your topic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="10" r="3.1"></circle><path d="M6.1 18.7a6.6 6.6 0 0 1 11.8 0"></path></svg></button></div>
         <div class="sugs" id="sugs"></div>
         <label>Language</label><select id="lang"><option>English</option><option>Hindi</option><option>Malayalam</option></select>
         <label>News date</label><input type="date" id="ndate"><div class="derr" id="derr" role="alert"></div>
@@ -310,7 +319,7 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
     </aside>
     <article class="panel read" id="read"><div class="empty"><div class="d">Blank page.</div>Choose a language and generate your first briefing.</div></article>
   </div>
-  <footer class="foot">Made for <b>Sacred Heart CMI Public School</b> · by Chrisben Martin</footer>
+  <footer class="foot">Made for <b>Sacred Heart CMI Public School</b></footer>
 </section>
 
 <div class="toast hidden" id="toast"></div>
@@ -331,6 +340,7 @@ firebase.initializeApp({
 const auth=firebase.auth(), db=firebase.firestore();
 const MODELS=["gemini-3.5-flash-lite","gemini-3.8-flash","gemini-flash-latest"];  // tried in order
 const $=s=>document.querySelector(s);
+const ICONS={"ring": "<svg class=\"ic\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3.2a8.8 8.8 0 0 1 8.8 8.8\" stroke-width=\"2\"><animateTransform attributeName=\"transform\" type=\"rotate\" values=\"0 12 12;360 12 12\" dur=\"1.4s\" repeatCount=\"indefinite\"></animateTransform></path><path d=\"M12 19a7 7 0 0 1-7-7\" stroke-width=\"2\" stroke-opacity=\".55\"><animateTransform attributeName=\"transform\" type=\"rotate\" values=\"360 12 12;0 12 12\" dur=\"1.05s\" repeatCount=\"indefinite\"></animateTransform></path></svg>", "ok": "<svg class=\"ic\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\" stroke-dasharray=\"57\" stroke-dashoffset=\"57\"><animate attributeName=\"stroke-dashoffset\" values=\"57;0;0;57\" keyTimes=\"0;0.34;0.84;1\" dur=\"3.4s\" repeatCount=\"indefinite\" calcMode=\"spline\" keySplines=\"0.35 0 0.15 1;0 0 1 1;0.5 0 0.4 1\"></animate></circle><path d=\"m8 12.2 2.7 2.8L16 9.4\" stroke-dasharray=\"13\" stroke-dashoffset=\"13\"><animate attributeName=\"stroke-dashoffset\" values=\"13;13;0;0;13\" keyTimes=\"0;0.3;0.52;0.82;1\" dur=\"3.4s\" repeatCount=\"indefinite\" calcMode=\"spline\" keySplines=\"0 0 1 1;0.35 0 0.15 1;0 0 1 1;0.5 0 0.4 1\"></animate></path></svg>"};
 let name=null, current=null, guest=false, session=[];
 
 const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.remove("hidden");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add("hidden"),2600)};
@@ -473,7 +483,7 @@ $("#make").onclick=async()=>{
   }
   const topic=$("#topic").value.trim();
   const b=$("#make"); b.disabled=true; b.textContent="Writing…";
-  $("#read").innerHTML='<div class="empty"><div class="d ld">Preparing your briefing…</div><span id="wait">Only 5 stories, just a moment.</span></div>';
+  $("#read").innerHTML='<div class="empty"><div class="d ld">'+ICONS.ring+'Preparing your briefing…</div><span id="wait">Only 5 stories, just a moment.</span></div>';
   const t0=Date.now(), tick=setInterval(()=>{const w=$("#wait");if(w){const n=Math.round((Date.now()-t0)/1000);w.textContent=n<8?"Only 5 stories, just a moment.":"Still working… "+n+"s"}},1000);
   try{
     const cid=cacheId(), hit=await cacheGet(cid), isToday=!$("#ndate").value||$("#ndate").value===todayStr();
@@ -580,7 +590,8 @@ function runQuiz(qs){
           const day=new Date().toDateString(), y=new Date(Date.now()-864e5).toDateString();
           let st={n:0,last:""}; try{st=JSON.parse(localStorage.getItem("hl_streak"))||st}catch(_){}
           if(st.last!==day){ st={n:st.last===y?st.n+1:1,last:day}; try{localStorage.setItem("hl_streak",JSON.stringify(st))}catch(_){} }
-          res.textContent=(score===qs.length?"Perfect — you're fully up to date! ":score+"/"+qs.length+" — read it once more and try again. ")+"🔥 "+st.n+"-day streak";
+          res.textContent=(score===qs.length?"Perfect — you're fully up to date! ":score+"/"+qs.length+" — read it once more and try again. ");
+          res.insertAdjacentHTML("beforeend",'<span class="stk">'+ICONS.ok+" "+st.n+"-day streak</span>");
           res.classList.remove("hidden");
         }
       };
@@ -858,7 +869,7 @@ async function loadFb(){
     if(!d||!d.key){ st.textContent="Not set. Users have no backup if Gemini is busy."; st.className="kst bad"; return }
     st.textContent="Saved ("+mask(d.key)+"), checking…";
     const r=await pingClaude(d.key);
-    st.textContent=r.ok?"Backup active ✓ ("+mask(d.key)+")":"Not working: "+r.msg; st.className="kst "+(r.ok?"ok":"bad");
+    st.textContent=r.ok?"Backup active ("+mask(d.key)+")":"Not working: "+r.msg; st.className="kst "+(r.ok?"ok":"bad");
   }catch(e){ st.textContent="Couldn't read the backup key. Check Firestore rules."; st.className="kst bad" }
 }
 $("#fbsave").onclick=async()=>{
@@ -884,7 +895,7 @@ async function testKeyRow(id){
   const k=keyList.find(x=>x.id===id); if(!k) return;
   kstat[id]={t:"checking…",c:""}; if(!editing) renderKeys();
   const r=await pingKey(k.key);
-  kstat[id]=r.ok?{t:"Active ✓",c:"ok"}:{t:"Not working: "+r.msg,c:"bad"}; if(!editing) renderKeys();
+  kstat[id]=r.ok?{t:"Active",c:"ok"}:{t:"Not working: "+r.msg,c:"bad"}; if(!editing) renderKeys();
 }
 function renderKeys(){
   const box=$("#klist"); box.replaceChildren();
