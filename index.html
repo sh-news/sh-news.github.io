@@ -157,6 +157,33 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 .opt.no{border-color:#ff7b7b;background:#ff7b7b14}
 .why{font-size:.85rem;color:var(--mute);margin:10px 0 0!important}
 .qres{margin-top:14px;font-family:Sora,sans-serif;font-size:1.05rem}
+/* tap-a-word glossary */
+.w{cursor:pointer;border-radius:4px;transition:background .15s,color .15s}
+.w:hover{background:#c6ff3d22;color:#fff}
+.w.sel{background:var(--lime);color:#000}
+#gloss{position:absolute;z-index:80;width:300px;max-width:calc(100vw - 16px);background:var(--card2);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:0 24px 60px -16px #000;animation:pop .2s ease-out}
+#gloss .gh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+#gloss .gh b{font-family:Sora,Inter,sans-serif;font-size:1.05rem;color:var(--lime);word-break:break-word}
+#gloss .gh button{background:none;border:0;color:var(--mute);font-size:1rem;padding:2px 6px}
+#gloss .gh button:hover{color:var(--text)}
+#gloss p{color:#cfd3de;font-size:.9rem;line-height:1.6;margin:8px 0 12px}
+/* voice + date controls */
+.vrow{display:flex;gap:8px}
+.mic{flex:none;width:48px;padding:0;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-size:1.05rem;transition:.2s}
+.mic:hover{border-color:var(--lime)}
+.mic.on{border-color:var(--lime);color:var(--lime);box-shadow:0 0 0 4px rgba(198,255,61,.14);animation:pu 1s infinite}
+input[type=date]{color-scheme:dark}
+.derr{color:#ff7b7b;font-size:.82rem;line-height:1.45;margin-top:8px;font-weight:500}
+.derr:empty{display:none}
+.chk{display:flex;gap:9px;align-items:center;margin:14px 0 0;font-size:.82rem;letter-spacing:0;text-transform:none;font-weight:500;color:var(--mute);cursor:pointer}
+input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
+/* creators (quiet) */
+.ctab{background:none;border:0;color:var(--mute);font-size:.85rem;padding:8px 10px;border-radius:999px;transition:.2s}
+.ctab:hover{color:var(--lime)}
+.cbox{max-width:360px;text-align:center}
+.cav{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--ice));color:#000;font-family:Sora;font-weight:800;font-size:1.3rem;display:grid;place-items:center}
+.cbox h2{margin:6px 0 4px}
+.cbox .sub{color:var(--mute);font-size:.88rem;line-height:1.6}
 </style>
 </head>
 <body>
@@ -166,7 +193,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 
 <!-- LANDING -->
 <section id="home">
-  <nav><div class="logo">head<i>line</i></div><div class="navr"><button class="btn o sm" data-enter="in">Sign in</button><button class="btn sm" data-enter="up">Register</button></div></nav>
+  <nav><div class="logo">head<i>line</i></div><div class="navr"><button class="ctab" data-creators>Creators</button><button class="btn o sm" data-enter="in">Sign in</button><button class="btn sm" data-enter="up">Register</button></div></nav>
   <div class="hero">
     <div>
       <div class="pill"><b></b> AI newsroom · with built-in quiz mode</div>
@@ -189,12 +216,15 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
     <div class="f"><em>🌍</em><h3>Your language</h3><p>English, Hindi or Malayalam — pick whichever you read best.</p></div>
     <div class="f"><em>🧠</em><h3>Quiz me</h3><p>Every briefing can turn into a 3-question quiz in your language, with a daily streak to keep you reading.</p></div>
     <div class="f"><em>🔊</em><h3>Listen</h3><p>Have your briefing read aloud in English, Hindi or Malayalam — handy for revision on the go.</p></div>
+    <div class="f"><em>📖</em><h3>Tap-a-word glossary</h3><p>Stuck on a word? Tap it in any briefing for a simple meaning in the same language.</p></div>
+    <div class="f"><em>📅</em><h3>Any day's news</h3><p>Pick a date and get that day's briefing. Past days only, no future news.</p></div>
+    <div class="f"><em>🎙️</em><h3>Speak and listen</h3><p>Say your topic out loud and hear the briefing read back to you.</p></div>
     <div class="f"><em>🗂️</em><h3>Personal archive</h3><p>Every story is stored under your username so you can reopen it any time.</p></div>
   </div>
 <div class="steps"><h2 class="d">Three steps. That's it.</h2>
     <div class="sg"><div><b>01</b><h3>Sign in or go guest</h3><p>Create a username and PIN, or jump in as a guest. No setup needed.</p></div><div><b>02</b><h3>Pick your language</h3><p>English, Hindi or Malayalam.</p></div><div><b>03</b><h3>Read and keep</h3><p>Your briefing is saved to your archive. Copy it or download it.</p></div></div></div>
   <div style="height:70px"></div>
-  <footer class="foot">Made for <b>Sacred Heart CMI Public School</b></footer>
+  <footer class="foot">Made for <b>Sacred Heart CMI Public School</b> · by Chrisben Martin</footer>
 </section>
 
 <!-- LOGIN / REGISTER -->
@@ -211,6 +241,24 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
     <button class="btn o" id="guestBtn" style="width:100%;margin-top:10px" data-guest>Continue as guest</button>
     <button class="btn o" id="close" style="width:100%;margin-top:10px">Cancel</button>
   </div>
+</div>
+
+<!-- CREATORS -->
+<div class="modal hidden" id="creators">
+  <div class="mbox cbox">
+    <div class="cav">CM</div>
+    <div class="tag">Creator</div>
+    <h2>Chrisben Martin</h2>
+    <p class="sub">Headline, AI news on demand.<br>Made for Sacred Heart CMI Public School.</p>
+    <button class="btn o sm" id="cclose" style="margin-top:20px">Close</button>
+  </div>
+</div>
+
+<!-- GLOSSARY POPOVER -->
+<div id="gloss" class="hidden" role="dialog" aria-live="polite">
+  <div class="gh"><b id="gw"></b><button id="gx" aria-label="Close">✕</button></div>
+  <p id="gd"></p>
+  <button class="btn o sm" id="gs">🔊 Hear it</button>
 </div>
 
 <!-- ADMIN -->
@@ -230,14 +278,17 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
 <!-- APP -->
 <section id="app" class="hidden">
   <div class="top"><div class="logo">head<i>line</i></div>
-    <div class="me"><div class="av" id="av"></div><span id="uname"></span><span class="badge hidden" id="badge">ADMIN</span><button class="btn o sm hidden" id="adminBtn">Admin</button><button class="btn o sm" id="logout">Leave</button></div></div>
+    <div class="me"><button class="ctab" data-creators>Creators</button><div class="av" id="av"></div><span id="uname"></span><span class="badge hidden" id="badge">ADMIN</span><button class="btn o sm hidden" id="adminBtn">Admin</button><button class="btn o sm" id="logout">Leave</button></div></div>
   <div class="wrap">
     <aside class="side">
       <div class="panel">
         <h3 class="d">New briefing</h3>
-        <label style="margin-top:14px">Focus (optional)</label><input id="topic" placeholder="e.g. education, technology">
+        <label style="margin-top:14px">Focus (optional)</label>
+        <div class="vrow"><input id="topic" placeholder="Type or tap the mic and speak"><button class="mic" id="mic" type="button" title="Speak your topic" aria-label="Speak your topic">🎙️</button></div>
         <div class="sugs" id="sugs"></div>
         <label>Language</label><select id="lang"><option>English</option><option>Hindi</option><option>Malayalam</option></select>
+        <label>News date</label><input type="date" id="ndate"><div class="derr" id="derr" role="alert"></div>
+        <label class="chk"><input type="checkbox" id="autoread"> Read the briefing aloud automatically</label>
         
         <button class="btn" id="make" style="width:100%;margin-top:20px">Generate briefing</button>
       </div>
@@ -245,7 +296,7 @@ nav{position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:22px 20px
     </aside>
     <article class="panel read" id="read"><div class="empty"><div class="d">Blank page.</div>Choose a language and generate your first briefing.</div></article>
   </div>
-  <footer class="foot">Made for <b>Sacred Heart CMI Public School</b></footer>
+  <footer class="foot">Made for <b>Sacred Heart CMI Public School</b> · by Chrisben Martin</footer>
 </section>
 
 <div class="toast hidden" id="toast"></div>
@@ -264,7 +315,7 @@ firebase.initializeApp({
   measurementId:"G-3H57DCLMZX"
 });
 const auth=firebase.auth(), db=firebase.firestore();
-const MODEL="gemini-2.5-flash";
+const MODEL="gemini-3.8-flash";
 const $=s=>document.querySelector(s);
 let name=null, current=null, guest=false, session=[];
 
@@ -359,17 +410,35 @@ $("#logout").onclick=()=>{ if(guest){ const g=guest; goHome(); openModal("in") }
 $("#aback").onclick=()=>{target=name;current=null;$("#read").innerHTML='<div class="empty"><div class="d">Blank page.</div>Choose a language and generate your first briefing.</div>';loadHistory()};
 
 /* ---------- generation ---------- */
+/* ---------- selectable date ---------- */
+const pad=n=>String(n).padStart(2,"0");
+const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())};
+const FUTURE_MSG="Don't Be Dumb, You Are Choosing An Future Date, Don't Give Me Future News";
+const isFuture=()=>{const v=$("#ndate").value;return !!v&&v>todayStr()};
+function checkDate(){const f=isFuture();$("#derr").textContent=f?FUTURE_MSG:"";return !f}
+const pickedDate=()=>{const [y,m,d]=($("#ndate").value||todayStr()).split("-").map(Number);return new Date(y,m-1,d)};
+const dateLabel=(short)=>pickedDate().toLocaleDateString("en-IN",{day:"numeric",month:short?"short":"long",year:"numeric"});
+$("#ndate").value=todayStr();
+["input","change"].forEach(ev=>$("#ndate").addEventListener(ev,checkDate));
+
 function buildPrompt(){
-  const f=$("#topic").value.trim(), d=new Date().toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"});
-  return `You are a news editor writing a short daily briefing for school students. Today is ${d}. Write everything in ${$("#lang").value}.
-${f?`Where it fits, lean toward this focus: "${f}".\n`:""}Use Google Search so the news is real and current.
+  const f=$("#topic").value.trim(), d=dateLabel(), isToday=$("#ndate").value===todayStr();
+  return `You are a news editor writing a short briefing for school students covering the news of ${d}${isToday?" (today)":""}. Write everything in ${$("#lang").value}.
+${f?`Where it fits, lean toward this focus: "${f}".\n`:""}Use Google Search so the news is real. Report only what happened on or was reported on ${d}, not events from other days. If little is available for that day, use the closest reliable reports and never invent anything.
 Format exactly:
-- First line: "# " followed by the words "Latest briefing" in ${$("#lang").value}.
+- First line: "# " followed by a short title in ${$("#lang").value} meaning "News briefing", then the date ${d} written in ${$("#lang").value}.
 - Then five sections, each starting with "## ", named in ${$("#lang").value}: Headlines, International, National, State (Kerala), Sports.
 - Under each section write exactly 2 items. Each item is a line starting with "### " and a short headline, followed by one line of 1-2 plain sentences.
 Keep the whole thing short (about 200 words), neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
 }
+let voiceRun=false;
 $("#make").onclick=async()=>{
+  if(!checkDate()){
+    voiceRun=false;
+    $("#read").innerHTML='<div class="empty"><div class="d">Whoa there.</div></div>';
+    $("#read .empty").append(FUTURE_MSG);
+    return;
+  }
   const topic=$("#topic").value.trim();
   const b=$("#make"); b.disabled=true; b.textContent="Writing…";
   $("#read").innerHTML='<div class="empty"><div class="d ld">Preparing your briefing…</div>This takes a few seconds.</div>';
@@ -386,21 +455,23 @@ $("#make").onclick=async()=>{
     if(!r.ok){ const m=j.error?.message||"Gemini request failed"; throw new Error(/api key|api_key|permission|quota/i.test(m)?"The shared API key isn't working. Please tell an admin.":m) }
     const text=(j.candidates?.[0]?.content?.parts||[]).map(p=>p.text).join("");
     if(!text) throw new Error("Empty response");
-    const label=topic||"Daily briefing", lang=$("#lang").value;
+    const label=(topic||"Daily briefing")+" · "+dateLabel(true), lang=$("#lang").value;
     let id;
     if(guest){ id="g"+Date.now(); session.unshift({id,topic:label,text,at:new Date()}) }
     else{ id=(await db.collection("users").doc(name).collection("stories").add({topic:label,text,style:"Briefing",lang,createdAt:firebase.firestore.FieldValue.serverTimestamp()})).id; target=name }
     current={id,text,topic:label}; render(text,label); loadHistory();
+    if(voiceRun||$("#autoread").checked) setTimeout(()=>{const lb=$("#read [data-listen]");if(lb)lb.click()},250);
   }catch(e){
     $("#read").innerHTML='<div class="empty"><div class="d">Something went wrong</div></div>';
     $("#read .empty").append(e.message);
   }
-  b.disabled=false; b.textContent="Generate briefing";
+  voiceRun=false; b.disabled=false; b.textContent="Generate briefing";
 };
 
 /* safe markdown → DOM (model text never goes through innerHTML) */
 function render(md,topic){
-  if(window.speechSynthesis) speechSynthesis.cancel();
+  if(window.speechSynthesis) hush();
+  closeGloss();
   const p=$("#read"); p.replaceChildren();
   const k=document.createElement("div"); k.className="tag"; k.textContent=topic; p.append(k);
   const wc=md.trim().split(/\s+/).length, mt=document.createElement("div"); mt.className="meta";
@@ -418,6 +489,7 @@ function render(md,topic){
     else{el=document.createElement("p");inl(el,line)}
     ul=null;p.append(el);
   });
+  p.querySelectorAll("h4,p,li").forEach(wrapWords);
   const hd=p.querySelector("h2"); hd?hd.after(mt):p.append(mt);
   const a=document.createElement("div");a.className="acts";
   const c=document.createElement("button");c.className="btn o sm";c.textContent="Copy text";c.onclick=()=>{navigator.clipboard.writeText(current.text);toast("Copied")};
@@ -425,7 +497,7 @@ function render(md,topic){
   const dl=document.createElement("button");dl.className="btn o sm";dl.textContent="Download";
   dl.onclick=()=>{const u=URL.createObjectURL(new Blob([current.text],{type:"text/plain"})),l=document.createElement("a");l.href=u;l.download=(topic||"story").replace(/[^\w]+/g,"-").slice(0,40)+".txt";l.click();URL.revokeObjectURL(u)};
   const q=document.createElement("button");q.className="btn sm";q.textContent="Quiz me";q.onclick=()=>quiz(q);
-  const l=document.createElement("button");l.className="btn o sm";l.textContent="Listen";l.onclick=()=>listen(l);
+  const l=document.createElement("button");l.className="btn o sm";l.textContent="Listen";l.dataset.listen="1";l.onclick=()=>listen(l);
   const qb=document.createElement("div");qb.id="quizbox";qb.className="quiz hidden";
   a.append(q,l,c,dl,x);p.append(a,qb);
 }
@@ -483,15 +555,94 @@ function runQuiz(qs){
   });
   box.append(res); box.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
-function listen(btn){
-  const sy=window.speechSynthesis; if(!sy) return toast("Listening isn't supported on this browser");
-  if(sy.speaking){ sy.cancel(); btn.textContent="Listen"; return }
-  const t=current.text.replace(/^#+\s*/gm,"").replace(/\*\*/g,"");
-  const u=new SpeechSynthesisUtterance(t);
-  u.lang=/[\u0D00-\u0D7F]/.test(t)?"ml-IN":/[\u0900-\u097F]/.test(t)?"hi-IN":"en-IN";
-  u.onend=u.onerror=()=>{btn.textContent="Listen"};
-  btn.textContent="Stop"; sy.speak(u);
+/* ---------- voice out ---------- */
+const detectLang=t=>/[\u0D00-\u0D7F]/.test(t)?"ml-IN":/[\u0900-\u097F]/.test(t)?"hi-IN":"en-IN";
+const LANGNAME={"ml-IN":"Malayalam","hi-IN":"Hindi","en-IN":"English"};
+function pickVoice(lang){
+  const vs=speechSynthesis.getVoices();
+  return vs.find(v=>v.lang.replace("_","-")===lang)||vs.find(v=>v.lang.slice(0,2)===lang.slice(0,2));
 }
+function hush(){
+  const prev=say.done; say.done=null; say.t=(say.t||0)+1;
+  if(window.speechSynthesis) speechSynthesis.cancel();
+  if(prev) prev();
+}
+function say(text,lang,onDone){
+  const sy=window.speechSynthesis; if(!sy) return toast("Listening isn't supported on this browser");
+  hush(); const my=say.t; say.done=onDone;
+  const parts=text.split(/\n+/).map(x=>x.trim()).filter(Boolean), v=pickVoice(lang);
+  parts.forEach((x,i)=>{
+    const u=new SpeechSynthesisUtterance(x); u.lang=lang; u.rate=.95; if(v) u.voice=v;
+    if(i===parts.length-1) u.onend=u.onerror=()=>{ if(my===say.t){ say.done=null; onDone&&onDone() } };
+    sy.speak(u);
+  });
+}
+function listen(btn){
+  if(!window.speechSynthesis) return toast("Listening isn't supported on this browser");
+  if(speechSynthesis.speaking){ hush(); btn.textContent="Listen"; return }
+  const t=current.text.replace(/^#+\s*/gm,"").replace(/\*\*/g,"");
+  btn.textContent="Stop"; say(t,detectLang(t),()=>{btn.textContent="Listen"});
+}
+
+/* ---------- voice in ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const LANGCODE={English:"en-IN",Hindi:"hi-IN",Malayalam:"ml-IN"};
+let rec=null;
+$("#mic").onclick=()=>{
+  if(!SR) return toast("Voice input isn't supported on this browser");
+  if(rec){ rec.stop(); return }
+  const mic=$("#mic"); let heard="";
+  rec=new SR(); rec.lang=LANGCODE[$("#lang").value]||"en-IN"; rec.interimResults=true; rec.maxAlternatives=1;
+  mic.classList.add("on"); toast("Listening… say your topic");
+  rec.onresult=e=>{ heard=Array.from(e.results).map(r=>r[0].transcript).join(" ").trim(); $("#topic").value=heard };
+  rec.onerror=e=>toast(e.error==="not-allowed"||e.error==="service-not-allowed"?"Microphone permission was blocked":"Couldn't hear that — try again");
+  rec.onend=()=>{ mic.classList.remove("on"); rec=null; if(heard){ voiceRun=true; $("#make").click() } };
+  try{ rec.start() }catch(_){ mic.classList.remove("on"); rec=null }
+};
+
+/* ---------- tap-a-word glossary ---------- */
+function wrapWords(el){
+  [...el.childNodes].forEach(n=>{
+    if(n.nodeType===3){
+      const f=document.createDocumentFragment();
+      n.nodeValue.split(/(\s+)/).forEach(t=>{ if(!t) return; /^\s+$/.test(t)?f.append(t):f.append(mk("span","w",t)) });
+      n.replaceWith(f);
+    }else if(n.nodeType===1) wrapWords(n);
+  });
+}
+const gcache=new Map(); let gsel=null, gdef="";
+function closeGloss(){ $("#gloss").classList.add("hidden"); if(gsel){gsel.classList.remove("sel");gsel=null} }
+async function openGloss(w){
+  const word=w.textContent.replace(/^[^\p{L}\p{M}\p{N}]+|[^\p{L}\p{M}\p{N}]+$/gu,"");
+  if(!word) return;
+  if(gsel) gsel.classList.remove("sel"); gsel=w; w.classList.add("sel");
+  const g=$("#gloss"), r=w.getBoundingClientRect(), lang=detectLang(word+" "+(current?current.text:""));
+  $("#gw").textContent=word; $("#gd").textContent="Looking it up…"; gdef=""; $("#gs").classList.add("hidden");
+  g.classList.remove("hidden");
+  g.style.left=Math.max(8,Math.min(r.left+scrollX,innerWidth-g.offsetWidth-8))+"px";
+  g.style.top=(r.bottom+scrollY+8)+"px";
+  const ctx=(w.closest("h4,p,li")||w.parentElement).textContent.trim(), key=lang+"|"+word.toLowerCase();
+  try{
+    let d=gcache.get(key);
+    if(!d){
+      d=(await gemText(`Explain the word "${word}" for a school student. It appears in this sentence from a news briefing: "${ctx}". Reply in ${LANGNAME[lang]} with a simple meaning in at most 2 short sentences. If it is the name of a person, place or organisation, say briefly who or what it is. Plain text only, no markdown, no preamble.`,false)).trim().replace(/\*\*/g,"");
+      if(!d) throw new Error("empty");
+      gcache.set(key,d);
+    }
+    if(gsel!==w) return;   // user tapped another word meanwhile
+    gdef=d; $("#gd").textContent=d; $("#gs").classList.remove("hidden"); $("#gs").dataset.lang=lang;
+  }catch(e){ if(gsel===w) $("#gd").textContent="Couldn't look that up. Try again." }
+}
+$("#read").addEventListener("click",e=>{ const w=e.target.closest(".w"); if(w) openGloss(w) });
+$("#gx").onclick=closeGloss;
+$("#gs").onclick=()=>{ if(gdef) say($("#gw").textContent+". "+gdef,$("#gs").dataset.lang||"en-IN") };
+document.addEventListener("click",e=>{ if(!e.target.closest(".w,#gloss")) closeGloss() });
+
+/* ---------- creators ---------- */
+document.querySelectorAll("[data-creators]").forEach(b=>b.onclick=()=>$("#creators").classList.remove("hidden"));
+$("#cclose").onclick=()=>$("#creators").classList.add("hidden");
+$("#creators").addEventListener("click",e=>{ if(e.target.id==="creators") $("#creators").classList.add("hidden") });
+addEventListener("keydown",e=>{ if(e.key==="Escape"){ $("#creators").classList.add("hidden"); closeGloss() } });
 
 /* ---------- archive ---------- */
 async function loadHistory(){
