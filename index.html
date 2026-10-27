@@ -219,7 +219,7 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
       <h1>News, written <span class="grad">the second you ask.</span></h1>
       <p>Get a short daily briefing with headlines, international, national, Kerala and sports news, in English, Hindi or Malayalam. Every briefing is saved to your personal archive.</p>
       <div class="cta"><button class="btn" data-enter="up">Start writing</button><button class="btn o" data-guest>Try as guest</button><a href="#feats" class="btn o" style="text-decoration:none;display:inline-block">How it works</a></div>
-      <div class="stats"><div><b>3</b><span>languages</span></div><div><b>5</b><span>news sections</span></div><div><b>10</b><span>quick stories</span></div></div>
+      <div class="stats"><div><b>3</b><span>languages</span></div><div><b>2</b><span>news sections</span></div><div><b>4</b><span>key stories</span></div></div>
     </div>
     <div class="demo"><div class="win">
       <div class="dots"><i></i><i></i><i></i></div>
@@ -348,7 +348,7 @@ const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.remove("hidden")
 /* cursor glow + typing demo */
 addEventListener("pointermove",e=>{const g=$("#glow");g.style.left=e.clientX+"px";g.style.top=e.clientY+"px"});
 (function typer(){
-  const txt="Headlines, international, national, state and sports news, each told in two short lines. Quick to read, easy to follow, in the language you choose...";
+  const txt="Headlines, international, national, state and sports news, each told in a clear three-line summary. Quick to read, easy to follow, in the language you choose...";
   let i=0; const el=$("#type");
   (function tick(){ if(!el) return; el.firstChild?el.firstChild.nodeValue=txt.slice(0,i):el.prepend(txt.slice(0,i));
     i=i>txt.length+40?0:i+1; setTimeout(tick,i>txt.length?60:32)})();
@@ -447,28 +447,26 @@ $("#ndate").value=todayStr();
 
 function buildPrompt(){
   const f=$("#topic").value.trim(), d=dateLabel(), isToday=$("#ndate").value===todayStr(), L=$("#lang").value;
-  return `You are a news editor writing a very short briefing for school students covering the news of ${d}${isToday?" (today)":""}. Write everything in ${L}.
-${f?`Focus topic: "${f}". At least one of the Headlines items MUST be about this focus (its biggest real story of the day).\n`:""}Use Google Search so the news is real. Report only what happened on or was reported on ${d}. If little is available, use the closest reliable reports and never invent anything.
+  return `You are a news editor writing a short briefing for school students covering the news of ${d}${isToday?" (today)":""}. Write everything in ${L}.
+${f?`Focus topic: "${f}". At least one of the Headlines stories MUST be about this focus (its biggest real story of the day).\n`:""}Use Google Search so the news is real. Report only what happened on or was reported on ${d}. If little is available, use the closest reliable reports and never invent anything.
 Format exactly, nothing before or after:
 # [short title in ${L} meaning "News briefing"] ${d}
 ## [Headlines, in ${L}]
 ### [headline of the single most important story of the day]
-[2 plain sentences]
-### [headline 2]
-[1 plain sentence]
-### [headline 3]
-[1 plain sentence]
+[2 to 3 plain sentences, 35 to 45 words, about three lines of text]
+### [headline of the second most important story]
+[2 to 3 plain sentences, 35 to 45 words, about three lines of text]
 ## [Sports, in ${L}]
 ### [headline of the biggest sports story]
-[1 plain sentence]
+[2 to 3 plain sentences, 35 to 45 words, about three lines of text]
 ### [headline of the second biggest sports story, ideally a different sport]
-[1 plain sentence]
-Exactly 5 stories in total: 3 under Headlines (the first one is the most important of the day), 2 under Sports. About 90 words overall, neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
+[2 to 3 plain sentences, 35 to 45 words, about three lines of text]
+Exactly 4 stories in total: 2 under Headlines (the first one is the most important of the day), 2 under Sports. Every story must be a full 35 to 45 words, never shorter, giving the key facts (who, what, where, why it matters). About 160 words overall, neutral and factual. No quotes, no invented statistics, no links, no citation numbers.`;
 }
 /* ---------- shared cache: same date + language + focus = same briefing for everyone ---------- */
 const FRESH_TODAY=20*60*1000, FRESH_PAST=12*3600*1000;
 const hashStr=t=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
-const cacheId=()=>"v4_"+($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase());
+const cacheId=()=>"v5_"+($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase());
 const cacheRef=id=>db.collection("newsCache").doc(id);
 async function cacheGet(id){ try{ const sn=await withTimeout(cacheRef(id).get(),3000,"cache timeout"); return sn.exists?sn.data():null }catch(e){ return null } }
 const cachePut=(id,text)=>{ cacheRef(id).set({text,at:Date.now()}).catch(()=>{}) };
@@ -483,8 +481,8 @@ $("#make").onclick=async()=>{
   }
   const topic=$("#topic").value.trim();
   const b=$("#make"); b.disabled=true; b.textContent="Writing…";
-  $("#read").innerHTML='<div class="empty"><div class="d ld">'+ICONS.ring+'Preparing your briefing…</div><span id="wait">Only 5 stories, just a moment.</span></div>';
-  const t0=Date.now(), tick=setInterval(()=>{const w=$("#wait");if(w){const n=Math.round((Date.now()-t0)/1000);w.textContent=n<8?"Only 5 stories, just a moment.":"Still working… "+n+"s"}},1000);
+  $("#read").innerHTML='<div class="empty"><div class="d ld">'+ICONS.ring+'Preparing your briefing…</div><span id="wait">Only 4 stories, just a moment.</span></div>';
+  const t0=Date.now(), tick=setInterval(()=>{const w=$("#wait");if(w){const n=Math.round((Date.now()-t0)/1000);w.textContent=n<8?"Only 4 stories, just a moment.":"Still working… "+n+"s"}},1000);
   try{
     const cid=cacheId(), hit=await cacheGet(cid), isToday=!$("#ndate").value||$("#ndate").value===todayStr();
     let text;
@@ -824,7 +822,7 @@ async function fetchFallback(){
 async function claudeOnce(fb,prompt,search,json){
   const ctrl=new AbortController(), to=setTimeout(()=>ctrl.abort(),35000);
   try{
-    const body={model:fb.model||FALLBACK_MODEL,max_tokens:700,messages:[{role:"user",content:prompt}]};
+    const body={model:fb.model||FALLBACK_MODEL,max_tokens:1500,messages:[{role:"user",content:prompt}]};
     if(search) body.tools=[{type:"web_search_20250305",name:"web_search",max_uses:1}];
     const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",signal:ctrl.signal,
       headers:{"content-type":"application/json","x-api-key":fb.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
