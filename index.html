@@ -241,7 +241,7 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
     <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="18" height="7" rx="2.2"></rect><rect x="3" y="13.4" width="18" height="7" rx="2.2"></rect><path d="M6.8 7.1h.1M6.8 16.9h.1" stroke-width="2.4"></path><path d="M14.6 7.1h3.2M14.6 16.9h3.2" stroke-width="1.5"></path></svg></em><h3>Personal archive</h3><p>Every story is stored under your username so you can reopen it any time.</p></div>
   </div>
 <div class="steps"><h2 class="d">Three steps. That's it.</h2>
-    <div class="sg"><div><b>01</b><h3>Sign in or go guest</h3><p>Create a username and PIN, or jump in as a guest. No setup needed.</p></div><div><b>02</b><h3>Pick your language</h3><p>English, Hindi or Malayalam.</p></div><div><b>03</b><h3>Read and keep</h3><p>Your briefing is saved to your archive. Copy it or download it.</p></div></div></div>
+    <div class="sg"><div><b>01</b><h3>Sign in or go guest</h3><p>Create a username and password, or jump in as a guest. No setup needed.</p></div><div><b>02</b><h3>Pick your language</h3><p>English, Hindi or Malayalam.</p></div><div><b>03</b><h3>Read and keep</h3><p>Your briefing is saved to your archive. Copy it or download it.</p></div></div></div>
   <div style="height:70px"></div>
   <footer class="foot">Made for <b>Sacred Heart CMI Public School</b></footer>
 </section>
@@ -249,12 +249,12 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
 <!-- LOGIN / REGISTER -->
 <div class="modal hidden" id="modal">
   <div class="mbox">
-    <h2 id="mtitle">Welcome back</h2><p id="msub">Sign in with your username and 4-digit PIN.</p>
+    <h2 id="mtitle">Welcome back</h2><p id="msub">Sign in with your username and password.</p>
     <div class="tabs"><button id="tabIn" class="on">Sign in</button><button id="tabUp">Register</button></div>
     <label>Username</label>
     <div class="at"><span>@</span><input id="un" maxlength="20" placeholder="yourname" autocomplete="username"></div>
-    <label>4-digit PIN</label><input id="pw" class="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="off">
-    <div id="pw2wrap" class="hidden"><label>Confirm PIN</label><input id="pw2" class="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="off"></div>
+    <label>Password</label><input id="pw" type="password" placeholder="Any password" autocomplete="current-password">
+    <div id="pw2wrap" class="hidden"><label>Confirm password</label><input id="pw2" type="password" placeholder="Repeat password" autocomplete="new-password"></div>
     <div class="err" id="err"></div>
     <button class="btn" id="go" style="width:100%;margin-top:6px">Sign in</button>
     <button class="btn o" id="guestBtn" style="width:100%;margin-top:10px" data-guest>Continue as guest</button>
@@ -355,8 +355,8 @@ addEventListener("pointermove",e=>{const g=$("#glow");g.style.left=e.clientX+"px
 })();
 
 /* ---------- accounts: register / sign in ---------- */
-// Users only ever see a username + 4-digit PIN. Under the hood Firebase still needs an
-// identifier and a secret of 6+ characters, so we derive both: username@DOMAIN and a padded PIN.
+// Users only ever see a username + password (any length, any characters). Under the hood Firebase still needs an
+// identifier and a secret of 6+ characters, so we derive both: username@DOMAIN and a padded password (so even 1-character passwords work, and old 4-digit PINs still log in).
 // No real email is used or sent.
 const DOMAIN="users.headline.app", mail=n=>n+"@"+DOMAIN, secret=(n,p)=>"pin-"+p+"-"+n, ts=()=>firebase.firestore.FieldValue.serverTimestamp();
 let mode="in", isAdmin=false, target=null;
@@ -366,7 +366,7 @@ function setMode(m){
   $("#tabIn").classList.toggle("on",m==="in");$("#tabUp").classList.toggle("on",m==="up");
   $("#pw2wrap").classList.toggle("hidden",m==="in");
   $("#mtitle").textContent=m==="in"?"Welcome back":"Create your account";
-  $("#msub").textContent=m==="in"?"Sign in with your username and 4-digit PIN.":"Pick a unique username and a 4-digit PIN to protect your archive.";
+  $("#msub").textContent=m==="in"?"Sign in with your username and password.":"Pick a unique username and any password to protect your archive.";
   $("#go").textContent=m==="in"?"Sign in":"Create account";
   $("#pw").value=$("#pw2").value="";
   $("#err").textContent="";
@@ -377,13 +377,12 @@ document.querySelectorAll("[data-enter]").forEach(b=>b.onclick=()=>openModal(b.d
 $("#tabIn").onclick=()=>setMode("in"); $("#tabUp").onclick=()=>setMode("up");
 $("#close").onclick=()=>$("#modal").classList.add("hidden");
 ["#un","#pw","#pw2"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")$("#go").click()}));
-["#pw","#pw2"].forEach(id=>$(id).addEventListener("input",e=>{e.target.value=e.target.value.replace(/\D/g,"").slice(0,4)}));
 
 const authMsg=e=>({
   "auth/email-already-in-use":"That username is taken — pick another, or sign in.",
-  "auth/invalid-credential":"Wrong username or PIN.",
-  "auth/user-not-found":"Wrong username or PIN.",
-  "auth/wrong-password":"Wrong username or PIN.",
+  "auth/invalid-credential":"Wrong username or password.",
+  "auth/user-not-found":"Wrong username or password.",
+  "auth/wrong-password":"Wrong username or password.",
   "auth/too-many-requests":"Too many attempts — wait a moment and try again.",
   "auth/network-request-failed":"Network error — check your connection.",
   "auth/operation-not-allowed":"Email/Password sign-in isn't enabled in Firebase yet."
@@ -392,8 +391,8 @@ const authMsg=e=>({
 $("#go").onclick=async()=>{
   const n=$("#un").value.trim().toLowerCase(), p=$("#pw").value, E=$("#err"); E.textContent="";
   if(!/^[a-z0-9_]{3,20}$/.test(n)) return E.textContent="Username: 3–20 characters, letters, numbers, underscore.";
-  if(!/^\d{4}$/.test(p)) return E.textContent="PIN must be exactly 4 digits.";
-  if(mode==="up"&&p!==$("#pw2").value) return E.textContent="PINs don't match.";
+  if(!p) return E.textContent="Enter a password.";
+  if(mode==="up"&&p!==$("#pw2").value) return E.textContent="Passwords don't match.";
   $("#go").disabled=true;
   try{
     if(mode==="up") await auth.createUserWithEmailAndPassword(mail(n),secret(n,p));
