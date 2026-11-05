@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="theme-color" content="#07080b"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><script>try{document.documentElement.dataset.theme=localStorage.getItem("hl_theme")||"dark"}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Headline — AI news, on demand</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -203,6 +204,45 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
 .kp{font-size:.72rem;color:var(--mute)}.kp.ok{color:var(--lime)}.kp.bad{color:#ff7b7b}
 .badge.off{background:#2a2e3a;color:var(--mute)}
 .kadd{display:grid;gap:8px;margin-top:14px}
+/* ===== v2 ===== */
+*{scrollbar-width:thin;scrollbar-color:var(--sb) transparent}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--sb);border-radius:8px}::-webkit-scrollbar-thumb:hover{background:var(--lime)}::-webkit-scrollbar-corner{background:transparent}
+:root{--sb:#2c3140}
+.hist{overflow-x:hidden;overflow-y:auto;padding:3px 6px 3px 3px;margin-right:-4px}
+.hist button{min-width:0;align-items:center;gap:10px}
+.hist button b{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist button small{flex:none;white-space:nowrap}
+.hist button:hover{transform:none;border-color:var(--lime);background:#c6ff3d12}
+html[data-theme=light]{--bg:#f4f6fb;--card:#fff;--card2:#eef1f7;--line:#dde1ea;--text:#12151c;--mute:#586072;--lime:#4d8a00;--ice:#0b6fa8;--sb:#c3c9d6;color-scheme:light}
+html[data-theme=light] .btn:not(.o),html[data-theme=light] .badge,html[data-theme=light] .av,html[data-theme=light] .cav,html[data-theme=light] .toast,html[data-theme=light] .tabs button.on,html[data-theme=light] .w.sel{color:#fff}
+html[data-theme=light] .badge.off{color:var(--mute);background:#dfe3ec}
+html[data-theme=light] .read p,html[data-theme=light] .read li,html[data-theme=light] #gloss p{color:#3a4152}
+html[data-theme=light] .read b,html[data-theme=light] .read h4{color:var(--text)}
+html[data-theme=light] .orb{opacity:.18}
+html[data-theme=light] .win,html[data-theme=light] .f{background:#fff}
+html[data-theme=light] .modal{background:#0007}
+html[data-theme=light] input[type=date]{color-scheme:light}
+html[data-theme=light] .grid{background-image:linear-gradient(#0000000a 1px,transparent 1px),linear-gradient(90deg,#0000000a 1px,transparent 1px)}
+.ctab{display:inline-flex;align-items:center;gap:6px}
+#prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--lime),var(--ice));z-index:120;transition:width .12s}
+.w.hl{background:#c6ff3d33;box-shadow:0 0 0 2px #c6ff3d33;border-radius:4px}
+html[data-theme=light] .w.hl{background:#4d8a0026;box-shadow:0 0 0 2px #4d8a0026}
+.top{flex-wrap:wrap;gap:10px}.me{flex-wrap:wrap;justify-content:flex-end}.av{cursor:pointer}
+.xpchip{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.78rem;font-weight:600;color:var(--lime);cursor:pointer}
+#banners{max-width:1160px;margin:0 auto;padding:0 20px}
+.bn{display:flex;gap:12px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-left:3px solid var(--lime);background:var(--card);border-radius:14px;padding:12px 16px;font-size:.9rem;margin-bottom:10px}
+.bn.warn{border-left-color:#ffb020}.bn button{background:none;border:0;color:var(--mute);font-size:1.2rem;cursor:pointer}
+.bar{height:8px;border-radius:99px;background:var(--card2);overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--lime),var(--ice));transition:width .8s}
+.bgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:10px}
+.bdg{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:.72rem;color:var(--mute);background:var(--card2);opacity:.45;filter:grayscale(1)}
+.bdg.on{opacity:1;filter:none;border-color:var(--lime);color:var(--text)}.bdg b{display:block;font-size:.85rem;margin-bottom:2px}
+.pst{display:flex;gap:12px;margin-top:16px}.pst>div{flex:1;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:.78rem;color:var(--mute)}.pst b{display:block;font-size:1.4rem;color:var(--text)}
+.sugs button.on{border-color:var(--lime);color:var(--lime)}
+.lbr.me1,.urow.me1{border-color:var(--lime)}
+.xg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:10px}
+.xc{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:14px 16px}.xc p{margin:6px 0 0!important;font-size:.9rem}
+.fbrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#rlt{margin-top:8px}
 </style>
 </head>
 <body>
@@ -212,14 +252,14 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
 
 <!-- LANDING -->
 <section id="home">
-  <nav><div class="logo">head<i>line</i></div><div class="navr"><button class="ctab" data-creators>Creators</button><button class="btn o sm" data-enter="in">Sign in</button><button class="btn sm" data-enter="up">Register</button></div></nav>
+  <nav><div class="logo">head<i>line</i></div><div class="navr"><button class="ctab" data-creators>Creators</button><button class="ctab" data-theme-toggle></button><button class="btn o sm" data-enter="in">Sign in</button><button class="btn sm" data-enter="up">Register</button></div></nav>
   <div class="hero">
     <div>
       <div class="pill"><b></b> AI newsroom · with built-in quiz mode</div>
       <h1>News, written <span class="grad">the second you ask.</span></h1>
       <p>Get a short daily briefing with headlines, international, national, Kerala and sports news, in English, Hindi or Malayalam. Every briefing is saved to your personal archive.</p>
-      <div class="cta"><button class="btn" data-enter="up">Start writing</button><button class="btn o" data-guest>Try as guest</button><a href="#feats" class="btn o" style="text-decoration:none;display:inline-block">How it works</a></div>
-      <div class="stats"><div><b>3</b><span>languages</span></div><div><b>2</b><span>news sections</span></div><div><b>4</b><span>key stories</span></div></div>
+      <div class="cta"><button class="btn" data-enter="up">Start writing</button><button class="btn o" data-enter="in">Sign in</button><a href="#feats" class="btn o" style="text-decoration:none;display:inline-block">How it works</a></div>
+      <div class="stats"><div><b data-count="3">0</b><span>languages</span></div><div><b data-count="2">0</b><span>news sections</span></div><div><b data-count="4">0</b><span>key stories</span></div></div>
     </div>
     <div class="demo"><div class="win">
       <div class="dots"><i></i><i></i><i></i></div>
@@ -241,7 +281,7 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
     <div class="f"><em><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.6" width="18" height="7" rx="2.2"></rect><rect x="3" y="13.4" width="18" height="7" rx="2.2"></rect><path d="M6.8 7.1h.1M6.8 16.9h.1" stroke-width="2.4"></path><path d="M14.6 7.1h3.2M14.6 16.9h3.2" stroke-width="1.5"></path></svg></em><h3>Personal archive</h3><p>Every story is stored under your username so you can reopen it any time.</p></div>
   </div>
 <div class="steps"><h2 class="d">Three steps. That's it.</h2>
-    <div class="sg"><div><b>01</b><h3>Sign in or go guest</h3><p>Create a username and password, or jump in as a guest. No setup needed.</p></div><div><b>02</b><h3>Pick your language</h3><p>English, Hindi or Malayalam.</p></div><div><b>03</b><h3>Read and keep</h3><p>Your briefing is saved to your archive. Copy it or download it.</p></div></div></div>
+    <div class="sg"><div><b>01</b><h3>Create your account</h3><p>Create a free account with a username and password. No email needed.</p></div><div><b>02</b><h3>Pick your language</h3><p>English, Hindi or Malayalam.</p></div><div><b>03</b><h3>Read and keep</h3><p>Your briefing is saved to your archive. Copy it or download it.</p></div></div></div>
   <div style="height:70px"></div>
   <footer class="foot">Made for <b>Sacred Heart CMI Public School</b></footer>
 </section>
@@ -257,7 +297,6 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
     <div id="pw2wrap" class="hidden"><label>Confirm password</label><input id="pw2" type="password" placeholder="Repeat password" autocomplete="new-password"></div>
     <div class="err" id="err"></div>
     <button class="btn" id="go" style="width:100%;margin-top:6px">Sign in</button>
-    <button class="btn o" id="guestBtn" style="width:100%;margin-top:10px" data-guest>Continue as guest</button>
     <button class="btn o" id="close" style="width:100%;margin-top:10px">Cancel</button>
   </div>
 </div>
@@ -293,6 +332,9 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
       <div id="fbstat" class="kst"></div>
       <div class="kadd"><input id="fbkey" type="password" placeholder="Paste an Anthropic API key (sk-ant-…)" autocomplete="off"><button class="btn sm" id="fbsave">Save</button><button class="btn o sm dg" id="fbdel">Remove</button></div>
       <div class="hint">If Gemini is overloaded or fails, the app automatically switches to this backup so users still get their briefing.</div></div>
+    <div class="kbox"><label style="margin-top:14px">Announcement banner</label><input id="annt" placeholder="Message shown to every signed-in user" maxlength="200"><label class="chk"><input type="checkbox" id="anon"> Show the banner</label><div class="kadd"><button class="btn sm" id="ansave">Save announcement</button></div></div>
+    <div class="kbox"><label style="margin-top:14px">Feedback &amp; error reports</label><div id="fblist" class="ulist" style="max-height:200px"></div></div>
+    <div class="kbox"><label style="margin-top:14px">My password</label><div id="apw"></div></div>
     <div class="ulist" id="ulist"></div>
     <button class="btn o" id="aclose" style="width:100%;margin-top:16px">Close</button>
   </div>
@@ -301,7 +343,8 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
 <!-- APP -->
 <section id="app" class="hidden">
   <div class="top"><div class="logo">head<i>line</i></div>
-    <div class="me"><button class="ctab" data-creators>Creators</button><div class="av" id="av"></div><span id="uname"></span><span class="badge hidden" id="badge">ADMIN</span><button class="btn o sm hidden" id="adminBtn">Admin</button><button class="btn o sm" id="logout">Leave</button></div></div>
+    <div class="me"><button class="ctab" data-creators>Creators</button><button class="ctab" data-theme-toggle></button><button class="ctab hidden" id="instBtn">Install app</button><button class="ctab" id="lbBtn">Leaderboard</button><button class="xpchip" id="xpchip" title="Profile"><span id="xl">Lv 1</span> · <b id="xn" data-v="0">0</b> XP</button><div class="av" id="av"></div><span id="uname"></span><span class="badge hidden" id="badge">ADMIN</span><button class="btn o sm hidden" id="adminBtn">Admin</button><button class="btn o sm" id="logout">Leave</button></div></div>
+  <div id="banners"></div>
   <div class="wrap">
     <aside class="side">
       <div class="panel">
@@ -309,24 +352,41 @@ input[type=checkbox]{width:auto;padding:0;accent-color:var(--lime)}
         <label style="margin-top:14px">Focus (optional)</label>
         <div class="vrow"><input id="topic" placeholder="Type or tap the mic and speak"><button class="mic" id="mic" type="button" title="Speak your topic" aria-label="Speak your topic"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="10" r="3.1"></circle><path d="M6.1 18.7a6.6 6.6 0 0 1 11.8 0"></path></svg></button></div>
         <div class="sugs" id="sugs"></div>
-        <label>Language</label><select id="lang"><option>English</option><option>Hindi</option><option>Malayalam</option></select>
+        <label>Language</label><select id="lang"><option>English</option><option>Hindi</option><option>Malayalam</option></select><div class="hint" id="langhint" style="margin-top:6px"></div><label>Kerala district (optional)</label><select id="district"><option value="">All Kerala</option><option>Thiruvananthapuram</option><option>Kollam</option><option>Pathanamthitta</option><option>Alappuzha</option><option>Kottayam</option><option>Idukki</option><option>Ernakulam</option><option>Thrissur</option><option>Palakkad</option><option>Malappuram</option><option>Kozhikode</option><option>Wayanad</option><option>Kannur</option><option>Kasaragod</option></select>
         <label>News date</label><input type="date" id="ndate"><div class="derr" id="derr" role="alert"></div>
         <label class="chk"><input type="checkbox" id="autoread"> Read the briefing aloud automatically</label>
         
         <button class="btn" id="make" style="width:100%;margin-top:20px">Generate briefing</button>
       </div>
-      <div class="panel"><div class="ahead"><h3 class="d" id="atitle">Archive</h3><button class="btn o sm hidden" id="aback">My archive</button></div><input class="hs" id="hsearch" placeholder="Search archive…"><div class="hist" id="hist"></div></div>
+      <div class="panel"><div class="ahead"><h3 class="d" id="atitle">Archive</h3><button class="btn o sm hidden" id="aback">My archive</button></div><button class="btn o sm" id="wk" style="width:100%;margin-top:12px">Weekly digest</button><input class="hs" id="hsearch" placeholder="Search archive…"><div class="hist" id="hist"></div></div>
     </aside>
     <article class="panel read" id="read"><div class="empty"><div class="d">Blank page.</div>Choose a language and generate your first briefing.</div></article>
   </div>
   <footer class="foot">Made for <b>Sacred Heart CMI Public School</b></footer>
 </section>
 
+<div class="modal hidden" id="prof"><div class="mbox abox">
+  <div class="ahead"><h2>Profile</h2><button class="btn o sm" data-close="prof">Close</button></div>
+  <div style="display:flex;gap:14px;align-items:center;margin-top:16px"><div class="av" id="pav" style="width:56px;height:56px;font-size:1.3rem"></div><div style="flex:1"><div class="d" style="font-size:1.15rem" id="pnm"></div><small id="plv" style="color:var(--mute)"></small><div class="bar" style="margin-top:8px"><i id="pbar"></i></div></div></div>
+  <div class="pst"><div>Total XP<b id="pxp" data-v="0">0</b></div><div>Streak<b id="pst">0</b></div></div>
+  <label>Badges</label><div class="bgs" id="pbg"></div>
+  <label>My interests (used for your home feed)</label><div class="sugs" id="pint"></div>
+  <label class="chk"><input type="checkbox" id="phide"> Hide me from the leaderboard</label>
+  <label>Streak reminders</label><button class="btn o sm" id="pnotif">Turn on reminders</button>
+  <label>Change password</label><div id="ppw"></div>
+</div></div>
+<div class="modal hidden" id="lb"><div class="mbox abox"><div class="ahead"><h2>Leaderboard</h2><button class="btn o sm" data-close="lb">Close</button></div><p>Top readers by XP.</p><div class="ulist" id="lbl" style="max-height:60vh"></div></div></div>
+<div class="modal hidden" id="rep"><div class="mbox"><h2>Report an error</h2><p>Spotted something wrong in this briefing?</p>
+  <label>What's wrong?</label><select id="rkind"><option>Wrong or made-up fact</option><option>Old news</option><option>Wrong language or garbled text</option><option>Something else</option></select>
+  <label>Details (optional)</label><input id="rnote" maxlength="200" placeholder="e.g. The score in story 3 is wrong">
+  <label class="chk"><input type="checkbox" id="rfix" checked> Write a corrected briefing now</label>
+  <div class="err" id="rerr"></div><button class="btn" id="rsend" style="width:100%;margin-top:6px">Send report</button><button class="btn o" data-close="rep" style="width:100%;margin-top:10px">Cancel</button></div></div>
 <div class="toast hidden" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
 <script>
 firebase.initializeApp({
   apiKey:"AIzaSyCSbP_YLj96o8paciuqwH7dVthvyZXGmq8",
@@ -447,7 +507,7 @@ $("#ndate").value=todayStr();
 function buildPrompt(){
   const f=$("#topic").value.trim(), d=dateLabel(), isToday=$("#ndate").value===todayStr(), L=$("#lang").value;
   return `You are a news editor writing a short briefing for school students covering the news of ${d}${isToday?" (today)":""}. Write everything in ${L}.
-${f?`Focus topic: "${f}". At least one of the Headlines stories MUST be about this focus (its biggest real story of the day).\n`:""}Use Google Search so the news is real. Report only what happened on or was reported on ${d}. If little is available, use the closest reliable reports and never invent anything.
+${f?`Focus topic: "${f}". At least one of the Headlines stories MUST be about this focus (its biggest real story of the day).\n`:""}${extraLines()}Use Google Search so the news is real. Report only what happened on or was reported on ${d}. If little is available, use the closest reliable reports and never invent anything.
 Format exactly, nothing before or after:
 # [short title in ${L} meaning "News briefing"] ${d}
 ## [Headlines, in ${L}]
@@ -465,7 +525,7 @@ Exactly 4 stories in total: 2 under Headlines (the first one is the most importa
 /* ---------- shared cache: same date + language + focus = same briefing for everyone ---------- */
 const FRESH_TODAY=20*60*1000, FRESH_PAST=12*3600*1000;
 const hashStr=t=>{let h=5381;for(const c of t)h=((h<<5)+h+c.charCodeAt(0))|0;return (h>>>0).toString(36)};
-const cacheId=()=>"v5_"+($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase());
+const cacheId=()=>"v5_"+($("#ndate").value||todayStr())+"_"+$("#lang").value+"_"+hashStr($("#topic").value.trim().toLowerCase()+"|"+($("#district")?$("#district").value:""));
 const cacheRef=id=>db.collection("newsCache").doc(id);
 async function cacheGet(id){ try{ const sn=await withTimeout(cacheRef(id).get(),3000,"cache timeout"); return sn.exists?sn.data():null }catch(e){ return null } }
 const cachePut=(id,text)=>{ cacheRef(id).set({text,at:Date.now()}).catch(()=>{}) };
@@ -483,7 +543,7 @@ $("#make").onclick=async()=>{
   $("#read").innerHTML='<div class="empty"><div class="d ld">'+ICONS.ring+'Preparing your briefing…</div><span id="wait">Only 4 stories, just a moment.</span></div>';
   const t0=Date.now(), tick=setInterval(()=>{const w=$("#wait");if(w){const n=Math.round((Date.now()-t0)/1000);w.textContent=n<8?"Only 4 stories, just a moment.":"Still working… "+n+"s"}},1000);
   try{
-    const cid=cacheId(), hit=await cacheGet(cid), isToday=!$("#ndate").value||$("#ndate").value===todayStr();
+    const cid=cacheId(), hit=window.bypassCache?null:await cacheGet(cid), isToday=!$("#ndate").value||$("#ndate").value===todayStr();
     let text;
     if(hit&&Date.now()-hit.at<(isToday?FRESH_TODAY:FRESH_PAST)) text=hit.text;     // fresh copy: skip the AI entirely
     else{
@@ -497,23 +557,22 @@ $("#make").onclick=async()=>{
         text=hit.text; toast("AI is busy — showing a saved copy from "+agoStr(Date.now()-hit.at));   // stale beats an error
       }
     }
-    const label=(topic||"Daily briefing")+" · "+dateLabel(true), lang=$("#lang").value;
+    const label=(topic||$("#district").value||"Daily briefing")+" · "+dateLabel(true), lang=$("#lang").value;
     let id="g"+Date.now();
-    current={id,text,topic:label}; render(text,label);
+    current={id,text,topic:label}; render(text,label); try{onBriefing(lang)}catch(_){}
     if(guest){ session.unshift({id,topic:label,text,at:new Date()}); loadHistory() }
     else{
       // show the briefing right away; save to the archive in the background so a slow database can't block it
       target=name; const mine=current;
       db.collection("users").doc(name).collection("stories").add({topic:label,text,style:"Briefing",lang,createdAt:firebase.firestore.FieldValue.serverTimestamp()})
-        .then(ref=>{ mine.id=ref.id; loadHistory() })
+        .then(ref=>{ mine.id=ref.id; try{noteGenId(ref.id)}catch(_){} loadHistory() })
         .catch(()=>toast("Couldn't save to your archive. Check Firestore rules."));
     }
     if(voiceRun||$("#autoread").checked) setTimeout(()=>{const lb=$("#read [data-listen]");if(lb)lb.click()},250);
   }catch(e){
-    $("#read").innerHTML='<div class="empty"><div class="d">Something went wrong</div></div>';
-    $("#read .empty").append(e.message);
+    showErr(e);
   }
-  clearInterval(tick); voiceRun=false; b.disabled=false; b.textContent="Generate briefing";
+  clearInterval(tick); voiceRun=false; window.bypassCache=false; window.skipLock=false; window.fixNote=""; b.disabled=false; b.textContent="Generate briefing";
 };
 
 /* safe markdown → DOM (model text never goes through innerHTML) */
@@ -584,9 +643,7 @@ function runQuiz(qs){
         if(oi===q.answer) score++; else b.classList.add("no");
         why.classList.remove("hidden");
         if(++done===qs.length){
-          const day=new Date().toDateString(), y=new Date(Date.now()-864e5).toDateString();
-          let st={n:0,last:""}; try{st=JSON.parse(localStorage.getItem("hl_streak"))||st}catch(_){}
-          if(st.last!==day){ st={n:st.last===y?st.n+1:1,last:day}; try{localStorage.setItem("hl_streak",JSON.stringify(st))}catch(_){} }
+          const st=quizDone(score,qs.length);
           res.textContent=(score===qs.length?"Perfect — you're fully up to date! ":score+"/"+qs.length+" — read it once more and try again. ");
           res.insertAdjacentHTML("beforeend",'<span class="stk">'+ICONS.ok+" "+st.n+"-day streak</span>");
           res.classList.remove("hidden");
@@ -710,7 +767,7 @@ async function loadHistory(){
     s.forEach(d=>{
       const v=d.data(),b=document.createElement("button");
       const t=document.createElement("b");t.textContent=v.topic;
-      const m=document.createElement("small");m.textContent=v.createdAt?v.createdAt.toDate().toLocaleDateString():"now";
+      const m=document.createElement("small");m.textContent=v.createdAt?v.createdAt.toDate().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}):"now";
       b.append(t,m);
       b.onclick=()=>{current={id:d.id,text:v.text,topic:v.topic};render(v.text,v.topic);scrollTo({top:0,behavior:"smooth"})};
       box.append(b);
@@ -766,7 +823,7 @@ async function tryOnce(key,model,prompt,search,json,ms=40000){
       return {ok:false,kind:"other",msg:"Empty response"+(j.promptFeedback?.blockReason?" ("+j.promptFeedback.blockReason+")":"")};
     }
     const msg=j.error?.message||("HTTP "+r.status);
-    return {ok:false,kind:errKind(r.status,msg),msg};
+    return {ok:false,kind:errKind(r.status,msg),msg,status:r.status};
   }catch(e){ return {ok:false,kind:"other",msg:e.name==="AbortError"?"Timed out. Try again.":"Network error. Check your connection."} }
   finally{ clearTimeout(to) }
 }
@@ -932,7 +989,7 @@ function renderKeys(){
       if(!confirm("Delete \""+(k.label||"this key")+"\"?")) return;
       try{await saveKeys(keyList.filter(x=>x.id!==k.id));renderKeys();toast("Key deleted")}catch(e){toast("Couldn't delete. Check Firestore rules.")}
     };
-    bt.append(b1,b2,b3,b4,b5); row.append(head,kk,bt); box.append(row);
+    bt.append(b1,b2,b3,b4,b5); row.append(head,kk,keyStatEl(k),bt); box.append(row);
   });
 }
 async function loadKey(){
@@ -975,7 +1032,7 @@ async function loadUsers(){
         if(!confirm("Delete @"+d.id+"'s profile and ALL their stories? This can't be undone.")) return;
         try{await wipeUser(d.id);if(target===d.id){target=name;loadHistory()}toast("Deleted @"+d.id);loadUsers()}
         catch(e){toast("Couldn't delete — check Firestore rules")}};
-      r.append(n,j,a1,a2,a3); box.append(r);
+      r.append(n,j,a1,a2,a3,pwBtn(d.id,d.id===name)); box.append(r);
     });
   }catch(e){ box.replaceChildren(mk("small","","Couldn't load users — check Firestore rules.")) }
 }
@@ -987,6 +1044,352 @@ async function wipeUser(id){
   }
   await db.collection("users").doc(id).delete();
 }
+</script>
+<script>
+/* ===================== v2 additions ===================== */
+const SVG=p=>'<svg class="ic" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
+const I={
+ sun:SVG('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/>'),
+ moon:SVG('<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/>'),
+ up:SVG('<path d="M7 11v9H4v-9h3Zm0 0 4-8c1.4 0 2.3 1 2 2.4L12.6 9H19a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.8 20H7"/>'),
+ flag:SVG('<path d="M5 21V4m0 0h11l-2 4 2 4H5"/>'),
+ img:SVG('<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/>')};
+I.down='<span style="display:inline-flex;transform:rotate(180deg)">'+I.up+'</span>';
+const GEN_WINDOW_H=12;                         // one new briefing per user per 12 h; inside the window the saved one is shown
+const DAYLANG=["English","English","Malayalam","Malayalam","Hindi","Hindi","English"];   // Sun..Sat
+const DAYNAME=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const INTS=["Education","Technology","Cricket","Football","Environment","Science","Space","Health","Business","Entertainment","Politics","Kerala"];
+const addEv=(id,ev,fn)=>$(id).addEventListener(ev,fn);
+
+/* ---- theme ---- */
+function setTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem("hl_theme",t)}catch(_){}
+  document.querySelectorAll("[data-theme-toggle]").forEach(b=>b.innerHTML=t==="light"?I.moon+"Dark":I.sun+"Light")}
+document.querySelectorAll("[data-theme-toggle]").forEach(b=>b.onclick=()=>setTheme(document.documentElement.dataset.theme==="light"?"dark":"light"));
+setTheme(document.documentElement.dataset.theme||"dark");
+
+/* ---- reading progress bar ---- */
+document.body.insertAdjacentHTML("afterbegin",'<div id="prog"></div>');
+addEventListener("scroll",()=>{const r=$("#read").getBoundingClientRect();
+  $("#prog").style.width=($("#app").classList.contains("hidden")||r.height<50?0:Math.max(0,Math.min(100,(innerHeight*.45-r.top)/r.height*100)))+"%"},{passive:true});
+
+/* ---- animated counters ---- */
+function countUp(el,to,ms=900){const from=+el.dataset.v||0;el.dataset.v=to;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches||from===to){el.textContent=to;return}
+  const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/ms);el.textContent=Math.round(from+(to-from)*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){countUp(e.target,+e.target.dataset.count,1200);io.unobserve(e.target)}}),{threshold:.6});
+document.querySelectorAll("[data-count]").forEach(b=>{b.dataset.v=0;io.observe(b)});
+
+/* ---- PWA ---- */
+if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)) navigator.serviceWorker.register("sw.js").catch(()=>{});
+let dip=null; const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();dip=e;$("#instBtn").classList.remove("hidden")});
+addEventListener("appinstalled",()=>$("#instBtn").classList.add("hidden"));
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!standalone) $("#instBtn").classList.remove("hidden");
+$("#instBtn").onclick=async()=>{if(dip){dip.prompt();await dip.userChoice;dip=null;$("#instBtn").classList.add("hidden")}else toast("Tap Share, then Add to Home Screen")};
+
+/* ---- accounts are mandatory ---- */
+enterGuest=function(){openModal("up");toast("Create a free account to use Headline")};
+const _gc=geminiCall; geminiCall=async function(){ if(!auth.currentUser) throw new Error("Please sign in to use Headline."); return _gc.apply(this,arguments) };
+
+/* ---- profile, XP, levels, badges ---- */
+let prof={};
+const LV=x=>Math.floor(Math.sqrt(x/40))+1, LVX=l=>(l-1)*(l-1)*40;
+const dstr=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const effStreak=(p=prof)=>{const l=p.streakLast;return l&&(l===todayStr()||l===dstr(new Date(Date.now()-864e5)))?(p.streak||0):0};
+const BADGES=[["first","First briefing","Generate a briefing",p=>p.briefings>=1],["perfect","Perfect score","3/3 on a quiz",p=>p.perfects>=1],
+ ["p3","Triple perfect","3 perfect quizzes",p=>p.perfects>=3],["s3","3-day streak","Quiz 3 days running",p=>p.streak>=3],["s7","7-day streak","Quiz 7 days running",p=>p.streak>=7],
+ ["s30","30-day streak","Quiz 30 days running",p=>p.streak>=30],["poly","Polyglot","Read all 3 languages",p=>(p.langs||[]).length>=3],
+ ["l5","Level 5","Reach level 5",p=>LV(p.xp||0)>=5],["fact","Fact-checker","Report an error",p=>p.reports>=1]];
+function saveProf(patch){Object.assign(prof,patch);if(!name||guest)return;db.collection("users").doc(name).set(patch,{merge:true}).catch(()=>{})}
+function paintXp(){const x=prof.xp||0;$("#xl").textContent="Lv "+LV(x);countUp($("#xn"),x)}
+function checkBadges(){const have=new Set(prof.badges||[]),neu=BADGES.filter(b=>!have.has(b[0])&&b[3](prof));
+  if(neu.length){saveProf({badges:[...have,...neu.map(b=>b[0])]});neu.forEach((b,i)=>setTimeout(()=>toast("Badge unlocked: "+b[1]),1200+i*2800))}paintXp()}
+function addXP(n,why){const old=prof.xp||0;saveProf({xp:old+n});toast("+"+n+" XP"+(why?" · "+why:""));
+  if(LV(old+n)>LV(old)) setTimeout(()=>toast("Level up! You're level "+LV(old+n)),1800);checkBadges()}
+function onBriefing(lang){
+  const t=todayStr(),L=new Set(prof.langs||[]);L.add(lang);
+  const n=prof.xpDay===t?(prof.xpDayN||0)+1:1;
+  saveProf({briefings:(prof.briefings||0)+1,langs:[...L],xpDay:t,xpDayN:n,lastGen:{at:Date.now(),id:null,lang}});
+  n<=3?addXP(10,"briefing"):checkBadges(); lockTick();
+}
+function noteGenId(id){ if(prof.lastGen) saveProf({lastGen:{...prof.lastGen,id}}) }
+function quizDone(score,total){
+  const t=todayStr();let n=effStreak(),gain=0;
+  if(prof.streakLast!==t){n++;saveProf({streak:n,streakLast:t});gain+=5*Math.min(n,7)}
+  const id=current&&current.id,seen=prof.quizzed||[];
+  if(id&&!seen.includes(id)){gain+=score*5+(score===total?10:0);saveProf({quizzed:[...seen,id].slice(-60),perfects:(prof.perfects||0)+(score===total?1:0)})}
+  gain?addXP(gain,"quiz"):checkBadges(); streakWatch(); return {n};
+}
+function openProfile(){
+  if(!name||guest)return;$("#prof").classList.remove("hidden");
+  const x=prof.xp||0,l=LV(x),a=LVX(l),b=LVX(l+1);
+  $("#pav").textContent=name[0].toUpperCase();$("#pnm").textContent="@"+name;
+  $("#plv").textContent="Level "+l+" · "+(b-x)+" XP to level "+(l+1);
+  $("#pbar").style.width="0";requestAnimationFrame(()=>$("#pbar").style.width=Math.round((x-a)/(b-a)*100)+"%");
+  countUp($("#pxp"),x);$("#pst").textContent=effStreak()+" day"+(effStreak()===1?"":"s");
+  const have=new Set(prof.badges||[]);$("#pbg").replaceChildren(...BADGES.map(b=>{const d=mk("div","bdg"+(have.has(b[0])?" on":""));d.append(mk("b","",b[1]),mk("span","",b[2]));return d}));
+  const pick=new Set(prof.pick||[]);$("#pint").replaceChildren(...INTS.map(t=>{const e=mk("button",pick.has(t)?"on":"",t);
+    e.onclick=()=>{pick.has(t)?pick.delete(t):pick.add(t);e.classList.toggle("on");saveProf({pick:[...pick]})};return e}));
+  $("#phide").checked=!!prof.hideLb;$("#ppw").replaceChildren(pwForm());
+}
+$("#phide").onchange=()=>saveProf({hideLb:$("#phide").checked});
+$("#pnotif").onclick=()=>{if(!window.Notification)return toast("Notifications aren't supported here");Notification.requestPermission().then(p=>toast(p==="granted"?"Streak reminders on":"Reminders blocked in browser settings"))};
+$("#av").onclick=$("#xpchip").onclick=openProfile;
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$("#"+b.dataset.close).classList.add("hidden"));
+["prof","lb","rep"].forEach(id=>addEv("#"+id,"click",e=>{if(e.target.id===id)$("#"+id).classList.add("hidden")}));
+
+/* ---- password change (self) + admin reset (needs Cloud Function) ---- */
+function pwForm(){
+  const w=mk("div"),a=mk("input"),b=mk("input"),c=mk("input"),e=mk("div","derr"),go=mk("button","btn sm","Update password");
+  [a,b,c].forEach((x,i)=>{x.type="password";x.autocomplete=i?"new-password":"current-password";x.placeholder=["Current password","New password","Repeat new password"][i];x.style.marginTop="8px"});
+  go.style.marginTop="12px";
+  go.onclick=async()=>{
+    e.textContent="";
+    if(!a.value||!b.value)return e.textContent="Fill in all the fields.";
+    if(b.value!==c.value)return e.textContent="New passwords don't match.";
+    if(b.value===a.value)return e.textContent="Pick a different password.";
+    go.disabled=true;
+    try{const u=auth.currentUser;await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,secret(name,a.value)));
+      await u.updatePassword(secret(name,b.value));a.value=b.value=c.value="";toast("Password changed")}
+    catch(x){e.textContent=/invalid-credential|wrong-password/.test(x.code)?"Current password is wrong.":authMsg(x)}
+    go.disabled=false};
+  w.append(a,b,c,e,go);return w}
+function pwBtn(id,me){const b=mk("button","btn o sm","Reset password");b.disabled=me;if(me)b.title="Use the password box in this panel";
+  b.onclick=async()=>{const p=prompt("New password for @"+id+":");if(!p)return;
+    try{await firebase.functions().httpsCallable("adminSetPassword")({username:id,password:p});toast("Password reset for @"+id)}
+    catch(e){toast(/not-found|internal|unavailable/i.test(e.code+e.message)?"Deploy the adminSetPassword function first (functions/index.js)":(e.message||"Couldn't reset"))}};return b}
+
+/* ---- leaderboard ---- */
+async function openLb(){
+  $("#lb").classList.remove("hidden");const box=$("#lbl");box.replaceChildren(mk("small","","Loading…"));
+  try{const s=await db.collection("users").orderBy("xp","desc").limit(30).get();box.replaceChildren();let r=0;
+    s.forEach(d=>{const v=d.data();if(v.hideLb&&d.id!==name)return;if(++r>10)return;
+      const row=mk("div","urow"+(d.id===name?" me1":""));row.append(mk("b","d","#"+r),mk("div","n","@"+d.id),mk("small","","Lv "+LV(v.xp||0)+" · "+(v.xp||0)+" XP · "+effStreak(v)+"d streak"));box.append(row)});
+    if(!r)box.append(mk("small","","Nobody yet. Earn XP to be first!"))}
+  catch(e){box.replaceChildren(mk("small","","Couldn't load the leaderboard. Check Firestore rules."))}}
+$("#lbBtn").onclick=openLb;
+
+/* ---- banners: announcement + streak at risk ---- */
+function banner(id,text,cls,dismiss){const o=$("#"+id);if(o)o.remove();const d=mk("div","bn "+(cls||""));d.id=id;d.append(mk("span","",text));
+  if(dismiss){const x=mk("button","","×");x.onclick=()=>{d.remove();dismiss()};d.append(x)}$("#banners").append(d)}
+async function loadAnnouncement(){
+  try{const s=await db.collection("config").doc("announcement").get(),d=s.exists?s.data():null,o=$("#bn-ann");if(o)o.remove();
+    if(!d||!d.on||!d.text)return;const h=hashStr(d.text);if(localStorage.getItem("hl_ann")===h)return;
+    banner("bn-ann",d.text,"",()=>localStorage.setItem("hl_ann",h))}catch(_){}}
+function streakWatch(){
+  if(!name||guest)return;const n=effStreak(),o=$("#bn-streak"),risk=n>0&&prof.streakLast!==todayStr()&&new Date().getHours()>=17;
+  if(!risk){if(o)o.remove();return}
+  if(!o)banner("bn-streak","Your "+n+"-day streak ends tonight. Take a quiz on a briefing to keep it alive.","warn");
+  if(window.Notification&&Notification.permission==="granted"&&document.hidden&&localStorage.getItem("hl_nt")!==todayStr()){
+    localStorage.setItem("hl_nt",todayStr());new Notification("Headline",{body:"Your "+n+"-day streak ends tonight.",icon:"icon-192.png"})}}
+setInterval(streakWatch,300000);
+
+/* ---- weekday language + 12 h generation window ---- */
+function setDayLang(){
+  const d=new Date().getDay(),L=DAYLANG[d],sel=$("#lang");sel.value=L;sel.disabled=!isAdmin;
+  $("#langhint").textContent=DAYNAME[d]+" is "+L+" day."+(isAdmin?" (Admins can change it.)":" One language per day.")}
+function lockInfo(){
+  if(isAdmin||guest||!prof.lastGen)return null;
+  const left=prof.lastGen.at+GEN_WINDOW_H*3600e3-Date.now();return left>0?{left}:null}
+const fmtLeft=ms=>{const m=Math.ceil(ms/60000);return Math.floor(m/60)+"h "+(m%60)+"m"};
+function lockTick(){const b=$("#make"),L=lockInfo();if(b.textContent==="Writing…")return;
+  b.textContent=L?"View my briefing · next in "+fmtLeft(L.left):"Generate briefing"}
+setInterval(lockTick,30000);
+async function showLocked(L,quiet){
+  try{const s=await db.collection("users").doc(name).collection("stories").orderBy("createdAt","desc").limit(6).get();
+    const d=s.docs.find(x=>!/^Weekly digest/.test(x.data().topic||""));
+    if(!d){toast("Couldn't find your saved briefing");return}
+    const v=d.data();target=name;current={id:d.id,text:v.text,topic:v.topic};render(v.text,v.topic);
+    if(!quiet)toast("You already have today's briefing. A new one unlocks in "+fmtLeft(L.left)+".");
+    scrollTo({top:0,behavior:"smooth"})}
+  catch(e){toast("Couldn't load your saved briefing")}}
+const _make=$("#make").onclick;
+$("#make").onclick=async function(){const L=lockInfo();if(L&&!window.skipLock)return showLocked(L);return _make.apply(this,arguments)};
+
+/* ---- prompt extras: Kerala district + error-report regeneration ---- */
+const extraLines=()=>{const d=$("#district").value;
+  return (d?`Local focus: one of the Headlines stories MUST be the biggest real news from ${d} district, Kerala, India. If a focus topic is also set, use a different Headlines story for it.\n`:"")
+   +(window.fixNote?`A reader reported a problem with an earlier version (${window.fixNote}). Double-check every fact with Google Search before writing.\n`:"")};
+
+/* ---- rate-limit friendly errors ---- */
+function showErr(e){
+  const m=e.message||"",box=$("#read");
+  if(!/429|quota|rate|exhaust|busy|overload|timed out|unavailable|503|resource/i.test(m)){box.innerHTML='<div class="empty"><div class="d">Something went wrong</div></div>';$("#read .empty").append(m);return}
+  let s=30;box.innerHTML='<div class="empty"><div class="d">Lots of readers right now</div><p id="rlt"></p><button class="btn sm" id="rlb" disabled style="margin-top:16px">Try again</button></div>';
+  const mkb=$("#make"),paint=()=>{$("#rlt").textContent="The news service is busy. Retrying is safe in "+s+"s. Your daily briefing isn't used up.";mkb.textContent="Try again in "+s+"s"};
+  setTimeout(()=>{mkb.disabled=true;paint()},0);
+  const iv=setInterval(()=>{s--;if(!$("#rlt")||s<=0){clearInterval(iv);mkb.disabled=false;lockTick();const r=$("#rlb");if(r){r.disabled=false;$("#rlt").textContent="Ready when you are.";r.onclick=()=>mkb.click()}return}paint()},1000)}
+
+/* ---- Gemini key stats: usage, last error, auto-disable on repeated 429s ---- */
+let kstats={},ksAt=0,rlMem={};
+async function loadKeyStats(force){if(!force&&Date.now()-ksAt<60000)return;ksAt=Date.now();
+  try{const s=await db.collection("keyStats").get();kstats={};s.forEach(d=>kstats[d.id]=d.data())}catch(_){}}
+const keyIdOf=key=>{const k=(kc||[]).concat(keyList||[]).find(x=>x.key===key);return k&&k.id};
+const inc=n=>firebase.firestore.FieldValue.increment(n);
+function noteKey(key,res){
+  const id=keyIdOf(key);if(!id)return;const r=db.collection("keyStats").doc(id);
+  if(res.ok){rlMem[id]=0;r.set({uses:inc(1),rl:0,lastOkAt:Date.now()},{merge:true}).catch(()=>{});return}
+  const p={uses:inc(1),fails:inc(1),lastError:String(res.msg||"").slice(0,200),lastErrorAt:Date.now()};
+  if(res.status===429){const n=Math.max(rlMem[id]||0,(kstats[id]&&kstats[id].rl)||0)+1;rlMem[id]=n;p.rl=inc(1);
+    if(n>=5){p.disabledUntil=Date.now()+30*60e3;rlMem[id]=0}}
+  r.set(p,{merge:true}).catch(()=>{})}
+const _t=tryOnce; tryOnce=async function(){const r=await _t.apply(this,arguments);try{noteKey(arguments[0],r)}catch(_){}return r};
+const _gk=getKeys; getKeys=async function(){const l=await _gk.apply(this,arguments);await loadKeyStats();
+  const ok=l.filter(k=>!(kstats[k.id]&&kstats[k.id].disabledUntil>Date.now()));return ok.length?ok:l};
+const _lk=loadKey; loadKey=async function(){await loadKeyStats(true);return _lk.apply(this,arguments)};
+function keyStatEl(k){
+  const s=kstats[k.id]||{},d=mk("div","hint"),dis=s.disabledUntil>Date.now();d.style.marginTop="2px";
+  d.textContent="Used "+(s.uses||0)+"× · failed "+(s.fails||0)+"×"+(s.lastError?" · last error "+agoStr(Date.now()-s.lastErrorAt)+": "+s.lastError:" · no errors yet")
+    +(dis?" · AUTO-PAUSED until "+new Date(s.disabledUntil).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})+" (repeated 429s)":"");
+  if(s.uses||s.fails||dis){const r=mk("button","btn o sm",dis?"Re-enable":"Reset stats");r.style.marginLeft="8px";
+    r.onclick=async()=>{await db.collection("keyStats").doc(k.id).set({uses:0,fails:0,rl:0,lastError:"",lastErrorAt:0,disabledUntil:0},{merge:true});await loadKeyStats(true);renderKeys()};d.append(r)}
+  return d}
+
+/* ---- admin: announcement, feedback list ---- */
+addEv("#adminBtn","click",async()=>{
+  $("#apw").replaceChildren(pwForm());
+  try{const s=await db.collection("config").doc("announcement").get(),d=s.exists?s.data():{};$("#annt").value=d.text||"";$("#anon").checked=!!d.on}catch(_){}
+  loadFeedback()});
+$("#ansave").onclick=async()=>{try{await db.collection("config").doc("announcement").set({text:$("#annt").value.trim(),on:$("#anon").checked,updatedAt:ts(),updatedBy:name});
+  localStorage.removeItem("hl_ann");toast("Announcement saved");loadAnnouncement()}catch(e){toast("Couldn't save. Check Firestore rules.")}};
+async function loadFeedback(){
+  const box=$("#fblist");box.replaceChildren(mk("small","","Loading…"));
+  try{const [f,r]=await Promise.all(["feedback","reports"].map(c=>db.collection(c).orderBy("at","desc").limit(15).get()));
+    const rows=[];f.forEach(d=>rows.push({t:"f",...d.data()}));r.forEach(d=>rows.push({t:"r",...d.data()}));
+    rows.sort((a,b)=>((b.at&&b.at.seconds)||0)-((a.at&&a.at.seconds)||0));box.replaceChildren();
+    box.append(mk("small","","Latest: "+rows.filter(x=>x.vote>0).length+" helpful · "+rows.filter(x=>x.vote<0).length+" not helpful · "+r.size+" reports"));
+    rows.forEach(x=>{const row=mk("div","urow");row.append(mk("div","n",x.t==="f"?(x.vote>0?"Helpful":"Not helpful"):"Report: "+x.kind),mk("small","","@"+x.user+" · "+(x.topic||"")+(x.note?" · "+x.note:"")));box.append(row)});
+    if(!rows.length)box.append(mk("small","","Nothing yet."))}
+  catch(e){box.replaceChildren(mk("small","","Couldn't load. Check Firestore rules."))}}
+
+/* ---- feedback, report, share card, extras (added under every briefing) ---- */
+async function vote(v,btns){if(!current)return;btns.forEach(b=>b.disabled=true);
+  try{await db.collection("feedback").add({user:name,storyId:current.id,topic:current.topic,vote:v,at:ts()});toast("Thanks for the feedback")}catch(e){toast("Couldn't send feedback");btns.forEach(b=>b.disabled=false)}}
+$("#rsend").onclick=async()=>{
+  if(!current)return;const kind=$("#rkind").value,note=$("#rnote").value.trim();$("#rsend").disabled=true;
+  try{await db.collection("reports").add({user:name,storyId:current.id,topic:current.topic,kind,note,text:current.text.slice(0,1500),at:ts()});
+    saveProf({reports:(prof.reports||0)+1});checkBadges();$("#rep").classList.add("hidden");$("#rnote").value="";toast("Report sent. Thank you!");
+    if($("#rfix").checked){window.bypassCache=true;window.skipLock=true;window.fixNote=kind+(note?": "+note:"");$("#make").click()}}
+  catch(e){$("#rerr").textContent="Couldn't send. Check your connection."}
+  $("#rsend").disabled=false};
+async function shareCard(){
+  if(!current)return;await document.fonts.ready;
+  const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#07080b");g.addColorStop(1,"#141824");x.fillStyle=g;x.fillRect(0,0,W,H);
+  const o=x.createRadialGradient(900,150,0,900,150,520);o.addColorStop(0,"#c6ff3d44");o.addColorStop(1,"#c6ff3d00");x.fillStyle=o;x.fillRect(0,0,W,H);
+  x.fillStyle="#fff";x.font="800 64px Sora,Inter,sans-serif";x.fillText("head",80,130);const hw=x.measureText("head").width;x.fillStyle="#c6ff3d";x.fillText("line",80+hw,130);
+  x.fillStyle="#9aa1b2";x.font="600 30px Inter,sans-serif";x.fillText(current.topic.slice(0,48),80,200);
+  const wrap=(t,w)=>{const L=[];let l="";t.split(" ").forEach(s=>{const n=l?l+" "+s:s;if(x.measureText(n).width>w&&l){L.push(l);l=s}else l=n});if(l)L.push(l);return L};
+  const hs=current.text.split("\n").filter(l=>l.startsWith("### ")).map(l=>l.slice(4).replace(/\*\*/g,"")).slice(0,4);
+  let y=320;x.font="700 46px Sora,Inter,sans-serif";
+  hs.forEach((h,i)=>{x.fillStyle="#c6ff3d";x.fillText(String(i+1).padStart(2,"0"),80,y);x.fillStyle="#fff";
+    wrap(h,820).slice(0,3).forEach((ln,k)=>{x.fillText(ln,180,y+k*58)});y+=Math.min(3,wrap(h,820).length)*58+60});
+  x.fillStyle="#6b7385";x.font="500 28px Inter,sans-serif";x.fillText("AI news on demand · Made for Sacred Heart CMI Public School",80,H-80);
+  c.toBlob(async b=>{const f=new File([b],"headline-card.png",{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:"Headline",text:current.topic});return}catch(e){if(e.name==="AbortError")return}}
+    const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="headline-card.png";a.click();URL.revokeObjectURL(u);toast("Card saved as an image")})}
+
+/* ---- daily extras: history, word of the day, fun fact ---- */
+async function getExtras(){
+  const d=$("#ndate").value||todayStr(),L=$("#lang").value,id="x1_"+d+"_"+L,hit=await cacheGet(id);
+  if(hit&&Date.now()-hit.at<864e5){try{return JSON.parse(hit.text)}catch(_){}}
+  const md=pickedDate().toLocaleDateString("en-IN",{day:"numeric",month:"long"});
+  const raw=await gemText(`For school students. Write all values in ${L}. Return JSON only: {"history":"2 sentences about one notable real event that happened on ${md} in history, with the year","word":"one useful vocabulary word of the day","meaning":"its simple meaning, one sentence","fact":"one surprising TRUE fun fact, 1 to 2 sentences"}`,true);
+  const j=JSON.parse(raw.replace(/```json|```/g,"").trim());cachePut(id,JSON.stringify(j));return j}
+async function fillExtras(host){
+  const ld=mk("p","","Loading…");host.append(ld);
+  try{const j=await getExtras();ld.remove();const g=mk("div","xg");
+    [["This day in history",j.history],["Word of the day",j.word+" — "+j.meaning],["Fun fact",j.fact]].forEach(([h,t])=>{const c=mk("div","xc");c.append(mk("div","tag",h),mk("p","",t||""));g.append(c)});host.append(g)}
+  catch(e){ld.textContent="Couldn't load the extras right now."}}
+
+/* ---- weekly digest ---- */
+async function weekly(btn){
+  btn.disabled=true;const o=btn.textContent;btn.textContent="Reading your week…";
+  try{const s=await db.collection("users").doc(name).collection("stories").where("createdAt",">=",new Date(Date.now()-7*864e5)).orderBy("createdAt","desc").limit(14).get();
+    const hs=[];s.forEach(d=>{const v=d.data();if(/^Weekly digest/.test(v.topic||""))return;(v.text||"").split("\n").filter(l=>l.startsWith("### ")).forEach(l=>hs.push(l.slice(4)))});
+    if(!hs.length){toast("Generate a few briefings first");throw 0}
+    const L=$("#lang").value,range=new Date(Date.now()-6*864e5).toLocaleDateString("en-IN",{day:"numeric",month:"short"})+" – "+new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short"});
+    const text=(await gemText(`You are a news editor writing a weekly digest for school students in ${L}. Use ONLY these headlines from the past 7 days and add no outside facts:\n- ${[...new Set(hs)].slice(0,40).join("\n- ")}\nFormat exactly:\n# [title in ${L} meaning "Weekly digest"] ${range}\n## [Top stories of the week, in ${L}]\n### [short theme headline]\n[2 to 3 plain sentences]\n(3 themes)\n## [What to watch next, in ${L}]\n- [short point]\n- [short point]\nNo links, no invented facts.`,false)).trim();
+    const label="Weekly digest · "+range;current={id:"w"+Date.now(),text,topic:label};render(text,label);target=name;const mine=current;
+    db.collection("users").doc(name).collection("stories").add({topic:label,text,style:"Digest",lang:L,createdAt:ts()}).then(r=>{mine.id=r.id;loadHistory()}).catch(()=>{});
+    if(prof.digestDay!==todayStr()){saveProf({digestDay:todayStr()});addXP(15,"weekly digest")}}
+  catch(e){if(e)toast("Couldn't make the digest. Try again.")}
+  btn.disabled=false;btn.textContent=o}
+$("#wk").onclick=()=>weekly($("#wk"));
+
+/* ---- sentence-highlighted listening with pause / resume ---- */
+let LQ=null;
+function sentences(){
+  const out=[];
+  document.querySelectorAll("#read h2,#read h3,#read h4,#read p,#read li").forEach(el=>{
+    if(el.closest("#quizbox,.xg,.empty"))return;
+    const ws=[...el.querySelectorAll(".w")];
+    if(!ws.length){const t=el.textContent.trim();if(t)out.push({ws:[],text:t});return}
+    let cur=[];ws.forEach(w=>{cur.push(w);if(/[.!?।॥…]["'”’)\]]*$/.test(w.textContent)){out.push({ws:cur,text:cur.map(a=>a.textContent).join(" ")});cur=[]}});
+    if(cur.length)out.push({ws:cur,text:cur.map(a=>a.textContent).join(" ")})});
+  return out}
+const clearHl=()=>document.querySelectorAll(".w.hl").forEach(w=>w.classList.remove("hl"));
+function endListen(){clearHl();if(LQ){const b=LQ.btn;b.textContent="Listen";const s=b.parentElement.querySelector("[data-stop]");if(s)s.classList.add("hidden");LQ=null}}
+function speakFrom(i){
+  const q=LQ,sy=speechSynthesis;sy.cancel();const gen=++q.gen,v=pickVoice(q.lang);
+  q.sents.slice(i).forEach((s,k)=>{
+    const u=new SpeechSynthesisUtterance(s.text);u.lang=q.lang;u.rate=.95;if(v)u.voice=v;
+    u.onstart=()=>{if(q.gen!==gen)return;q.i=i+k;clearHl();s.ws.forEach(w=>w.classList.add("hl"));if(s.ws[0])s.ws[0].scrollIntoView({block:"nearest",behavior:"smooth"})};
+    if(i+k===q.sents.length-1)u.onend=u.onerror=()=>{if(q.gen===gen)endListen()};
+    sy.speak(u)})}
+listen=function(btn){
+  if(!window.speechSynthesis)return toast("Listening isn't supported on this browser");
+  if(LQ&&LQ.btn===btn){
+    if(LQ.paused){LQ.paused=false;btn.textContent="Pause";speakFrom(LQ.i)}
+    else{LQ.paused=true;LQ.gen++;speechSynthesis.cancel();btn.textContent="Resume"}   // cancel + remember sentence: works on every browser
+    return}
+  hush();const sents=sentences();if(!sents.length)return;
+  LQ={btn,sents,lang:detectLang(sents.map(s=>s.text).join(" ")),i:0,gen:0,paused:false};
+  btn.textContent="Pause";const s=btn.parentElement.querySelector("[data-stop]");if(s)s.classList.remove("hidden");speakFrom(0)};
+const _hush=hush; hush=function(){const r=_hush.apply(this,arguments);if(LQ){LQ.gen++;clearHl();LQ=null}return r};
+
+/* ---- decorate every rendered briefing ---- */
+const _render=render;
+render=function(md,topic){
+  _render(md,topic);
+  const a=$("#read .acts");if(!a)return;
+  const l=a.querySelector("[data-listen]"),stop=mk("button","btn o sm hidden","Stop");stop.dataset.stop=1;
+  stop.onclick=()=>{if(LQ){LQ.gen++;speechSynthesis.cancel();endListen()}};l.after(stop);
+  const sh=mk("button","btn o sm");sh.innerHTML=I.img+"Share card";sh.onclick=shareCard;
+  const ex=mk("button","btn o sm","Daily extras");ex.onclick=()=>{let h=$("#xtra");if(h){h.remove();return}h=mk("div","sec");h.id="xtra";h.append(mk("h3","","Today's extras"));$("#read").append(h);fillExtras(h)};
+  a.append(sh,ex);
+  const fb=mk("div","fbrow"),up=mk("button","btn o sm"),dn=mk("button","btn o sm"),rp=mk("button","btn o sm");
+  up.innerHTML=I.up+"Helpful";dn.innerHTML=I.down+"Not helpful";rp.innerHTML=I.flag+"Report an error";
+  up.onclick=()=>vote(1,[up,dn]);dn.onclick=()=>vote(-1,[up,dn]);rp.onclick=()=>{$("#rerr").textContent="";$("#rep").classList.remove("hidden")};
+  fb.append(up,dn,rp);$("#read").append(fb);
+};
+
+/* ---- interests-based home feed ---- */
+const myInterests=()=>[...new Set([...(prof.pick||[]),...(prof.auto||[])])].slice(0,8);
+function deriveInterests(){
+  const c={};document.querySelectorAll("#hist b").forEach(b=>{const t=b.textContent.split(" · ")[0].trim();if(t&&!/^(Daily briefing|Weekly digest)$/.test(t))c[t]=(c[t]||0)+1});
+  const auto=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,5).map(e=>e[0]);
+  if(JSON.stringify(auto)!==JSON.stringify(prof.auto||[]))saveProf({auto})}
+const _lh=loadHistory; loadHistory=async function(){await _lh.apply(this,arguments);if(!guest&&target===name)deriveInterests()};
+function homeFeed(){
+  if(current||guest||!name)return;
+  const p=$("#read");p.replaceChildren();p.append(mk("div","tag","For you"),mk("h2","d","Hi, @"+name));
+  const L=lockInfo(),ints=myInterests(),s1=mk("div","sec");s1.append(mk("h3","","Your topics"));
+  if(ints.length&&!L){const w=mk("div","sugs");ints.forEach(t=>{const b=mk("button","",t);b.onclick=()=>{$("#topic").value=t;$("#make").click()};w.append(b)});s1.append(w)}
+  else s1.append(mk("p","",L?"Your briefing is ready. A new one unlocks in "+fmtLeft(L.left)+".":"Pick interests in your profile and they'll appear here as one-tap briefings."));
+  const s2=mk("div","sec");s2.append(mk("h3","","Today's extras"));p.append(s1,s2);fillExtras(s2)}
+addEv("#aback","click",homeFeed);
+
+/* ---- sign-in hook ---- */
+const _show=show;
+show=function(){_show.apply(this,arguments);onShow()};
+async function onShow(){
+  if(guest||!name)return;prof={};$("#banners").replaceChildren();
+  try{const sn=await db.collection("users").doc(name).get();prof=sn.exists?sn.data():{}}catch(_){}
+  setDayLang();paintXp();streakWatch();loadAnnouncement();lockTick();
+  const L=lockInfo();if(L)showLocked(L,true).then(()=>{if(!current)homeFeed()});else homeFeed()}
+setDayLang();
+
 </script>
 </body>
 </html>
