@@ -1,1 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Shared briefing · Headline</title><link rel="icon" href="../favicon.ico" sizes="any">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<style>:root{--bg:#07080b;--card:#0e1015;--line:#1f232d;--text:#eceef3;--mute:#8a90a0;--lime:#c6ff3d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Inter,system-ui,sans-serif}a{color:var(--lime)}.wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px}.logo{font-weight:800;font-size:1.4rem;text-decoration:none;color:var(--text)}.logo i{color:var(--lime);font-style:normal}h1{font-size:2rem;letter-spacing:-.03em;margin:28px 0 6px}h2{margin-top:34px;font-size:1.25rem}p,li{color:#c3c8d4}.m{color:var(--mute);font-size:.85rem}.btn{display:inline-block;background:var(--lime);color:#0a0c05;font-weight:700;border-radius:999px;padding:12px 22px;text-decoration:none;border:0;cursor:pointer;font:inherit;font-weight:700}@media(prefers-color-scheme:light){:root{--bg:#f4f6fb;--card:#fff;--line:#dde1ea;--text:#12151c;--mute:#586072;--lime:#4d8a00}p,li{color:#3a4152}.btn{color:#fff}}</style><style>.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px;margin-top:20px}.card h3{margin:22px 0 4px;color:var(--lime);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}.card h4{margin:18px 0 4px;font-size:1.05rem}.card h1{margin:0 0 8px;font-size:1.6rem}.bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn.o{background:none;color:var(--text);border:1px solid var(--line)}
+@media print{body{background:#fff;color:#000}.wrap{padding:0;max-width:none}.noprint{display:none!important}.card{border:0;padding:0;background:none}.card h3{color:#444}p,li{color:#000}a{color:#000}.m{color:#444}}</style></head>
+<body><div class="wrap"><div class="noprint" style="display:flex;justify-content:space-between;align-items:center"><a class="logo" href="../">head<i>line</i></a><span class="m">Shared briefing</span></div>
+<div class="card" id="c"><p class="m">Loading…</p></div>
+<div class="bar noprint"><button class="btn" onclick="print()">Print or save as PDF</button><a class="btn o" href="../">Open Headline</a></div>
+<p class="m noprint" style="margin-top:20px">AI-generated news. Check important facts with a trusted source.</p></div>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyCSbP_YLj96o8paciuqwH7dVthvyZXGmq8",authDomain:"news-af425.firebaseapp.com",projectId:"news-af425",appId:"1:28387227118:web:2db21ce8f8745a3c22caff"});
+const q=new URLSearchParams(location.search),id=(q.get("id")||"").replace(/[^a-z0-9]/gi,"");
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+function inl(p,t){t.split(/(\*\*[^*]+\*\*)/).forEach(s=>{if(/^\*\*.+\*\*$/.test(s)){const b=el("b",null,s.slice(2,-2));p.append(b)}else p.append(document.createTextNode(s))})}
+(async()=>{const c=document.getElementById("c");
+  try{if(!id)throw 0;const s=await firebase.firestore().collection("shared").doc(id).get();if(!s.exists)throw 0;const d=s.data();document.title=(d.topic||"Briefing")+" · Headline";c.replaceChildren();let ul=null;
+    String(d.text||"").split("\n").forEach(line=>{line=line.trim();if(!line){ul=null;return}let e;
+      if(line.startsWith("### "))e=el("h4");else if(line.startsWith("## "))e=el("h3");else if(line.startsWith("# "))e=el("h1");
+      else if(/^[-*] /.test(line)){if(!ul){ul=el("ul");c.append(ul)}const li=el("li");inl(li,line.slice(2));ul.append(li);return}else e=el("p");
+      ul=null;inl(e,line.replace(/^#+ /,""));c.append(e)});
+    if(q.get("print")==="1")setTimeout(print,600)}
+  catch(e){c.replaceChildren(el("h1",null,"Link not found"),el("p","m","This briefing was removed or the link is wrong."))}})();
+</script></body></html>
 
