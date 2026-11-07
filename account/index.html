@@ -1,1 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#07080b"><link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/site.css"><title>My account · Headline</title><meta name="robots" content="noindex"><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="../assets/common.js"></script></head><body>
+<header id="hdr"></header><main class="wrap"><h1>My account</h1><p class="m">Your progress, settings and security in one place.</p><div id="main"><div class="sk"></div><div class="sk"></div></div></main>
+<script>
+HL.header("account");
+const {auth,db}=HL.init(),E=HL.el,FV=firebase.firestore.FieldValue,main=document.getElementById("main"),secret=(n,p)=>"pin-"+p+"-"+n;
+const INTS=["Education","Technology","Cricket","Football","Environment","Science","Space","Health","Business","Entertainment","Politics","Kerala"];
+const BADGES=[["first","First briefing","Generate a briefing",p=>p.briefings>=1],["perfect","Perfect score","3/3 on a quiz",p=>p.perfects>=1],["p3","Triple perfect","3 perfect quizzes",p=>p.perfects>=3],["s3","3-day streak","Quiz 3 days running",p=>p.streak>=3],["s7","7-day streak","Quiz 7 days running",p=>p.streak>=7],["s30","30-day streak","Quiz 30 days running",p=>p.streak>=30],["poly","Polyglot","Read all 3 languages",p=>(p.langs||[]).length>=3],["l5","Level 5","Reach level 5",p=>HL.LV(p.xp||0)>=5],["fact","Fact-checker","Report an error",p=>p.reports>=1]];
+let name="",prof={};
+const save=patch=>{Object.assign(prof,patch);return db.collection("users").doc(name).set(patch,{merge:true})};
+function card(title){const c=E("div","card");if(title)c.append(E("h2","",title));main.append(c);return c}
+function signedOut(){main.replaceChildren();const c=card("Sign in to see your account");c.append(E("p","m","Your account page shows your level, badges and settings."));const a=E("a","btn","Sign in to Headline");a.href="../";a.onclick=()=>{try{sessionStorage.setItem("hl_go","account")}catch(e){}};c.append(a)}
+function pwForm(){
+  const w=E("div"),f=["Current password","New password","Repeat new password"].map((p,i)=>{const x=E("input");x.type="password";x.placeholder=p;x.autocomplete=i?"new-password":"current-password";return x}),e=E("div","err"),go=E("button","btn sm","Update password");go.style.marginTop="12px";
+  go.onclick=async()=>{e.textContent="";const[a,b,c]=f;if(!a.value||!b.value)return e.textContent="Fill in all the fields.";if(b.value!==c.value)return e.textContent="New passwords don't match.";if(b.value.length<6)return e.textContent="Use at least 6 characters.";if(b.value===a.value)return e.textContent="Pick a different password.";
+    go.disabled=true;try{const u=auth.currentUser;await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,secret(name,a.value)));await u.updatePassword(secret(name,b.value));f.forEach(x=>x.value="");HL.toast("Password changed")}catch(x){e.textContent=/invalid-credential|wrong-password/.test(x.code)?"Current password is wrong.":(x.message||"Couldn't change it.")}go.disabled=false};
+  w.append(...f,e,go);return w}
+const genCode=()=>{const A="ABCDEFGHJKMNPQRSTUVWXYZ23456789";return Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>A[b%A.length]).join("").replace(/(.{4})(?=.)/g,"$1-")};
+const sha=async s=>[...new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)))].map(b=>b.toString(16).padStart(2,"0")).join("");
+function render(){
+  main.replaceChildren();const x=prof.xp||0,l=HL.LV(x),a=HL.LVX(l),b=HL.LVX(l+1);
+  const c=card(),top=E("div");top.style.cssText="display:flex;gap:16px;align-items:center";const av=E("div","av",name[0].toUpperCase()),info=E("div"),nm=E("div","","@"+name);info.style.flex="1";nm.style.cssText="font:700 1.3rem Sora,sans-serif";
+  info.append(nm,E("small","m","Level "+l+" · "+(b-x)+" XP to level "+(l+1)));
+  const bar=E("div","bar"),fill=E("i");bar.append(fill);info.append(bar);top.append(av,info);c.append(top);setTimeout(()=>fill.style.width=Math.round((x-a)/(b-a)*100)+"%",50);
+  const g=E("div","grid3");[["Total XP",x],["Streak",HL.streak(prof)+" day"+(HL.streak(prof)===1?"":"s")],["Briefings",prof.briefings||0],["Perfect quizzes",prof.perfects||0],["Languages read",(prof.langs||[]).length+"/3"]].forEach(([k,v])=>{const s=E("div","st",k);s.append(E("b","",v));g.append(s)});c.append(g);
+  if(prof.role==="admin"){const r=E("div","row"),ad=E("a","btn o sm","Open admin panel");ad.href="../admin/";r.append(ad);c.append(r)}
+  const have=new Set(prof.badges||[]),bc=card("Badges"),bg=E("div","grid3");BADGES.forEach(t=>{const d=E("div","bdg"+(have.has(t[0])||t[3](prof)?" on":""));d.append(E("b","",t[1]),E("span","",t[2]));bg.append(d)});bc.append(bg);
+  const ic=card("My interests");ic.append(E("p","m","These appear as one-tap topics on your home feed."));const pick=new Set(prof.pick||[]),ch=E("div","chips");
+  INTS.forEach(t=>{const e=E("button",pick.has(t)?"on":"",t);e.onclick=()=>{pick.has(t)?pick.delete(t):pick.add(t);e.classList.toggle("on");save({pick:[...pick]})};ch.append(e)});ic.append(ch);
+  const sc=card("Settings");let rm="";try{rm=localStorage.getItem("hl_rm")}catch(e){}
+  const cb=E("label","chk"),ck=E("input");ck.type="checkbox";ck.checked=rm==="1";ck.onchange=()=>{try{localStorage.setItem("hl_rm",ck.checked?"1":"0")}catch(e){}document.documentElement.dataset.motion=ck.checked?"reduce":"";HL.toast("Saved")};cb.append(ck,document.createTextNode(" Reduce motion"));sc.append(cb);
+  const lb=E("label","","Interface language"),sel=E("select");[["en","English"],["ml","മലയാളം"],["hi","हिन्दी"]].forEach(([v,t])=>{const o=E("option","",t);o.value=v;sel.append(o)});try{sel.value=localStorage.getItem("hl_ui")||"en"}catch(e){}sel.onchange=()=>{try{localStorage.setItem("hl_ui",sel.value)}catch(e){}HL.toast("Applies next time you open the app")};sc.append(lb,sel);
+  const gc=card("Leaderboard"),hc=E("label","chk"),hk=E("input");hk.type="checkbox";hk.checked=!!prof.hideLb;hk.onchange=()=>save({hideLb:hk.checked});hc.append(hk,document.createTextNode(" Don't show me on the public leaderboard"));gc.append(hc);
+  const pc=card("Change password");pc.append(pwForm());
+  const rc=card("Recovery code");rc.append(E("p","m",prof.hasRec?"You have a recovery code. Making a new one replaces the old one.":"You don't have a recovery code yet. It lets you reset a forgotten password."));
+  const rb=E("button","btn o sm",prof.hasRec?"Create new recovery code":"Create recovery code"),rv=E("div");rv.style.cssText="font:700 1.5rem Sora,sans-serif;letter-spacing:.12em;margin-top:16px;user-select:all";
+  rb.onclick=async()=>{if(prof.hasRec&&!confirm("This replaces your old recovery code. Continue?"))return;const code=genCode();try{await db.collection("recovery").doc(name).set({hash:await sha(name+":"+code.replace(/-/g,"")),at:FV.serverTimestamp()});await save({hasRec:true});rv.textContent=code;HL.toast("Save this code now. It won't be shown again.")}catch(e){HL.toast("Couldn't save the code")}};rc.append(rb,rv);
+  const sec=card("Sessions & data"),r=E("div","row");
+  const lo=E("button","btn o sm","Log out everywhere");lo.onclick=async()=>{if(!confirm("Sign out of Headline on every device?"))return;try{await db.collection("users").doc(name).set({sessionVer:FV.increment(1)},{merge:true})}catch(e){HL.toast("Couldn't do that")}};
+  const so=E("button","btn o sm","Sign out");so.onclick=()=>auth.signOut().then(()=>location.href="../");
+  const dl=E("button","btn o sm","Download my data");dl.onclick=async()=>{dl.disabled=true;try{const s=await db.collection("users").doc(name).collection("stories").orderBy("createdAt","desc").limit(300).get(),out={profile:prof,stories:s.docs.map(d=>({id:d.id,...d.data(),createdAt:d.data().createdAt&&d.data().createdAt.toDate().toISOString()}))};
+    const u=URL.createObjectURL(new Blob([JSON.stringify(out,null,2)],{type:"application/json"})),a=document.createElement("a");a.href=u;a.download="headline-"+name+"-data.json";a.click();URL.revokeObjectURL(u)}catch(e){HL.toast("Couldn't export your data")}dl.disabled=false};
+  r.append(lo,so,dl);sec.append(r);const t=E("p","m");t.style.marginTop="16px";t.innerHTML='Read the <a href="../terms/">Terms &amp; Privacy</a>. To delete your account, ask an admin.';sec.append(t)}
+auth.onAuthStateChanged(async u=>{
+  if(!u||!u.email||!u.email.endsWith("@"+HL.DOMAIN))return signedOut();
+  name=u.email.split("@")[0];
+  try{const s=await db.collection("users").doc(name).get();prof=s.exists?s.data():{};if(prof.suspended&&prof.role!=="admin"){await auth.signOut();return signedOut()}render()}
+  catch(e){main.replaceChildren();card("Couldn't load your account").append(E("p","m","Check your connection and refresh."))}});
+</script></body></html>
 
