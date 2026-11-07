@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /share/
+Disallow: /account/
+Disallow: /admin/
+Disallow: /archive/
+Disallow: /leaderboard/
+Disallow: /offline/
+Sitemap: https://YOURNAME.github.io/REPO/sitemap.xml
