@@ -1,1 +1,14 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#07080b"><link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/site.css"><title>Leaderboard · Headline</title><meta name="robots" content="noindex"><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="../assets/common.js"></script></head><body>
+<header id="hdr"></header><main class="wrap"><h1>Leaderboard</h1><p class="m">Top readers by XP. Earn XP by reading briefings and taking quizzes.</p><div id="list"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></main>
+<script>
+HL.header("leaderboard");const {auth,db}=HL.init(),E=HL.el,box=document.getElementById("list");let me="";
+async function load(){
+  try{const s=await db.collection("users").orderBy("xp","desc").limit(60).get();box.replaceChildren();let r=0,mine=null;
+    s.forEach(d=>{const v=d.data();if(v.hideLb&&d.id!==me)return;r++;if(d.id===me)mine=r;if(r>25&&d.id!==me)return;
+      const row=E("div","lbr"+(d.id===me?" me":"")+(r<=3?" t"+r:""));row.append(E("span","rk","#"+r),E("span","nm","@"+d.id),E("small","","Lv "+HL.LV(v.xp||0)+" · "+(v.xp||0)+" XP · "+HL.streak(v)+"d streak"));box.append(row)});
+    if(!r){const c=E("div","card");c.append(E("h2","","Nobody on the board yet"),E("p","m","Generate a briefing and take a quiz to earn the first XP."));const a=E("a","btn sm","Go to Headline");a.href="../";c.append(a);box.append(c)}
+    else if(mine)box.prepend(E("p","m","You are ranked #"+mine+"."))}
+  catch(e){box.replaceChildren();const c=E("div","card");c.append(E("h2","","Couldn't load the leaderboard"),E("p","m","Please sign in and try again."));const a=E("a","btn sm","Sign in to Headline");a.href="../";c.append(a);box.append(c)}}
+auth.onAuthStateChanged(u=>{me=u&&u.email?u.email.split("@")[0]:"";load()});
+</script></body></html>
 
