@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#07080b"><link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/site.css"><title>Achievements · Headline</title><meta name="robots" content="noindex"><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="../assets/common.js"></script></head><body>
+<header id="hdr"></header><main class="wrap"><h1>Achievements</h1><p class="m" id="sub">Badges you've earned and how close you are to the rest.</p><div id="main"><div class="sk"></div><div class="sk"></div></div></main>
+<script>
+HL.header("achievements");const {auth,db}=HL.init(),E=HL.el,main=document.getElementById("main");let name="";
+const fmtS=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+function signedOut(){main.replaceChildren();const c=E("div","card");c.append(E("h2","","Sign in to see your achievements"));const a=E("a","btn","Sign in to Headline");a.href="../";a.onclick=()=>{try{sessionStorage.setItem("hl_go","url:"+location.href)}catch(e){}};c.append(a);main.append(c)}
+async function render(prof){
+  let min=180;try{const s=await db.collection("config").doc("site").get();if(s.exists&&s.data().minReadSec)min=s.data().minReadSec}catch(e){}
+  const t=HL.day(new Date()),sec=prof.actDay===t?(prof.actSec||0):0,quiz=prof.quizDay===t,done=prof.goalDay===t;
+  main.replaceChildren();
+  const g=E("div","card");g.append(E("h2","","Today's goal"));
+  g.append(E("p","m",done?"Done! Your streak is safe for today.":"Stay on a briefing for "+fmtS(min)+" and take its quiz to earn today's streak."));
+  const p=E("div","prog"),i=E("i");i.style.width=(done?100:Math.min(100,sec/min*100))+"%";p.append(i);g.append(p);
+  g.append(E("small","m",done?"Goal complete":"Reading time "+fmtS(Math.min(sec,min))+" / "+fmtS(min)+" · Quiz "+(quiz?"taken":"not taken yet")));main.append(g);
+  const have=new Set(prof.badges||[]);let n=0;
+  const grid=E("div","ach");HL.ACH.forEach(a=>{const cur=a.cur(prof),on=have.has(a.id)||cur>=a.max;if(on)n++;
+    const c=E("div","achc"+(on?" on":""));const h=E("h3","",a.name);if(on)h.prepend(E("span","tick","✓"));c.append(h,E("p","",a.desc));
+    const pr=E("div","prog"),f=E("i");f.style.width=Math.min(100,cur/a.max*100)+"%";pr.append(f);c.append(pr);
+    c.append(E("small","",on?"Unlocked":(a.unit==="sec"?Math.floor(cur/60)+" / "+Math.floor(a.max/60)+" min":Math.min(cur,a.max)+" / "+a.max)));grid.append(c)});
+  document.getElementById("sub").textContent=n+" of "+HL.ACH.length+" unlocked.";main.append(grid)}
+auth.onAuthStateChanged(async u=>{
+  if(!u||!u.email||!u.email.endsWith("@"+HL.DOMAIN))return signedOut();name=u.email.split("@")[0];
+  try{const s=await db.collection("users").doc(name).get();render(s.exists?s.data():{})}catch(e){main.replaceChildren(E("p","m","Couldn't load. Check your connection."))}});
+</script></body></html>
