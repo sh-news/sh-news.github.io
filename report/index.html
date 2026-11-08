@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#07080b"><link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/site.css"><title>Monthly report card · Headline</title><meta name="robots" content="noindex"><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="../assets/common.js"></script></head><body>
+<header id="hdr"></header><main class="wrap"><h1>Report card</h1><p class="m">Your reading month at a glance.</p>
+<div class="sel noprint"><select id="mon" aria-label="Month"></select><button class="btn o sm" id="pr">Print or save as PDF</button></div><div id="main"><div class="sk"></div><div class="sk"></div></div></main>
+<script>
+HL.header("report");const {auth,db}=HL.init(),E=HL.el,main=document.getElementById("main"),sel=document.getElementById("mon");let name="",prof={};
+const MN=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const now=new Date();for(let i=0;i<6;i++){const d=new Date(now.getFullYear(),now.getMonth()-i,1),o=E("option","",MN[d.getMonth()]+" "+d.getFullYear());o.value=d.getFullYear()+"-"+HL.pad(d.getMonth()+1);sel.append(o)}
+document.getElementById("pr").onclick=()=>print();
+function signedOut(){main.replaceChildren();const c=E("div","card");c.append(E("h2","","Sign in to see your report card"));const a=E("a","btn","Sign in to Headline");a.href="../";a.onclick=()=>{try{sessionStorage.setItem("hl_go","url:"+location.href)}catch(e){}};c.append(a);main.append(c)}
+const delta=(a,b)=>b?(a>=b?"▲ ":"▼ ")+Math.abs(a-b)+" vs last month":"";
+async function load(){
+  const m=sel.value,[y,mo]=m.split("-").map(Number),from=new Date(y,mo-1,1),to=new Date(y,mo,1),pm=HL.day(new Date(y,mo-2,1)).slice(0,7),ms=(prof.mstats||{})[m]||{},pms=(prof.mstats||{})[pm]||{};
+  main.replaceChildren(E("div","sk"),E("div","sk"));
+  let st=[];try{const s=await db.collection("users").doc(name).collection("stories").where("createdAt",">=",from).where("createdAt","<",to).orderBy("createdAt").get();st=s.docs.map(d=>d.data())}catch(e){}
+  const days=new Set(st.map(x=>x.createdAt&&HL.day(x.createdAt.toDate()))),langs={},tp={};
+  st.forEach(x=>{if(x.lang)langs[x.lang]=(langs[x.lang]||0)+1;const t=(x.topic||"").split(" · ")[0].trim();if(t&&!/^(Daily briefing|Weekly digest)$/.test(t))tp[t]=(tp[t]||0)+1});
+  const top=Object.entries(tp).sort((a,b)=>b[1]-a[1]).slice(0,3).map(e=>e[0]),mins=Math.round((ms.sec||0)/60),pmins=Math.round((pms.sec||0)/60),avg=ms.quizzes?Math.round(ms.scoreSum/ms.quizzes):null;
+  main.replaceChildren();
+  const hd=E("div","card");hd.append(E("h2","","@"+name+" · "+sel.options[sel.selectedIndex].text));
+  const msg=st.length||ms.quizzes?"You read "+st.length+" briefing"+(st.length===1?"":"s")+" on "+days.size+" day"+(days.size===1?"":"s")+(ms.quizzes?", took "+ms.quizzes+" quiz"+(ms.quizzes===1?"":"zes")+(avg!==null?" and averaged "+avg+"%":""):"")+".":"No reading recorded this month yet.";
+  hd.append(E("p","m",msg));
+  const g=E("div","grid3");[["Briefings read",st.length,""],["Days read",days.size,""],["Goal days",ms.days||0,delta(ms.days||0,pms.days||0)],["Minutes reading",mins,delta(mins,pmins)],["Quizzes",ms.quizzes||0,""],["Quiz average",avg===null?"–":avg+"%",""],["Perfect quizzes",ms.perfects||0,""],["XP earned",ms.xp||0,delta(ms.xp||0,pms.xp||0)]].forEach(([k,v,d])=>{const s=E("div","st",k);s.append(E("b","",v));if(d)s.append(E("span","",d));g.append(s)});hd.append(g);main.append(hd);
+  const c2=E("div","card");c2.append(E("h2","","Highlights"));
+  c2.append(E("p","m","Languages: "+(Object.keys(langs).length?Object.entries(langs).map(e=>e[0]+" ("+e[1]+")").join(", "):"none yet")));
+  c2.append(E("p","m","Top topics: "+(top.length?top.join(", "):"none yet — try a focus topic or district")));
+  c2.append(E("p","m","Current streak: "+HL.streak(prof)+" day"+(HL.streak(prof)===1?"":"s")+" · Best: "+Math.max(prof.bestStreak||0,HL.streak(prof))+" · Level "+HL.LV(prof.xp||0)+" ("+(prof.xp||0)+" XP)"));main.append(c2)}
+sel.onchange=load;
+auth.onAuthStateChanged(async u=>{
+  if(!u||!u.email||!u.email.endsWith("@"+HL.DOMAIN))return signedOut();name=u.email.split("@")[0];
+  try{const s=await db.collection("users").doc(name).get();prof=s.exists?s.data():{};load()}catch(e){main.replaceChildren(E("p","m","Couldn't load. Check your connection."))}});
+</script></body></html>
