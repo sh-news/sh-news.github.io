@@ -1,1 +1,392 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex"><title>Opening…</title><meta http-equiv="refresh" content="1;url=../"><script>try{sessionStorage.setItem("hl_go","admin")}catch(e){}location.replace("../")</script></head><body><p><a href="../">Open Headline</a></p></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><script>
+(function(){
+  /* Only run on the official site. A copy saved with Ctrl+S (opened from disk or another host) shows an error instead. */
+  var ALLOWED=['sh-news.github.io'];
+  if(ALLOWED.indexOf(location.hostname)===-1){
+    try{window.stop()}catch(e){}
+    document.documentElement.innerHTML='<head><meta charset="utf-8"><title>Not available</title></head><body style="margin:0;background:#07080b;color:#eceef3;font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px"><div><h1 style="font-size:1.6rem;margin:0 0 8px">This copy isn\'t authorised</h1><p style="color:#8a90a0;margin:0">Please use the official site: <a style="color:#c6ff3d" href="https://sh-news.github.io/">sh-news.github.io</a></p></div></body>';
+    throw new Error('Blocked: unauthorised origin');
+  }
+  document.addEventListener('keydown',function(e){
+    if((e.ctrlKey||e.metaKey)&&String(e.key).toLowerCase()==='s'){
+      e.preventDefault();e.stopPropagation();
+      var t=document.createElement('div');t.textContent='Saving this page is not allowed.';
+      t.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2147483647;background:#ef4444;color:#fff;padding:.75rem 1.3rem;border-radius:10px;font:600 14px system-ui,sans-serif';
+      document.body.appendChild(t);setTimeout(function(){t.remove()},3200);
+    }
+  },true);
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#07080b"><title>Admin · Headline</title><link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"><style>
+:root{--bg:#07080b;--card:#0e1015;--card2:#14171f;--line:#1f232d;--text:#eceef3;--mute:#8a90a0;--lime:#c6ff3d;--ice:#7dd3fc;color-scheme:dark}
+html[data-theme=light]{--bg:#f4f6fb;--card:#fff;--card2:#eef1f7;--line:#dde1ea;--text:#12151c;--mute:#586072;--lime:#4d8a00;--ice:#0b6fa8;color-scheme:light}
+html[data-motion=reduce] *{animation:none!important;transition:none!important}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,system-ui,sans-serif}a{color:var(--lime)}
+.top{display:flex;align-items:center;gap:14px;padding:12px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap;position:sticky;top:0;background:var(--bg);z-index:5}
+.logo{font:800 1.35rem Sora,Inter,sans-serif;color:var(--text);text-decoration:none}.logo i{color:var(--lime);font-style:normal}
+.top nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}.top nav a{color:var(--mute);text-decoration:none;padding:7px 13px;border-radius:99px;font-size:.9rem;font-weight:600}.top nav a:hover{color:var(--text)}.top nav a.on{background:var(--lime);color:#0a0c05}
+.wrap{max-width:820px;margin:0 auto;padding:30px 20px 90px}h1{font:700 2rem Sora,Inter,sans-serif;letter-spacing:-.03em;margin:6px 0 4px}h2{font-size:1.1rem;margin:0 0 12px}.m{color:var(--mute);font-size:.88rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin-top:16px}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--lime);color:#0a0c05;font:inherit;font-weight:700;font-size:.9rem;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;text-decoration:none}.btn.o{background:none;color:var(--text);border:1px solid var(--line)}.btn:disabled{opacity:.5;cursor:default}.btn.sm{padding:7px 14px;font-size:.82rem}
+input,select{width:100%;background:var(--card2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;margin-top:8px}label{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-top:18px}
+.chk{display:flex;gap:10px;align-items:center;text-transform:none;letter-spacing:0;font-size:.92rem;color:var(--text)}.chk input{width:auto;margin:0}
+.bar{height:8px;border-radius:99px;background:var(--card2);overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--lime),var(--ice));transition:width .8s}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:14px}
+.st{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:14px;font-size:.78rem;color:var(--mute)}.st b{display:block;font-size:1.5rem;color:var(--text)}
+.bdg{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:.72rem;color:var(--mute);background:var(--card2);opacity:.45;filter:grayscale(1)}.bdg.on{opacity:1;filter:none;border-color:var(--lime);color:var(--text)}.bdg b{display:block;font-size:.85rem}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chips button{background:var(--card2);border:1px solid var(--line);color:var(--mute);border-radius:99px;padding:7px 14px;font:inherit;font-size:.85rem;cursor:pointer}.chips button.on{border-color:var(--lime);color:var(--lime)}
+.err{color:#f87171;font-size:.85rem;min-height:1.2em;margin-top:8px}.av{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--ice));color:#0a0c05;display:grid;place-items:center;font:800 1.4rem Sora,sans-serif;flex:none}
+.lbr{display:flex;gap:12px;align-items:center;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-top:8px}.lbr.me{border-color:var(--lime)}.lbr .rk{width:34px;font-weight:800;color:var(--mute)}.lbr .nm{flex:1;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis}.lbr small{color:var(--mute)}.lbr.t1 .rk{color:#f5c542}.lbr.t2 .rk{color:#cbd5e1}.lbr.t3 .rk{color:#d6925a}
+details{border-bottom:1px solid var(--line);padding:14px 0}summary{cursor:pointer;font-weight:600}details p{color:var(--mute);margin:10px 0 0}kbd{border:1px solid var(--line);border-radius:6px;padding:1px 7px;background:var(--card2);font-size:.8rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--lime);color:#0a0c05;padding:11px 20px;border-radius:999px;font-weight:700;font-size:.88rem;z-index:50}html[data-theme=light] .btn:not(.o),html[data-theme=light] .toast,html[data-theme=light] .top nav a.on,html[data-theme=light] .av{color:#fff}
+.hidden{display:none!important}.sk{height:60px;border-radius:14px;margin-top:10px;background:linear-gradient(90deg,var(--card2) 25%,var(--line) 37%,var(--card2) 63%);background-size:200% 100%;animation:shim 1.4s linear infinite}@keyframes shim{to{background-position:-200% 0}}
+html[data-theme=contrast]{--bg:#000;--card:#000;--card2:#0b0b0b;--line:#fff;--text:#fff;--mute:#e6e6e6;--lime:#ffe600;--ice:#00e5ff;color-scheme:dark}
+html[data-theme=contrast] .btn:not(.o),html[data-theme=contrast] .top nav a.on,html[data-theme=contrast] .toast,html[data-theme=contrast] .av{color:#000}
+html[data-theme=contrast] .card,html[data-theme=contrast] input,html[data-theme=contrast] select,html[data-theme=contrast] .btn.o,html[data-theme=contrast] .st,html[data-theme=contrast] .bdg,html[data-theme=contrast] .lbr{border-width:2px}
+html[data-theme=contrast] a{text-decoration:underline}html[data-theme=contrast] :focus-visible{outline:3px solid #ffe600;outline-offset:2px}
+.prog{height:6px;border-radius:9px;background:var(--card2);overflow:hidden;margin-top:8px}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--ice))}
+.ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:14px}.achc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.achc.on{border-color:var(--lime)}.achc h3{margin:0;font-size:1rem}.achc p{margin:4px 0 0;color:var(--mute);font-size:.82rem}.achc small{color:var(--mute);font-size:.75rem;display:block;margin-top:8px}.achc .tick{float:right;color:var(--lime);font-weight:800}
+.sel{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.sel select{width:auto;margin:0}
+.q{margin-top:18px}.q h2{font-size:1.1rem}.opt{display:block;width:100%;text-align:left;background:var(--card2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;margin-top:8px;cursor:pointer}.opt.ok{border-color:#22c55e;background:#22c55e22}.opt.no{border-color:#ef4444;background:#ef444422}.opt:disabled{cursor:default}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:#64748b;margin-right:10px}.dot.ok{background:#22c55e}.dot.warn{background:#f59e0b}.dot.bad{background:#ef4444}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.srow:last-child{border:0}.srow small{color:var(--mute)}
+@media print{body{background:#fff;color:#000}.top,.noprint{display:none!important}.card{border:1px solid #bbb}.st{border:1px solid #bbb}}
+
+</style><style>
+/* Admin console: sidebar layout. Uses the colour variables from site.css (dark / light / contrast). */
+body{overflow-x:hidden}
+.shell{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--card);border-right:1px solid var(--line);padding:18px 14px;display:flex;flex-direction:column;gap:6px;z-index:30}
+.side .brand{display:flex;align-items:center;gap:10px;padding:6px 10px 16px}.side .brand .logo{font-size:1.3rem}.side .brand a{display:inline;padding:0;border:0;gap:0;background:none;box-shadow:none}.side .brand a:hover{background:none}.side .brand .tag{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:2px 9px}
+.side h4{margin:16px 10px 6px;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.side a{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:12px;color:var(--mute);text-decoration:none;font-weight:600;font-size:.92rem;border:1px solid transparent}
+.side a:hover{color:var(--text);background:var(--card2)}.side a.on{color:var(--text);background:var(--card2);border-color:var(--line);box-shadow:inset 3px 0 0 var(--lime)}
+.side a svg{width:18px;height:18px;flex:none}.side a .bd{margin-left:auto;background:var(--lime);color:#0a0c05;border-radius:99px;font-size:.68rem;padding:1px 8px;font-weight:700}
+.side .me{margin-top:auto;border-top:1px solid var(--line);padding:14px 8px 4px;font-size:.84rem;color:var(--mute)}.side .me b{display:block;color:var(--text);font-size:.95rem}
+.main{min-width:0}
+.bar2{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:12px 26px}
+.bar2 h1{font-size:1.15rem;margin:0;letter-spacing:-.01em;font-family:Sora,Inter,sans-serif}.bar2 .crumb{color:var(--mute);font-size:.8rem}
+.bar2 .sp{flex:1}.hb{display:inline-flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--line);color:var(--mute);border-radius:10px;padding:8px 12px;font:inherit;font-size:.82rem;cursor:pointer}.hb:hover{color:var(--text);border-color:var(--lime)}
+.hb kbd{font-size:.66rem;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 6px}.hb svg{width:16px;height:16px}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:.74rem;color:var(--mute)}.live i{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 #22c55e88;animation:pl 2s infinite}@keyframes pl{70%{box-shadow:0 0 0 8px #22c55e00}}
+.burger2{display:none}
+.page{max-width:1120px;margin:0 auto;padding:26px 26px 90px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}.panel>h2,.ph h2{margin:0;font-size:1rem}.ph{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}.panel .sub{color:var(--mute);font-size:.84rem;margin:-8px 0 14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.kpi small{color:var(--mute);font-size:.76rem}.kpi b{display:block;font-size:1.8rem;margin-top:4px;font-family:Sora,Inter,sans-serif}.kpi:hover{border-color:var(--lime)}
+.attn{display:flex;gap:10px;flex-wrap:wrap}.attn a{display:inline-flex;gap:8px;align-items:center;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:9px 14px;color:var(--text);text-decoration:none;font-size:.88rem}.attn a:hover{border-color:var(--lime)}.attn a b{color:var(--lime)}.attn a.bad b{color:#f87171}
+.clear{color:#22c55e;font-size:.92rem}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:.88rem}.tbl th{background:var(--card2);text-align:left;padding:10px 12px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--line)}.tbl td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:middle}.tbl tr:hover td{background:var(--card2)}.tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px}.tw .tbl th:first-child{border-top-left-radius:14px}
+.pill{display:inline-block;font-size:.68rem;font-weight:700;border-radius:99px;padding:2px 9px;background:var(--lime);color:#0a0c05;margin-left:6px}.pill.off{background:#ef4444;color:#fff}.pill.mut{background:var(--card2);color:var(--mute);border:1px solid var(--line)}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.tools input,.tools select{width:auto;flex:1;min-width:160px;margin:0}
+.dbars{display:flex;align-items:flex-end;gap:5px;height:130px}.dbars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;align-items:center;font-size:.6rem;color:var(--mute)}.dbars i{display:block;width:100%;background:linear-gradient(var(--lime),var(--ice));border-radius:5px 5px 0 0;min-height:2px}.dlab{display:flex;gap:5px;margin-top:6px}.dlab span{flex:1;text-align:center;font-size:.58rem;color:var(--mute)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hb2{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:.84rem}.hb2 span{width:100px;color:var(--mute)}.hb2 i{display:block;height:10px;border-radius:9px;background:linear-gradient(90deg,var(--lime),var(--ice))}.hb2 em{font-style:normal;color:var(--mute);font-size:.76rem}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.hrow:last-child{border:0}.hrow small{color:var(--mute);display:block}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px;background:#64748b}.dot.ok{background:#22c55e}.dot.warn{background:#f59e0b}.dot.bad{background:#ef4444}
+.ovl{position:fixed;inset:0;background:#000a;z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:8vh 16px;overflow-y:auto}.ovl.hidden{display:none}
+.dlg{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;width:min(640px,100%);box-shadow:0 30px 80px -20px #000}.dlg h2{margin:0 0 4px}.dlg .sub{color:var(--mute);font-size:.85rem;margin-bottom:12px}
+.pal input{margin:0 0 10px;font-size:1rem}.pal .it{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;cursor:pointer;color:var(--text)}.pal .it.on,.pal .it:hover{background:var(--card2)}.pal .it small{margin-left:auto;color:var(--mute)}
+.logn{max-width:400px;margin:12vh auto;padding:0 20px}.logn .panel{padding:28px}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn.dg{border-color:#ef4444;color:#f87171}
+.rg{width:100%;border-collapse:collapse;font-size:.9rem}.rg th,.rg td{padding:11px 8px;border-bottom:1px solid var(--line);text-align:center}.rg th:first-child,.rg td:first-child{text-align:left}.rg input{width:auto;margin:0}
+.evi{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-top:8px;font-size:.88rem;flex-wrap:wrap}
+pre.st{white-space:pre-wrap;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px;max-height:50vh;overflow:auto;font:inherit;font-size:.88rem}
+@media(max-width:900px){
+ .shell{grid-template-columns:1fr}.burger2{display:inline-flex}
+ .side{position:fixed;left:0;top:0;bottom:0;width:272px;transform:translateX(-102%);transition:transform .25s;box-shadow:0 0 60px #000}.side.open{transform:none}
+ .scrim{position:fixed;inset:0;background:#0008;z-index:25}.scrim.hidden{display:none}
+ .bar2{padding:10px 14px}.page{padding:18px 14px 80px}.two,.three{grid-template-columns:1fr}.hb span.t{display:none}
+}
+@media print{.side,.bar2{display:none}.shell{display:block}}
+
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
+/* Shared helpers (HL) used by the pages in this file */
+(function(){try{document.documentElement.dataset.theme=localStorage.getItem("hl_theme")||"dark";if(localStorage.getItem("hl_rm")==="1")document.documentElement.dataset.motion="reduce"}catch(e){}})();
+window.HL={
+  DOMAIN:"users.headline.app",
+  cfg:{apiKey:"AIzaSyCSbP_YLj96o8paciuqwH7dVthvyZXGmq8",authDomain:"news-af425.firebaseapp.com",projectId:"news-af425",appId:"1:28387227118:web:2db21ce8f8745a3c22caff"},
+  el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e},
+  init(){firebase.initializeApp(this.cfg);return{auth:firebase.auth(),db:firebase.firestore()}},
+  toast(m){let t=document.getElementById("toast");if(!t){t=this.el("div","toast");t.id="toast";document.body.append(t)}t.textContent=m;t.classList.remove("hidden");clearTimeout(this.tt);this.tt=setTimeout(()=>t.classList.add("hidden"),2600)},
+  header(active){
+    const links=[["account","Account"],["achievements","Achievements"],["report","Report card"],["leaderboard","Leaderboard"],["help","Help"]];
+    const h=document.getElementById("hdr");h.className="top";h.innerHTML='<a class="logo" href="../">head<i>line</i></a>';
+    const n=this.el("nav");links.forEach(([k,t])=>{const a=this.el("a",k===active?"on":"",t);a.href="../"+k+"/";n.append(a)});h.append(n);
+    const TH=["dark","light","contrast"],th=this.el("button","btn o sm"),nx=()=>TH[(TH.indexOf(document.documentElement.dataset.theme)+1)%3];
+    const paint=()=>th.textContent={dark:"Dark",light:"Light",contrast:"Contrast"}[nx()];paint();
+    th.onclick=()=>{const t=nx();document.documentElement.dataset.theme=t;try{localStorage.setItem("hl_theme",t)}catch(e){}paint()};
+    const b=this.el("a","btn sm","Back to app");b.href="../";h.append(th,b)},
+  LV:x=>Math.floor(Math.sqrt(x/40))+1,LVX:l=>(l-1)*(l-1)*40,
+  pad:n=>String(n).padStart(2,"0"),
+  ACH:[
+    {id:"first",name:"First briefing",desc:"Read your first briefing",max:1,cur:p=>p.briefings||0},
+    {id:"perfect",name:"Perfect score",desc:"Score 3/3 on a quiz",max:1,cur:p=>p.perfects||0},
+    {id:"p3",name:"Triple perfect",desc:"Score 3/3 on three quizzes",max:3,cur:p=>p.perfects||0},
+    {id:"s3",name:"3-day streak",desc:"Reach your daily goal 3 days running",max:3,cur:p=>Math.max(p.bestStreak||0,p.streak||0)},
+    {id:"s7",name:"7-day streak",desc:"Reach your daily goal 7 days running",max:7,cur:p=>Math.max(p.bestStreak||0,p.streak||0)},
+    {id:"s30",name:"30-day streak",desc:"Reach your daily goal 30 days running",max:30,cur:p=>Math.max(p.bestStreak||0,p.streak||0)},
+    {id:"poly",name:"Polyglot",desc:"Read in English, Malayalam and Hindi",max:3,cur:p=>(p.langs||[]).length},
+    {id:"l5",name:"Level 5",desc:"Reach level 5",max:5,cur:p=>Math.floor(Math.sqrt((p.xp||0)/40))+1},
+    {id:"fact",name:"Fact-checker",desc:"Report an error in a briefing",max:1,cur:p=>p.reports||0},
+    {id:"focus",name:"Focused reader",desc:"Read for 60 minutes in total",max:3600,cur:p=>p.activeSec||0,unit:"sec"},
+    {id:"days5",name:"Weekly regular",desc:"Reach your daily goal on 5 different days",max:5,cur:p=>p.daysRead||0},
+    {id:"chal",name:"Challenger",desc:"Send a quiz challenge to a friend",max:1,cur:p=>p.challenges||0}],
+  day(d){return d.getFullYear()+"-"+this.pad(d.getMonth()+1)+"-"+this.pad(d.getDate())},
+  streak(p){const l=p.streakLast;return l&&(l===this.day(new Date())||l===this.day(new Date(Date.now()-864e5)))?(p.streak||0):0}
+};
+
+</script></head>
+<body><div class="sk" style="margin:30vh auto;width:220px"></div><noscript>The admin console needs JavaScript.</noscript><script>
+/* Headline admin console */
+(function(){
+"use strict";
+const {auth,db}=HL.init(),E=HL.el,FV=firebase.firestore.FieldValue,inc=n=>FV.increment(n),ts=()=>FV.serverTimestamp(),$=s=>document.querySelector(s);
+const secret=(n,p)=>"pin-"+p+"-"+n,STAFF=["owner","admin","subowner","staff"],norm=r=>r==="admin"?"owner":(r||"user");
+const PERMS=[["viewDash","View the dashboard"],["manageUsers","See users and their archives"],["resetPasswords","Reset passwords"],["suspendUsers","Suspend / unsuspend users"],["setLimits","Set daily limits"],["deleteUsers","Delete user data"],["manageKeys","Manage API keys"],["siteSettings","Site settings and maintenance"],["announcements","Announcement banner"],["events","Seasonal events"],["viewFeedback","View feedback and errors"]];
+const DEFR={subowner:{viewDash:1,manageUsers:1,resetPasswords:1,suspendUsers:1,setLimits:1,deleteUsers:0,manageKeys:0,siteSettings:1,announcements:1,events:1,viewFeedback:1},staff:{viewDash:1,manageUsers:0,resetPasswords:0,suspendUsers:0,setLimits:0,deleteUsers:0,manageKeys:0,siteSettings:0,announcements:1,events:0,viewFeedback:1}};
+let me={name:"",role:"user"},roles={},site={},usersCache=null,cur="overview",unsubs=[];
+const can=p=>me.role==="owner"||!!((roles[me.role]||DEFR[me.role]||{})[p]);
+const API=()=>(site.apiUrl||"").replace(/\/$/,"");
+const SVG=p=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>';
+const ic={home:SVG('<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9Z"/>'),users:SVG('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6 6 0 0 1 3.5 5.5"/>'),shield:SVG('<path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3Z"/><path d="M9 12l2 2 4-4"/>'),lock:SVG('<rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'),cal:SVG('<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/>'),sl:SVG('<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>'),msg:SVG('<path d="M4 5h16v11H9l-5 4V5Z"/>'),key:SVG('<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>'),pulse:SVG('<path d="M3 12h4l2-6 4 12 2-6h6"/>'),db:SVG('<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>'),user:SVG('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'),search:SVG('<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/>'),menu:SVG('<path d="M4 7h16M4 12h16M4 17h16"/>')};
+const NAV=[["Overview",[["overview","Overview",ic.home,()=>true]]],["People",[["users","Users",ic.users,()=>can("manageUsers")],["roles","Roles & permissions",ic.shield,()=>me.role==="owner"],["security","Security & audit",ic.lock,()=>can("viewDash")]]],["Content",[["events","Seasonal events",ic.cal,()=>can("events")],["site","Site & announcements",ic.sl,()=>can("siteSettings")||can("announcements")],["feedback","Feedback & errors",ic.msg,()=>can("viewFeedback")]]],["System",[["api","API & Worker",ic.key,()=>can("manageKeys")||can("siteSettings")],["health","Health checks",ic.pulse,()=>true],["data","Data & exports",ic.db,()=>can("viewDash")||can("manageUsers")]]],["Account",[["me","My account",ic.user,()=>true]]]];
+const ITEMS=NAV.flatMap(g=>g[1]);
+const toast=m=>HL.toast(m),skel=n=>{const f=document.createDocumentFragment();for(let i=0;i<n;i++)f.append(E("div","sk"));return f};
+const ago=ms=>{const m=Math.round(ms/60000);return m<1?"just now":m<60?m+" min ago":m<1440?Math.round(m/60)+" h ago":Math.round(m/1440)+" d ago"};
+const dstr=d=>HL.day(d),days=n=>Array.from({length:n},(_,i)=>dstr(new Date(Date.now()-(n-1-i)*864e5)));
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const audit=(action,target,detail)=>db.collection("audit").add({at:ts(),admin:me.name,action,target:target||"",detail:String(detail||"").slice(0,160)}).catch(()=>{});
+const csv=(rows)=>rows.map(r=>r.map(v=>{v=v==null?"":String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(",")).join("\n");
+function download(name,text,type){const u=URL.createObjectURL(new Blob([text],{type:type||"text/plain"})),a=document.createElement("a");a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+const btn=(t,c,fn)=>{const b=E("button","btn "+(c||"o")+" sm",t);if(fn)b.onclick=fn;return b};
+const panel=(title,sub)=>{const p=E("div","panel");if(title){const h=E("div","ph");h.append(E("h2","",title));p.append(h)}if(sub)p.append(E("div","sub",sub));return p};
+function table(heads,rows){const w=E("div","tw"),t=E("table","tbl"),h=E("tr");heads.forEach(x=>h.append(E("th","",x)));t.append(h);rows.forEach(r=>{const tr=E("tr");r.forEach(c=>{const td=E("td");c instanceof Node?td.append(c):td.textContent=c==null?"":c;tr.append(td)});t.append(tr)});w.append(t);return w}
+function bars(title,vals,labels){const p=panel(title),mx=Math.max(1,...vals),w=E("div","dbars");vals.forEach(v=>{const c=E("div");c.append(E("span","",v||""));const i=E("i");i.style.height=Math.max(2,v/mx*78)+"%";c.append(i);w.append(c)});const l=E("div","dlab");labels.forEach(d=>l.append(E("span","",d.slice(8))));p.append(w,l);return p}
+function dialog(title,sub){const o=E("div","ovl"),d=E("div","dlg");d.append(E("h2","",title));if(sub)d.append(E("div","sub",sub));o.append(d);document.body.append(o);const close=()=>o.remove();o.onclick=e=>{if(e.target===o)close()};return{o,d,close}}
+async function apiCall(path,body,authed){const h={"content-type":"application/json"};if(authed)h.authorization="Bearer "+await auth.currentUser.getIdToken();const r=await fetch(API()+path,{method:"POST",headers:h,body:JSON.stringify(body)}),j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||"Request failed");return j}
+async function legacy(n,d){if(!firebase.functions)await new Promise((res,rej)=>{const s=document.createElement("script");s.src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js";s.onload=res;s.onerror=rej;document.head.append(s)});return firebase.functions().httpsCallable(n)(d)}
+async function loadUsers(force){if(usersCache&&!force)return usersCache;const s=await db.collection("users").get();usersCache=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>a.id.localeCompare(b.id));return usersCache}
+
+/* ---------------- shell ---------------- */
+function buildShell(){
+  document.body.innerHTML=`<div class="shell"><aside class="side" id="side"></aside><div class="main"><div class="bar2"><button class="hb burger2" id="bg" aria-label="Menu">${ic.menu}</button><div><div class="crumb">Admin</div><h1 id="ttl">Overview</h1></div><div class="sp"></div><span class="live"><i></i><span class="t">Live</span></span><button class="hb" id="sb">${ic.search}<span class="t">Search</span><kbd>Ctrl K</kbd></button><button class="hb" id="th"></button><a class="hb" href="../">Back to app</a></div><div class="page" id="page"></div></div></div><div class="scrim hidden" id="scrim"></div><div class="ovl hidden" id="pal"><div class="dlg pal"><input id="pi" placeholder="Search pages and people…" autocomplete="off"><div id="pl"></div></div></div>`;
+  const TH=["dark","light","contrast"],nx=()=>TH[(TH.indexOf(document.documentElement.dataset.theme)+1)%3],th=$("#th"),paint=()=>th.textContent={dark:"Dark",light:"Light",contrast:"Contrast"}[nx()];paint();
+  th.onclick=()=>{const t=nx();document.documentElement.dataset.theme=t;try{localStorage.setItem("hl_theme",t)}catch(e){}paint()};
+  $("#bg").onclick=()=>{$("#side").classList.add("open");$("#scrim").classList.remove("hidden")};$("#scrim").onclick=closeSide;
+  $("#sb").onclick=openPalette;$("#pal").onclick=e=>{if(e.target.id==="pal")closePalette()};
+  $("#pi").oninput=palList;$("#pi").onkeydown=palKey;
+  paintSide()}
+const closeSide=()=>{$("#side").classList.remove("open");$("#scrim").classList.add("hidden")};
+function paintSide(){
+  const s=$("#side");s.replaceChildren();const b=E("div","brand");b.innerHTML='<a class="logo" href="../" style="text-decoration:none">head<i>line</i></a><span class="tag">Admin</span>';s.append(b);
+  NAV.forEach(([g,items])=>{const vis=items.filter(i=>i[3]());if(!vis.length)return;s.append(E("h4","",g));vis.forEach(([id,label,icon])=>{const a=E("a",id===cur?"on":"");a.href="#"+id;a.innerHTML=icon;a.append(E("span","",label));a.dataset.id=id;a.onclick=closeSide;s.append(a)})});
+  const m=E("div","me"),role=me.role==="subowner"?"Sub owner":me.role[0].toUpperCase()+me.role.slice(1);m.append(E("b","","@"+me.name),E("span","",role));const out=btn("Sign out","o",()=>auth.signOut().then(()=>location.reload()));out.style.marginTop="10px";m.append(out);s.append(m)}
+function setBadge(id,n){const a=document.querySelector('.side a[data-id="'+id+'"]');if(!a)return;let b=a.querySelector(".bd");if(!n){if(b)b.remove();return}if(!b){b=E("span","bd");a.append(b)}b.textContent=n}
+async function go(id){
+  if(!ITEMS.some(i=>i[0]===id))id="overview";cur=id;const it=ITEMS.find(i=>i[0]===id);paintSide();$("#ttl").textContent=it[1];document.title=it[1]+" · Headline Admin";
+  const host=$("#page");host.replaceChildren();if(!it[3]()){const p=panel("No access","Your role doesn't include this page. Ask an owner to change your permissions.");host.append(p);return}
+  host.append(skel(3));try{const out=E("div");await S[id](out);host.replaceChildren(out)}catch(e){host.replaceChildren(panel("Couldn't load this page","Check your connection and the Firestore rules, then refresh."))}scrollTo(0,0)}
+addEventListener("hashchange",()=>{if(me.name)go(location.hash.slice(1))});
+
+/* ---------------- command palette (Ctrl+K or /) ---------------- */
+let palSel=0,palItems=[];
+function openPalette(){$("#pal").classList.remove("hidden");$("#pi").value="";palList();$("#pi").focus();loadUsers().then(palList).catch(()=>{})}
+function closePalette(){$("#pal").classList.add("hidden")}
+function palList(){
+  const q=$("#pi").value.trim().toLowerCase().replace(/^@/,""),items=[];
+  ITEMS.filter(i=>i[3]()&&(!q||i[1].toLowerCase().includes(q))).forEach(i=>items.push({t:i[1],s:"Page",run:()=>{location.hash="#"+i[0]}}));
+  if(q&&usersCache&&can("manageUsers"))usersCache.filter(u=>u.id.includes(q)).slice(0,6).forEach(u=>items.push({t:"@"+u.id,s:"Open user",run:()=>openUser(u.id)}));
+  items.push({t:"Switch theme",s:"Action",run:()=>$("#th").click()},{t:"Back to app",s:"Action",run:()=>location.href="../"},{t:"Sign out",s:"Action",run:()=>auth.signOut().then(()=>location.reload())});
+  palItems=items.filter(i=>!q||i.t.toLowerCase().includes(q)).slice(0,10);palSel=0;const l=$("#pl");l.replaceChildren();
+  palItems.forEach((it,i)=>{const r=E("div","it"+(i===0?" on":""),it.t);r.append(E("small","",it.s));r.onclick=()=>{closePalette();it.run()};l.append(r)})}
+function palKey(e){
+  if(e.key==="Escape")return closePalette();
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();palSel=(palSel+(e.key==="ArrowDown"?1:-1)+palItems.length)%palItems.length;[...$("#pl").children].forEach((c,i)=>c.classList.toggle("on",i===palSel))}
+  if(e.key==="Enter"&&palItems[palSel]){const it=palItems[palSel];closePalette();it.run()}}
+addEventListener("keydown",e=>{
+  if(!me.name)return;
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openPalette();return}
+  if(e.key==="Escape"){closePalette();closeSide();document.querySelectorAll(".ovl:not(#pal)").forEach(o=>o.remove());return}
+  if(e.key==="/"&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)){e.preventDefault();openPalette()}});
+
+/* ---------------- sections ---------------- */
+const S={};
+S.overview=async host=>{
+  const dd=days(14),need=[],att=E("div","attn");
+  const P=[db.collection("users").get()];
+  if(can("viewDash"))P.push(db.collection("usage").where("day",">=",dd[0]).get(),db.collection("activity").where("day",">=",dd[0]).get());
+  const [us,ua,ac]=await Promise.all(P);usersCache=us.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>a.id.localeCompare(b.id));
+  const week=new Date(Date.now()-7*864e5);
+  let nRep=0,nErr=0,ai=null,keysPaused=0;
+  const q2=[];if(can("viewFeedback"))q2.push(db.collection("reports").where("at",">=",week).get().then(s=>nRep=s.size).catch(()=>{}),db.collection("errors").where("at",">=",week).get().then(s=>nErr=s.size).catch(()=>{}));
+  q2.push(db.collection("status").doc("ai").get().then(s=>ai=s.exists?s.data():null).catch(()=>{}),db.collection("keyStats").get().then(s=>s.forEach(d=>{if((d.data().disabledUntil||0)>Date.now())keysPaused++})).catch(()=>{}));await Promise.all(q2);
+  const susp=usersCache.filter(u=>u.suspended).length,norec=usersCache.filter(u=>u.hasRec!==true).length;
+  const add=(label,n,href,bad)=>need.push([label,n,href,bad]);
+  if(susp)add("Suspended users",susp,"#users");if(nRep)add("Reports this week",nRep,"#feedback");if(nErr)add("App errors this week",nErr,"#feedback",true);
+  if(ai&&(ai.lastErrAt||0)>(ai.lastOkAt||0)&&Date.now()-ai.lastErrAt<30*60e3)add("AI having trouble",1,"#health",true);
+  if(keysPaused)add("API keys auto-paused",keysPaused,"#api",true);if(site.maintenance)add("Maintenance mode is ON",1,"#site",true);
+  if(!site.apiUrl)add("Free API server not set up",1,"#api");if(norec)add("Users without a recovery code",norec,"#users");
+  const p0=panel("Needs attention");need.length?need.forEach(([l,n,h,b])=>{const a=E("a",b?"bad":"",l+" ");a.href=h;a.append(E("b","",n));att.append(a)}):att.append(E("div","clear","✓ Nothing needs your attention."));p0.append(att);host.append(p0);setBadge("feedback",nRep+nErr);
+  if(!can("viewDash"))return;
+  const U={},A={};ua.forEach(d=>U[d.id]=d.data());ac.forEach(d=>{const v=d.data();(A[v.day]=A[v.day]||new Set()).add(v.user)});
+  const g=(d,k)=>(U[d]&&U[d][k])||0,br=dd.map(d=>g(d,"briefings")),au=dd.map(d=>A[d]?A[d].size:0),wk=new Set();dd.slice(-7).forEach(d=>A[d]&&A[d].forEach(x=>wk.add(x)));
+  const qn=sum(dd.map(d=>g(d,"quizzes"))),qp=sum(dd.map(d=>g(d,"quizPct"))),lang={English:0,Malayalam:0,Hindi:0};dd.forEach(d=>{for(const L in lang)lang[L]+=g(d,"lang_"+L)});
+  const k=E("div","kpis");[["Registered users",usersCache.length],["Active today",au[13]],["Active (7 days)",wk.size],["Briefings (14 days)",sum(br)],["Quizzes taken",qn],["Avg quiz score",qn?Math.round(qp/qn)+"%":"–"]].forEach(([l,v])=>{const c=E("div","kpi");c.append(E("small","",l),E("b","",v));k.append(c)});host.append(k);
+  const two=E("div","two");two.append(bars("Briefings per day",br,dd),bars("Active users per day",au,dd));host.append(two);
+  const lp=panel("Language split (14 days)"),tl=Math.max(1,sum(Object.values(lang)));Object.entries(lang).forEach(([n,v])=>{const r=E("div","hb2");r.append(E("span","",n));const i=E("i");i.style.width=Math.max(2,v/tl*60)+"%";r.append(i,E("em","",v+" · "+Math.round(v/tl*100)+"%"));lp.append(r)});
+  const tp=panel("Trending topics (7 days)");try{const s=await db.collection("trending").where("day",">=",dd[7]).get(),m={};s.forEach(d=>{const t=d.data().t||{};for(const x in t){m[x]=m[x]||{name:t[x].name,n:0};m[x].n+=t[x].n||0}});const tr=Object.values(m).sort((a,b)=>b.n-a.n).slice(0,6);tr.length?tr.forEach(x=>{const r=E("div","hb2");r.append(E("span","",x.name));const i=E("i");i.style.width=Math.max(4,x.n/tr[0].n*60)+"%";r.append(i,E("em","",x.n));tp.append(r)}):tp.append(E("div","sub","No custom topics yet."))}catch(e){tp.append(E("div","sub","Couldn't load."))}
+  const t2=E("div","two");t2.append(lp,tp);host.append(t2);
+  try{const s=await db.collection("audit").orderBy("at","desc").limit(8).get(),pr=panel("Recent admin activity");pr.append(s.size?table(["When","Admin","Action","Target"],s.docs.map(d=>{const v=d.data();return[v.at?ago(Date.now()-v.at.toMillis()):"just now","@"+v.admin,v.action,v.target]})):E("div","sub","Nothing yet."));host.append(pr)}catch(e){}};
+
+S.users=async host=>{
+  const list=await loadUsers(true);let q="",flt="all",page=0;const per=20;
+  const p=panel("Users"),tools=E("div","tools"),si=E("input");si.placeholder="Search username…";const sf=E("select");[["all","All roles & statuses"],["staff","Staff & owners"],["user","Students"],["susp","Suspended"],["norec","No recovery code"]].forEach(([v,t])=>{const o=E("option","",t);o.value=v;sf.append(o)});
+  tools.append(si,sf);p.append(tools);const box=E("div"),pg=E("div","act");p.append(box,pg);host.append(p);
+  const draw=()=>{
+    const rows=list.filter(u=>(!q||u.id.includes(q))&&(flt==="all"||(flt==="staff"&&STAFF.includes(u.role))||(flt==="user"&&!STAFF.includes(u.role))||(flt==="susp"&&u.suspended)||(flt==="norec"&&u.hasRec!==true)));
+    const pages=Math.max(1,Math.ceil(rows.length/per));page=Math.min(page,pages-1);box.replaceChildren(table(["User","Role","Level","Streak","Briefings","Last seen",""],rows.slice(page*per,page*per+per).map(u=>{
+      const n=E("span");n.append(document.createTextNode("@"+u.id));if(u.suspended)n.append(E("span","pill off","SUSPENDED"));
+      const r=norm(u.role),open=btn("Manage","o",()=>openUser(u.id));
+      return[n,r==="user"?"Student":r==="subowner"?"Sub owner":r[0].toUpperCase()+r.slice(1),"Lv "+HL.LV(u.xp||0)+" · "+(u.xp||0)+" XP",HL.streak(u)+" d",u.briefings||0,u.lastSeen?ago(Date.now()-u.lastSeen.toMillis()):"—",open]})));
+    pg.replaceChildren();pg.append(E("span","sub",rows.length+" users · page "+(page+1)+" of "+pages));if(page>0)pg.append(btn("Previous","o",()=>{page--;draw()}));if(page<pages-1)pg.append(btn("Next","o",()=>{page++;draw()}))};
+  si.oninput=()=>{q=si.value.trim().toLowerCase().replace(/^@/,"");page=0;draw()};sf.onchange=()=>{flt=sf.value;page=0;draw()};draw()};
+
+async function openUser(id){
+  const list=await loadUsers(),u=list.find(x=>x.id===id);if(!u)return toast("User not found");
+  const me_=id===me.name,staff=STAFF.includes(u.role),{d,close}=dialog("@"+id,"Level "+HL.LV(u.xp||0)+" · "+(u.xp||0)+" XP · streak "+HL.streak(u)+" · "+(u.briefings||0)+" briefings"+(u.limit?" · limit "+u.limit+"/day":""));
+  const act=E("div","act");
+  const refresh=async()=>{usersCache=null;close();go("users");};
+  if(me.role==="owner"){const sel=E("select");sel.style.cssText="width:auto;margin:0";[["user","Student"],["staff","Staff"],["subowner","Sub owner"],["owner","Owner"]].forEach(([k,t])=>{const o=E("option","",t);o.value=k;sel.append(o)});sel.value=norm(u.role);sel.disabled=me_;
+    sel.onchange=async()=>{if(!confirm("Change @"+id+" to "+sel.options[sel.selectedIndex].text+"?")){sel.value=norm(u.role);return}try{await db.collection("users").doc(id).update({role:sel.value});audit("Changed role",id,sel.value);toast("Role updated");refresh()}catch(e){toast("Couldn't change role")}};act.append(sel)}
+  if(can("resetPasswords")&&!me_)act.append(btn("Reset password","o",async()=>{const p=prompt("New password for @"+id+" (6+ characters):");if(!p)return;if(p.length<6)return toast("Use at least 6 characters");
+    try{API()?await apiCall("/admin/set-password",{username:id,password:p},true):await legacy("adminSetPassword",{username:id,password:p});audit("Reset password",id);toast("Password reset")}catch(e){toast(e.message||"Couldn't reset (is the API server set up?)")}}));
+  if(can("suspendUsers")&&!me_&&!(staff&&me.role!=="owner"))act.append(btn(u.suspended?"Unsuspend":"Suspend",u.suspended?"o":"o dg",async()=>{if(!u.suspended&&!confirm("Suspend @"+id+"? They'll be signed out and blocked."))return;try{await db.collection("users").doc(id).update({suspended:!u.suspended});audit(u.suspended?"Unsuspended":"Suspended",id);toast("Done");refresh()}catch(e){toast("Couldn't update")}}));
+  if(can("setLimits"))act.append(btn("Daily limit","o",async()=>{const x=prompt("Briefings per day for @"+id+" (blank = site default):",u.limit??"");if(x===null)return;try{await db.collection("users").doc(id).update({limit:x.trim()===""?FV.delete():Math.max(1,Math.min(20,+x||1))});audit("Set daily limit",id,x||"default");toast("Limit updated");refresh()}catch(e){toast("Couldn't update")}}));
+  if(can("deleteUsers")&&!me_&&!staff)act.append(btn("Delete data","o dg",async()=>{if(!confirm("Delete @"+id+"'s profile and ALL their stories? This can't be undone."))return;try{const c=db.collection("users").doc(id).collection("stories");for(;;){const s=await c.limit(400).get();if(s.empty)break;const b=db.batch();s.forEach(x=>b.delete(x.ref));await b.commit()}await db.collection("users").doc(id).delete();audit("Deleted user data",id);toast("Deleted");refresh()}catch(e){toast("Couldn't delete. Check Firestore rules.")}}));
+  d.append(act);
+  if(can("manageUsers")){const st=E("div");st.style.marginTop="18px";st.append(E("h2","","Recent briefings"));d.append(st);
+    try{const s=await db.collection("users").doc(id).collection("stories").orderBy("createdAt","desc").limit(15).get();
+      if(!s.size)st.append(E("div","sub","No briefings yet."));else s.forEach(x=>{const v=x.data(),r=E("div","evi");r.append(E("span","",(v.fav?"★ ":"")+(v.topic||"Briefing")),btn("Read","o",()=>{st.replaceChildren(E("h2","",v.topic||"Briefing"),(()=>{const pre=E("pre","st",v.text||"");return pre})(),btn("Back","o",()=>{close();openUser(id)}))}));st.append(r)})}
+    catch(e){st.append(E("div","sub","Couldn't load stories."))}}}
+
+S.roles=async host=>{
+  const p=panel("Roles & permissions","Owners always have every permission. Choose what Sub owners and Staff can do. Assign roles from a person's Manage window.");
+  const t=E("table","rg"),h=E("tr");["Permission","Sub owner","Staff"].forEach(x=>h.append(E("th","",x)));t.append(h);
+  PERMS.forEach(([k,l])=>{const tr=E("tr");tr.append(E("td","",l));["subowner","staff"].forEach(r=>{const td=E("td"),c=E("input");c.type="checkbox";c.dataset.r=r;c.dataset.p=k;c.checked=!!(roles[r]||DEFR[r]||{})[k];c.setAttribute("aria-label",l+" for "+r);td.append(c);tr.append(td)});t.append(tr)});
+  const sv=btn("Save permissions","",async()=>{const o={subowner:{},staff:{}};p.querySelectorAll("input").forEach(c=>o[c.dataset.r][c.dataset.p]=c.checked);try{await db.collection("config").doc("roles").set(o);roles=o;audit("Saved permissions");toast("Permissions saved")}catch(e){toast("Only owners can do this")}});sv.style.marginTop="16px";p.append(t,sv);host.append(p)};
+
+S.security=async host=>{
+  const p1=panel("Admin sign-ins","Every time an owner, sub owner or staff member signs in. “New device” means the first time from that browser.");
+  try{const s=await db.collection("adminLogins").orderBy("at","desc").limit(40).get();p1.append(s.size?table(["Admin","Role","When","Device"],s.docs.map(d=>{const v=d.data();return["@"+v.user,v.role||"",v.at?v.at.toDate().toLocaleString():"just now",v.newDevice?"NEW DEVICE":"known"]})):E("div","sub","No sign-ins recorded yet."))}catch(e){p1.append(E("div","sub","Only owners can see sign-ins."))}
+  const p2=panel("Audit log","Changes made in this console.");const f=E("input");f.placeholder="Filter by admin, action or target…";f.style.marginBottom="12px";const box=E("div");p2.append(f,box);
+  let rows=[];try{const s=await db.collection("audit").orderBy("at","desc").limit(150).get();rows=s.docs.map(d=>d.data())}catch(e){box.append(E("div","sub","Couldn't load the audit log."))}
+  const draw=()=>{const q=f.value.toLowerCase();box.replaceChildren(table(["When","Admin","Action","Target","Detail"],rows.filter(v=>!q||(v.admin+" "+v.action+" "+v.target+" "+v.detail).toLowerCase().includes(q)).map(v=>[v.at?v.at.toDate().toLocaleString():"just now","@"+v.admin,v.action,v.target,v.detail])))};f.oninput=draw;if(rows.length)draw();host.append(p1,p2)};
+
+S.events=async host=>{
+  let edit=null;const p=panel("Seasonal events","Banners and XP multipliers for a date range, like an exam-week challenge.");
+  p.insertAdjacentHTML("beforeend",'<label>Event name</label><input id="evn" maxlength="40" placeholder="e.g. Exam week sprint"><div class="two" style="gap:10px"><div><label>Starts</label><input id="evs" type="date"></div><div><label>Ends</label><input id="eve" type="date"></div></div><div class="two" style="gap:10px"><div><label>XP multiplier (1 to 5)</label><input id="evm" type="number" min="1" max="5" step="0.5" value="2"></div><div><label>Banner message</label><input id="evt" maxlength="100" placeholder="Optional"></div></div>');
+  const act=E("div","act"),list=E("div");p.append(act);
+  const load=async()=>{list.replaceChildren(skel(2));const s=await db.collection("events").orderBy("start","desc").limit(50).get();list.replaceChildren();const t=dstr(new Date());
+    s.forEach(d=>{const v=d.data(),on=v.start<=t&&v.end>=t,r=E("div","evi"),l=E("span","",v.name+" · "+v.start+" to "+v.end+" · "+(v.mult||1)+"×");if(on)l.append(E("span","pill","ACTIVE"));const a=E("span");
+      a.append(btn("Edit","o",()=>{edit=d.id;$("#evn").value=v.name;$("#evs").value=v.start;$("#eve").value=v.end;$("#evm").value=v.mult||1;$("#evt").value=v.msg||"";scrollTo(0,0)}),btn("Delete","o dg",async()=>{if(!confirm("Delete this event?"))return;await db.collection("events").doc(d.id).delete();audit("Deleted event",v.name);load()}));a.style.cssText="display:flex;gap:8px";r.append(l,a);list.append(r)});if(!s.size)list.append(E("div","sub","No events yet."))};
+  act.append(btn("Save event","",async()=>{const o={name:$("#evn").value.trim(),start:$("#evs").value,end:$("#eve").value,mult:Math.max(1,Math.min(5,+$("#evm").value||1)),msg:$("#evt").value.trim()};if(!o.name||!o.start||!o.end||o.end<o.start)return toast("Add a name and a valid date range");
+    try{edit?await db.collection("events").doc(edit).set(o):await db.collection("events").add(o);audit(edit?"Edited event":"Added event",o.name);edit=null;["evn","evs","eve","evt"].forEach(i=>$("#"+i).value="");toast("Event saved");load()}catch(e){toast("Couldn't save. You may not have permission.")}}),btn("Clear form","o",()=>{edit=null;["evn","evs","eve","evt"].forEach(i=>$("#"+i).value="")}));
+  host.append(p,list);await load()};
+
+S.site=async host=>{
+  if(can("announcements")){const a=await db.collection("config").doc("announcement").get(),d=a.exists?a.data():{},p=panel("Announcement banner","Shown to every signed-in student until they close it.");
+    p.insertAdjacentHTML("beforeend",'<input id="annt" maxlength="200" placeholder="Message">');$("#annt",p);p.querySelector("#annt").value=d.text||"";
+    const lab=E("label","chk"),cb=E("input");cb.type="checkbox";cb.checked=!!d.on;lab.append(cb,document.createTextNode(" Show the banner"));p.append(lab);
+    p.append(btn("Save announcement","",async()=>{try{await db.collection("config").doc("announcement").set({text:p.querySelector("#annt").value.trim(),on:cb.checked,updatedAt:ts(),updatedBy:me.name});audit("Saved announcement");toast("Saved")}catch(e){toast("Couldn't save. You may not have permission.")}}));p.lastChild.style.marginTop="14px";host.append(p)}
+  if(can("siteSettings")){const p=panel("Site settings");
+    p.insertAdjacentHTML("beforeend",`<label class="chk"><input type="checkbox" id="mnt"> Maintenance mode (only admins can use the app)</label><label>Maintenance message</label><input id="mmsg" maxlength="200"><div class="two" style="gap:10px"><div><label>Briefings per user per day</label><input id="lim" type="number" min="1" max="20"></div><div><label>Sign out after inactivity (minutes)</label><input id="idle" type="number" min="5" max="480"></div></div><label class="chk"><input type="checkbox" id="shr"> One shared briefing per day (students can't pick topic, district or date)</label><div class="two" style="gap:10px"><div><label>Minimum reading time for goal and streak (seconds)</label><input id="minr" type="number" min="30" max="900"></div><div><label>Streak reminder starts at (hour 0 to 23)</label><input id="rem" type="number" min="0" max="23"></div></div><label>Status page note</label><input id="note" maxlength="160" placeholder="e.g. AI is slow today">`);
+    const f=i=>p.querySelector("#"+i);f("mnt").checked=!!site.maintenance;f("mmsg").value=site.maintMsg||"";f("lim").value=site.dailyLimit??1;f("idle").value=site.idleMin??60;f("shr").checked=site.sharedOnly!==false;f("minr").value=site.minReadSec??180;f("rem").value=site.reminderHour??17;f("note").value=site.statusNote||"";
+    const sv=btn("Save settings","",async()=>{const n=(i,lo,hi,dv)=>Math.max(lo,Math.min(hi,+f(i).value||dv));try{await db.collection("config").doc("site").set({maintenance:f("mnt").checked,maintMsg:f("mmsg").value.trim().slice(0,200),dailyLimit:n("lim",1,20,1),idleMin:n("idle",5,480,60),sharedOnly:f("shr").checked,minReadSec:n("minr",30,900,180),reminderHour:n("rem",0,23,17),statusNote:f("note").value.trim().slice(0,160),updatedAt:ts()},{merge:true});audit("Saved site settings",f("mnt").checked?"maintenance ON":"");toast("Settings saved")}catch(e){toast("Couldn't save. You may not have permission.")}});sv.style.marginTop="16px";p.append(sv);host.append(p)}};
+
+S.feedback=async host=>{
+  const p=panel("Feedback, reports & app errors","Newest 40 of each. Delete items once handled."),tabs=E("div","tools"),box=E("div");let kind="reports";
+  const draw=async()=>{box.replaceChildren(skel(2));const s=await db.collection(kind).orderBy("at","desc").limit(40).get();
+    const rows=s.docs.map(d=>{const v=d.data(),del=btn("Delete","o dg",async()=>{await db.collection(kind).doc(d.id).delete();audit("Deleted "+kind.slice(0,-1),v.user||"");draw()});
+      return kind==="feedback"?["@"+v.user,v.vote>0?"Helpful":"Not helpful",v.topic||"",v.at?ago(Date.now()-v.at.toMillis()):"",del]:kind==="reports"?["@"+v.user,v.kind||"",(v.topic||"")+(v.note?" · "+v.note:""),v.at?ago(Date.now()-v.at.toMillis()):"",del]:["@"+(v.user||"?"),"App error",(v.msg||"").slice(0,120),v.at?ago(Date.now()-v.at.toMillis()):"",del]});
+    box.replaceChildren(rows.length?table(["User","Type","Details","When",""],rows):E("div","sub","Nothing here."))};
+  [["reports","Reports"],["feedback","Thumbs up/down"],["errors","App errors"]].forEach(([k,t])=>{const b=btn(t,"o",()=>{kind=k;[...tabs.children].forEach(x=>x.classList.add("o"));b.classList.remove("o");draw()});if(k===kind)b.classList.remove("o");tabs.append(b)});
+  p.append(tabs,box);host.append(p);await draw()};
+
+S.api=async host=>{
+  if(can("siteSettings")||me.role==="owner"){const p=panel("Free API server (Cloudflare Worker)","When set, AI keys stay on the Worker and the key list below is not used. Setup steps are in worker/README.txt.");
+    p.insertAdjacentHTML("beforeend",'<label>Worker address</label><input id="wurl" placeholder="https://headline-api.YOURNAME.workers.dev"><label class="chk"><input type="checkbox" id="wcl"> The Worker has a Claude backup key</label>');
+    p.querySelector("#wurl").value=site.apiUrl||"";p.querySelector("#wcl").checked=!!site.proxyClaude;const out=E("div","sub");
+    const act=E("div","act");act.append(btn("Save & test","",async()=>{const u=p.querySelector("#wurl").value.trim().replace(/\/$/,"");if(u&&!/^https:\/\/[\w.\-]+(:\d+)?$/.test(u))return toast("Use an https:// address with no path");
+      try{await db.collection("config").doc("site").set({apiUrl:u,proxyClaude:p.querySelector("#wcl").checked,updatedAt:ts()},{merge:true});audit("Saved API server",u||"off");if(!u){out.textContent="API server turned off.";return}
+        const t0=performance.now(),r=await fetch(u+"/health");out.textContent=r.ok?"✓ Worker reachable ("+Math.round(performance.now()-t0)+" ms).":"The Worker answered with an error ("+r.status+")."}catch(e){out.textContent="Saved, but the Worker couldn't be reached. Check the address and its ALLOWED_ORIGIN."}}));p.append(act,out);host.append(p)}
+  if(can("manageKeys")){
+    const p=panel("Gemini API keys","Used by the browser only when no Worker is set. Keys are rotated automatically.");let keys=[],st={};
+    const load=async()=>{const [k,s]=await Promise.all([db.collection("config").doc("gemini").get(),db.collection("keyStats").get()]);const d=k.exists?k.data():{};keys=Array.isArray(d.keys)?d.keys:(d.key?[{id:"k1",label:"Key 1",key:d.key,on:true}]:[]);st={};s.forEach(x=>st[x.id]=x.data());draw()};
+    const save=async()=>{const first=keys.find(x=>x.on!==false);await db.collection("config").doc("gemini").set({keys,key:first?first.key:"",updatedAt:ts(),updatedBy:me.name})};
+    const box=E("div"),mask=k=>k.length>10?k.slice(0,4)+"••••••••"+k.slice(-4):"••••";
+    const draw=()=>{box.replaceChildren(keys.length?table(["Label","Key","Usage","Status",""],keys.map(k=>{const s=st[k.id]||{},paused=(s.disabledUntil||0)>Date.now(),a=E("span");a.style.cssText="display:flex;gap:6px;flex-wrap:wrap";
+      a.append(btn(k.on===false?"Turn on":"Turn off","o",async()=>{k.on=k.on===false;await save();audit("Toggled API key",k.label);draw()}),btn("Test","o",async()=>{try{const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models?pageSize=1&key="+encodeURIComponent(k.key));toast(r.ok?"Key works":"Key rejected ("+r.status+")")}catch(e){toast("Network error")}}),btn("Remove","o dg",async()=>{if(!confirm("Remove "+k.label+"?"))return;keys=keys.filter(x=>x!==k);await save();audit("Removed API key",k.label);draw()}));
+      return[k.label,mask(k.key),(s.uses||0)+" uses · "+(s.fails||0)+" fails"+(s.lastError?" · "+s.lastError.slice(0,40):""),paused?"Auto-paused":k.on===false?"Off":"On",a]})):E("div","sub","No keys saved."))};
+    const add=E("div","tools"),nl=E("input"),nk=E("input");nl.placeholder="Label";nk.placeholder="Paste a Gemini key";nk.type="password";add.append(nl,nk,btn("Add key","",async()=>{const v=nk.value.trim();if(v.length<20)return toast("That doesn't look like a key");keys.push({id:"k"+Date.now().toString(36),label:nl.value.trim()||"Key "+(keys.length+1),key:v,on:true});await save();audit("Added API key",nl.value||"");nl.value=nk.value="";draw()}));add.style.marginTop="14px";
+    p.append(box,add);host.append(p);await load();
+    const c=panel("Claude backup key","Used only if Gemini is busy. Starts with sk-ant-.");const ci=E("input");ci.type="password";ci.placeholder="Paste a Claude key";const cs=E("div","sub");const ca=E("div","act");
+    ca.append(btn("Save","",async()=>{const v=ci.value.trim();if(!/^sk-ant-[\w-]{20,}$/.test(v))return toast("That doesn't look like an Anthropic key");await db.collection("config").doc("fallback").set({key:v,model:"claude-haiku-5-5",on:true,updatedAt:ts(),updatedBy:me.name});audit("Saved Claude key");ci.value="";toast("Saved");lf()}),btn("Remove","o dg",async()=>{if(!confirm("Remove the Claude key?"))return;await db.collection("config").doc("fallback").delete();audit("Removed Claude key");lf()}));
+    const lf=async()=>{const s=await db.collection("config").doc("fallback").get();cs.textContent=s.exists&&s.data().key?"Saved ("+mask(s.data().key)+")":"Not set."};c.append(ci,ca,cs);host.append(c);lf()}};
+
+S.health=async host=>{
+  const p=panel("Health checks","Plain-language checks of everything the app depends on."),box=E("div");p.append(box);const again=btn("Run again","o",()=>go("health"));again.style.marginTop="14px";p.append(again);host.append(p);
+  const row=(cls,name,msg,fix)=>{const r=E("div","hrow"),l=E("div");l.append(E("span","dot "+cls));l.append(document.createTextNode(name));l.append(E("small","",msg));r.append(l);if(fix){const a=E("a","btn o sm","Fix");a.href=fix;r.append(a)}box.append(r);return cls};let bad=0;const R=(...a)=>{if(row(...a)!=="ok")bad++};
+  let t0=performance.now();try{const s=await db.collection("config").doc("site").get();const ms=Math.round(performance.now()-t0);R(ms>3000?"warn":"ok","Database",ms>3000?"Slow ("+ms+" ms)":"Reachable ("+ms+" ms)")}catch(e){R("bad","Database","Can't read from Firestore.")}
+  try{const s=await db.collection("config").doc("roles").get();R(s.exists?"ok":"warn","Roles & permissions",s.exists?"Saved.":"Not saved yet. Open Roles & permissions and press Save.","#roles")}catch(e){R("bad","Roles & permissions","Can't read them. Publish the new Firestore rules.")}
+  if(site.apiUrl){t0=performance.now();try{const r=await fetch(API()+"/health");R(r.ok?"ok":"bad","API server",r.ok?"Reachable ("+Math.round(performance.now()-t0)+" ms).":"Answered with error "+r.status,r.ok?null:"#api")}catch(e){R("bad","API server","Unreachable. Check the address and ALLOWED_ORIGIN.","#api")}}
+  else R("warn","API server","Not set up. AI keys are still readable by signed-in users.","#api");
+  try{const s=await db.collection("status").doc("ai").get(),d=s.exists?s.data():{},ok=d.lastOkAt||0,er=d.lastErrAt||0,n=Date.now();R(!ok&&!er?"warn":er>ok&&n-er<30*60e3?"bad":"ok","AI briefings",!ok&&!er?"No recent activity.":er>ok&&n-er<30*60e3?"Last error "+ago(n-er)+".":"Last success "+ago(n-ok)+".")}catch(e){R("warn","AI briefings","Unknown.")}
+  try{const s=await db.collection("keyStats").get();let paused=0;s.forEach(d=>{if((d.data().disabledUntil||0)>Date.now())paused++});R(paused?"warn":"ok","Gemini keys",paused?paused+" key(s) auto-paused after repeated rate limits.":"No keys paused.",paused?"#api":null)}catch(e){}
+  R(site.maintenance?"warn":"ok","Maintenance mode",site.maintenance?"ON. Students can't use the app.":"Off.",site.maintenance?"#site":null);
+  try{const us=await loadUsers(true),nr=us.filter(u=>u.hasRec!==true).length,ns=us.filter(u=>u.suspended).length;R(nr?"warn":"ok","Recovery codes",nr?nr+" user(s) have no recovery code. They can make one in My account.":"Everyone has one.");R("ok","Users",us.length+" registered"+(ns?", "+ns+" suspended":"")+".")}catch(e){}
+  try{const t=dstr(new Date()),s=await db.collection("events").where("end",">=",t).get(),a=s.docs.filter(d=>d.data().start<=t).length;R("ok","Events",a?a+" event(s) running today.":"No event running today.","#events")}catch(e){}
+  setBadge("health",bad)};
+
+S.data=async host=>{
+  const p=panel("Exports","Download your data as files.");const act=E("div","act");p.append(act);
+  if(can("manageUsers"))act.append(btn("Users (CSV)","o",async()=>{const us=await loadUsers(true);download("headline-users.csv",csv([["username","role","xp","level","streak","briefings","perfect_quizzes","suspended","limit"],...us.map(u=>[u.id,norm(u.role),u.xp||0,HL.LV(u.xp||0),HL.streak(u),u.briefings||0,u.perfects||0,!!u.suspended,u.limit??""])]),"text/csv");audit("Exported users")}));
+  if(can("viewDash"))act.append(btn("Usage by day (CSV)","o",async()=>{const s=await db.collection("usage").orderBy("day","desc").limit(120).get();download("headline-usage.csv",csv([["day","briefings","quizzes","quiz_score_total","english","malayalam","hindi"],...s.docs.map(d=>{const v=d.data();return[v.day,v.briefings||0,v.quizzes||0,v.quizPct||0,v.lang_English||0,v.lang_Malayalam||0,v.lang_Hindi||0]})]),"text/csv");audit("Exported usage")}));
+  if(can("viewFeedback"))["feedback","reports","errors"].forEach(k=>act.append(btn(k[0].toUpperCase()+k.slice(1)+" (JSON)","o",async()=>{const s=await db.collection(k).orderBy("at","desc").limit(500).get();download("headline-"+k+".json",JSON.stringify(s.docs.map(d=>({id:d.id,...d.data(),at:d.data().at&&d.data().at.toDate().toISOString()})),null,2),"application/json");audit("Exported "+k)})));
+  host.append(p);
+  if(can("siteSettings")){const z=panel("Shared briefing cache","Clears saved briefings so the next student request writes fresh ones. Useful after fixing a prompt or a bad briefing.");z.append(btn("Clear briefing cache","o dg",async()=>{if(!confirm("Delete all saved shared briefings?"))return;let n=0;try{for(;;){const s=await db.collection("newsCache").limit(400).get();if(s.empty)break;const b=db.batch();s.forEach(d=>b.delete(d.ref));await b.commit();n+=s.size}audit("Cleared briefing cache",n+" items");toast("Cleared "+n+" items")}catch(e){toast("Couldn't clear the cache")}}));host.append(z)}};
+
+S.me=async host=>{
+  const p=panel("My account","Signed in as @"+me.name+" ("+me.role+")."),f=["Current password","New password","Repeat new password"].map((x,i)=>{const e=E("input");e.type="password";e.placeholder=x;e.autocomplete=i?"new-password":"current-password";return e}),err=E("div","err");
+  const go2=btn("Update password","",async()=>{err.textContent="";const[a,b,c]=f;if(!a.value||!b.value)return err.textContent="Fill in all the fields.";if(b.value!==c.value)return err.textContent="New passwords don't match.";if(b.value.length<6)return err.textContent="Use at least 6 characters.";
+    try{const u=auth.currentUser;await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,secret(me.name,a.value)));await u.updatePassword(secret(me.name,b.value));f.forEach(x=>x.value="");audit("Changed own password");toast("Password changed")}catch(x){err.textContent=/invalid-credential|wrong-password/.test(x.code)?"Current password is wrong.":(x.message||"Couldn't change it.")}});go2.style.marginTop="12px";
+  p.append(...f,err,go2);host.append(p);
+  const q=panel("Session");const a=E("div","act");a.append(btn("Sign out","o",()=>auth.signOut().then(()=>location.reload())),btn("Sign out everywhere","o dg",async()=>{if(!confirm("Sign out of Headline on every device?"))return;await db.collection("users").doc(me.name).set({sessionVer:inc(1)},{merge:true})}));q.append(a);host.append(q)};
+
+/* ---------------- sign-in screen + start ---------------- */
+const FL="hl_fl";
+function loginScreen(msg){
+  document.body.innerHTML='<div class="logn"><div class="panel"><div class="logo" style="font-size:1.6rem;margin-bottom:6px">head<i>line</i></div><div class="sub" style="margin:0 0 18px">Admin console</div><label>Username</label><input id="lu" autocomplete="username" autocapitalize="none" spellcheck="false"><label>Password</label><input id="lp" type="password" autocomplete="current-password"><div class="err" id="le"></div><button class="btn" id="lg" style="width:100%;margin-top:8px;justify-content:center">Sign in</button><p class="m" style="margin-top:16px"><a href="../">Back to Headline</a></p></div></div>';
+  $("#le").textContent=msg||"";const go=async()=>{
+    const u=$("#lu").value.trim().toLowerCase(),p=$("#lp").value,e=$("#le");e.textContent="";if(!/^[a-z0-9_]{3,20}$/.test(u)||!p)return e.textContent="Enter your username and password.";
+    let f={};try{f=JSON.parse(localStorage.getItem(FL))||{}}catch(_){}const k=u+"@"+HL.DOMAIN,x=f[k]||{n:0,until:0};if(x.until>Date.now())return e.textContent="Too many wrong attempts. Try again in "+Math.ceil((x.until-Date.now())/60000)+" min.";
+    $("#lg").disabled=true;try{await auth.signInWithEmailAndPassword(k,secret(u,p));delete f[k];localStorage.setItem(FL,JSON.stringify(f))}
+    catch(err){if(/invalid-credential|wrong-password|user-not-found/.test(err.code)){x.n++;if(x.n>=5){x.until=Date.now()+5*60e3;x.n=0}f[k]=x;try{localStorage.setItem(FL,JSON.stringify(f))}catch(_){}}e.textContent=/invalid-credential|wrong-password|user-not-found/.test(err.code)?"Wrong username or password.":(err.message||"Couldn't sign in.")}
+    $("#lg").disabled=false};
+  $("#lg").onclick=go;$("#lp").onkeydown=e=>{if(e.key==="Enter")go()}}
+async function start(u){
+  const name=u.email.split("@")[0];let d;try{const s=await db.collection("users").doc(name).get();d=s.exists?s.data():{}}catch(e){return loginScreen("Couldn't read your account. Check the Firestore rules.")}
+  if(!STAFF.includes(d.role)){await auth.signOut();return loginScreen("This account isn't an admin.")}
+  if(d.suspended&&norm(d.role)!=="owner"){await auth.signOut();return loginScreen("This account is suspended.")}
+  me={name,role:norm(d.role)};unsubs.forEach(f=>f());unsubs=[];
+  unsubs.push(db.collection("config").doc("site").onSnapshot(s=>{site=s.exists?s.data():{}},()=>{}));
+  await new Promise(res=>{let first=true;unsubs.push(db.collection("config").doc("roles").onSnapshot(s=>{roles=s.exists?s.data():{};if(me.role==="owner"&&!s.exists)db.collection("config").doc("roles").set(DEFR).catch(()=>{});if(first){first=false;res()}else{paintSide()}},()=>res()))});
+  unsubs.push(db.collection("users").doc(name).onSnapshot(s=>{const v=s.data()||{};if(v.suspended&&norm(v.role)!=="owner")auth.signOut().then(()=>location.reload())},()=>{}));
+  try{if(!sessionStorage.getItem("hl_adm_logged")){sessionStorage.setItem("hl_adm_logged","1");const k="hl_dev_"+name;let known=null;try{known=localStorage.getItem(k);localStorage.setItem(k,"1")}catch(_){}db.collection("adminLogins").add({user:name,role:me.role,at:ts(),newDevice:!known,ua:navigator.userAgent.slice(0,100)}).catch(()=>{})}}catch(_){}
+  buildShell();go(location.hash.slice(1)||"overview");
+  setInterval(()=>{if(cur==="overview"&&!document.hidden)go("overview")},120000);
+  if(me.role==="owner"){const t0=Date.now();unsubs.push(db.collection("adminLogins").orderBy("at","desc").limit(1).onSnapshot(s=>s.docChanges().forEach(c=>{if(c.type!=="added")return;const v=c.doc.data();if(!v.at||v.at.toMillis()<t0-5000||v.user===me.name)return;toast("@"+v.user+" ("+v.role+") signed in"+(v.newDevice?" from a new device":""))}),()=>{}))}}
+auth.onAuthStateChanged(u=>{if(u&&u.email&&u.email.endsWith("@"+HL.DOMAIN))start(u);else{unsubs.forEach(f=>f());unsubs=[];me={name:"",role:"user"};loginScreen()}});
+})();
+
+</script></body></html>
