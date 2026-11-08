@@ -4,7 +4,6 @@
 HL.header("account");
 const {auth,db}=HL.init(),E=HL.el,FV=firebase.firestore.FieldValue,main=document.getElementById("main"),secret=(n,p)=>"pin-"+p+"-"+n;
 const INTS=["Education","Technology","Cricket","Football","Environment","Science","Space","Health","Business","Entertainment","Politics","Kerala"];
-const BADGES=[["first","First briefing","Generate a briefing",p=>p.briefings>=1],["perfect","Perfect score","3/3 on a quiz",p=>p.perfects>=1],["p3","Triple perfect","3 perfect quizzes",p=>p.perfects>=3],["s3","3-day streak","Quiz 3 days running",p=>p.streak>=3],["s7","7-day streak","Quiz 7 days running",p=>p.streak>=7],["s30","30-day streak","Quiz 30 days running",p=>p.streak>=30],["poly","Polyglot","Read all 3 languages",p=>(p.langs||[]).length>=3],["l5","Level 5","Reach level 5",p=>HL.LV(p.xp||0)>=5],["fact","Fact-checker","Report an error",p=>p.reports>=1]];
 let name="",prof={};
 const save=patch=>{Object.assign(prof,patch);return db.collection("users").doc(name).set(patch,{merge:true})};
 function card(title){const c=E("div","card");if(title)c.append(E("h2","",title));main.append(c);return c}
@@ -23,7 +22,7 @@ function render(){
   const bar=E("div","bar"),fill=E("i");bar.append(fill);info.append(bar);top.append(av,info);c.append(top);setTimeout(()=>fill.style.width=Math.round((x-a)/(b-a)*100)+"%",50);
   const g=E("div","grid3");[["Total XP",x],["Streak",HL.streak(prof)+" day"+(HL.streak(prof)===1?"":"s")],["Briefings",prof.briefings||0],["Perfect quizzes",prof.perfects||0],["Languages read",(prof.langs||[]).length+"/3"]].forEach(([k,v])=>{const s=E("div","st",k);s.append(E("b","",v));g.append(s)});c.append(g);
   if(prof.role==="admin"){const r=E("div","row"),ad=E("a","btn o sm","Open admin panel");ad.href="../admin/";r.append(ad);c.append(r)}
-  const have=new Set(prof.badges||[]),bc=card("Badges"),bg=E("div","grid3");BADGES.forEach(t=>{const d=E("div","bdg"+(have.has(t[0])||t[3](prof)?" on":""));d.append(E("b","",t[1]),E("span","",t[2]));bg.append(d)});bc.append(bg);
+  const have=new Set(prof.badges||[]),bc=card("Badges"),bg=E("div","grid3");HL.ACH.forEach(t=>{const d=E("div","bdg"+(have.has(t.id)||t.cur(prof)>=t.max?" on":""));d.append(E("b","",t.name),E("span","",t.desc));bg.append(d)});bc.append(bg);const al=E("a","btn o sm","See progress");al.href="../achievements/";al.style.marginTop="14px";bc.append(al);
   const ic=card("My interests");ic.append(E("p","m","These appear as one-tap topics on your home feed."));const pick=new Set(prof.pick||[]),ch=E("div","chips");
   INTS.forEach(t=>{const e=E("button",pick.has(t)?"on":"",t);e.onclick=()=>{pick.has(t)?pick.delete(t):pick.add(t);e.classList.toggle("on");save({pick:[...pick]})};ch.append(e)});ic.append(ch);
   const sc=card("Settings");let rm="";try{rm=localStorage.getItem("hl_rm")}catch(e){}
@@ -46,4 +45,3 @@ auth.onAuthStateChanged(async u=>{
   try{const s=await db.collection("users").doc(name).get();prof=s.exists?s.data():{};if(prof.suspended&&prof.role!=="admin"){await auth.signOut();return signedOut()}render()}
   catch(e){main.replaceChildren();card("Couldn't load your account").append(E("p","m","Check your connection and refresh."))}});
 </script></body></html>
-
