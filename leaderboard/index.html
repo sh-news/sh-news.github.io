@@ -11,4 +11,3 @@ async function load(){
   catch(e){box.replaceChildren();const c=E("div","card");c.append(E("h2","","Couldn't load the leaderboard"),E("p","m","Please sign in and try again."));const a=E("a","btn sm","Sign in to Headline");a.href="../";c.append(a);box.append(c)}}
 auth.onAuthStateChanged(u=>{me=u&&u.email?u.email.split("@")[0]:"";load()});
 </script></body></html>
-
