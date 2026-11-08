@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#07080b"><link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/site.css"><title>Quiz challenge · Headline</title><meta name="robots" content="noindex"><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="../assets/common.js"></script></head><body>
+<header id="hdr"></header><main class="wrap"><h1>Quiz challenge</h1><div id="main"><div class="sk"></div><div class="sk"></div></div></main>
+<script>
+HL.header("");const {auth,db}=HL.init(),E=HL.el,FV=firebase.firestore.FieldValue,main=document.getElementById("main"),code=(new URLSearchParams(location.search).get("c")||"").replace(/[^a-z0-9]/gi,"");let name="",ch=null;
+function msg(t,s){main.replaceChildren();const c=E("div","card");c.append(E("h2","",t));if(s)c.append(E("p","m",s));const a=E("a","btn sm","Open Headline");a.href="../";c.append(a);main.append(c)}
+function signedOut(){main.replaceChildren();const c=E("div","card");c.append(E("h2","","Sign in to play this challenge"),E("p","m","You need a free Headline account."));const a=E("a","btn","Sign in");a.href="../";a.onclick=()=>{try{sessionStorage.setItem("hl_go","url:"+location.href)}catch(e){}};c.append(a);main.append(c)}
+async function board(card){
+  const s=await db.collection("challenges").doc(code).collection("plays").orderBy("score","desc").limit(20).get(),box=E("div");box.append(E("h2","","Scores"));
+  const row=(n,sc,tt,me)=>{const r=E("div","lbr"+(me?" me":""));r.append(E("span","nm","@"+n),E("small","",sc+"/"+tt));box.append(r)};
+  row(ch.by,ch.score,ch.total,ch.by===name);s.forEach(d=>{const v=d.data();row(d.id,v.score,v.total,d.id===name)});card.append(box)}
+async function play(){
+  const qs=ch.qs||[];let i=0,score=0;
+  const step=()=>{main.replaceChildren();const c=E("div","card");c.append(E("small","m","@"+ch.by+" scored "+ch.score+"/"+ch.total+(ch.topic?" · "+ch.topic:"")),E("small","m"," "));
+    const q=qs[i],box=E("div","q");box.append(E("h2","",(i+1)+". "+q.q));const why=E("p","m hidden",q.why||"");
+    q.options.forEach((o,oi)=>{const b=E("button","opt",o);b.onclick=()=>{box.querySelectorAll(".opt").forEach((x,xi)=>{x.disabled=true;if(xi===q.answer)x.classList.add("ok")});if(oi===q.answer)score++;else b.classList.add("no");why.classList.remove("hidden");
+      const n=E("button","btn sm",i+1<qs.length?"Next question":"See result");n.style.marginTop="14px";n.onclick=()=>{i++;i<qs.length?step():finish()};box.append(why,n)};box.append(b)});
+    c.append(box);main.append(c)};
+  const finish=async()=>{
+    try{await db.collection("challenges").doc(code).collection("plays").doc(name).set({score,total:qs.length,at:FV.serverTimestamp()});
+      await db.collection("users").doc(name).set({xp:FV.increment(10),mstats:{[HL.day(new Date()).slice(0,7)]:{xp:FV.increment(10)}}},{merge:true})}catch(e){}
+    main.replaceChildren();const c=E("div","card"),r=score>ch.score?"You beat @"+ch.by+"!":score===ch.score?"A tie with @"+ch.by+".":"@"+ch.by+" wins this one.";
+    c.append(E("h2","",r),E("p","m","You scored "+score+"/"+qs.length+". +10 XP for playing."));await board(c);main.append(c)};
+  step()}
+auth.onAuthStateChanged(async u=>{
+  if(!code)return msg("No challenge link","Ask your friend to send the link again.");
+  if(!u||!u.email||!u.email.endsWith("@"+HL.DOMAIN))return signedOut();name=u.email.split("@")[0];
+  try{const s=await db.collection("challenges").doc(code).get();if(!s.exists)return msg("Challenge not found","The link may be wrong or removed.");ch=s.data();
+    if(!Array.isArray(ch.qs)||!ch.qs.length)return msg("This challenge has no questions");
+    const mine=ch.by===name,p=await db.collection("challenges").doc(code).collection("plays").doc(name).get();
+    if(mine||p.exists){main.replaceChildren();const c=E("div","card");c.append(E("h2","",mine?"Your challenge":"You already played this"),E("p","m",mine?"Share the link so friends can try to beat "+ch.score+"/"+ch.total+".":"Your score was "+p.data().score+"/"+p.data().total+"."));await board(c);main.append(c);return}
+    main.replaceChildren();const c=E("div","card");c.append(E("h2","","@"+ch.by+" challenged you"),E("p","m",(ch.topic?ch.topic+" · ":"")+ch.qs.length+" questions. They scored "+ch.score+"/"+ch.total+". Can you beat it?"));const b=E("button","btn","Start the quiz");b.onclick=play;c.append(b);main.append(c)}
+  catch(e){msg("Couldn't load the challenge","Check your connection and try again.")}});
+</script></body></html>
