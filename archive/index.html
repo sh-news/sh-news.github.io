@@ -1,1 +1,20 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex"><title>Opening…</title><meta http-equiv="refresh" content="1;url=../"><script>try{sessionStorage.setItem("hl_go","archive")}catch(e){}location.replace("../")</script></head><body><p><a href="../">Open Headline</a></p></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><script>
+(function(){
+  /* Only run on the official site. A copy saved with Ctrl+S (opened from disk or another host) shows an error instead. */
+  var ALLOWED=['sh-news.github.io'];
+  if(ALLOWED.indexOf(location.hostname)===-1){
+    try{window.stop()}catch(e){}
+    document.documentElement.innerHTML='<head><meta charset="utf-8"><title>Not available</title></head><body style="margin:0;background:#07080b;color:#eceef3;font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:24px"><div><h1 style="font-size:1.6rem;margin:0 0 8px">This copy isn\'t authorised</h1><p style="color:#8a90a0;margin:0">Please use the official site: <a style="color:#c6ff3d" href="https://sh-news.github.io/">sh-news.github.io</a></p></div></body>';
+    throw new Error('Blocked: unauthorised origin');
+  }
+  document.addEventListener('keydown',function(e){
+    if((e.ctrlKey||e.metaKey)&&String(e.key).toLowerCase()==='s'){
+      e.preventDefault();e.stopPropagation();
+      var t=document.createElement('div');t.textContent='Saving this page is not allowed.';
+      t.style.cssText='position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2147483647;background:#ef4444;color:#fff;padding:.75rem 1.3rem;border-radius:10px;font:600 14px system-ui,sans-serif';
+      document.body.appendChild(t);setTimeout(function(){t.remove()},3200);
+    }
+  },true);
+})();
+</script>
+<meta name="robots" content="noindex"><title>Opening…</title><meta http-equiv="refresh" content="1;url=../"><script>try{sessionStorage.setItem("hl_go","archive")}catch(e){}location.replace("../")</script></head><body><p><a href="../">Open Headline</a></p></body></html>
