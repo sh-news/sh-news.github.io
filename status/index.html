@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#07080b"><link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/site.css"><title>Status · Headline</title><meta name="description" content="Is Headline working? Live status of the website, database and AI service."><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="../assets/common.js"></script></head><body>
+<header id="hdr"></header><main class="wrap"><h1>Status</h1><p class="m" id="upd">Checking…</p><div class="card" id="all"><h2 id="alltxt">Checking…</h2><p class="m" id="note"></p></div><div class="card" id="rows"></div></main>
+<script>
+HL.header("");firebase.initializeApp(HL.cfg);const db=firebase.firestore(),E=HL.el;
+const row=(n,cls,t,d)=>{const r=E("div","srow"),l=E("div");const dot=E("span","dot "+cls);l.append(dot,document.createTextNode(n));const x=E("small","",t+(d?" · "+d:""));r.append(l,x);return r};
+const ago=ms=>{const m=Math.round(ms/60000);return m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"};
+async function check(){
+  const rows=document.getElementById("rows");let worst=0,maint=false,note="",site={};const out=[];
+  out.push(row("Website","ok","Operational"));
+  const t0=performance.now();
+  try{const s=await db.collection("config").doc("site").get();site=s.exists?s.data():{};const ms=Math.round(performance.now()-t0);out.push(row("Database & sign-in data",ms>3000?"warn":"ok",ms>3000?"Slow":"Operational",ms+" ms"));if(ms>3000)worst=Math.max(worst,1)}
+  catch(e){out.push(row("Database & sign-in data","bad","Unreachable"));worst=2}
+  maint=!!site.maintenance;note=site.statusNote||"";
+  try{const s=await db.collection("status").doc("ai").get(),d=s.exists?s.data():{},ok=d.lastOkAt||0,er=d.lastErrAt||0,n=Date.now();
+    if(!ok&&!er)out.push(row("AI briefings","warn","No recent activity"));
+    else if(er>ok&&n-er<30*60e3){out.push(row("AI briefings","warn","Having trouble","last error "+ago(n-er)+"; backup AI may be used"));worst=Math.max(worst,1)}
+    else out.push(row("AI briefings","ok","Operational",ok?"last success "+ago(n-ok):""))}
+  catch(e){out.push(row("AI briefings","warn","Unknown"))}
+  if(site.apiUrl){const a=performance.now();try{const r=await fetch(site.apiUrl.replace(/\/$/,"")+"/health");out.push(row("API server",r.ok?"ok":"bad",r.ok?"Operational":"Error",Math.round(performance.now()-a)+" ms"));if(!r.ok)worst=2}catch(e){out.push(row("API server","bad","Unreachable"));worst=2}}
+  if(maint){out.push(row("Maintenance","warn","In progress"));worst=Math.max(worst,1)}
+  rows.replaceChildren(...out);
+  document.getElementById("alltxt").textContent=maint?"Under maintenance":worst===0?"All systems operational":worst===1?"Some systems are slow or degraded":"We're having an outage";
+  document.getElementById("note").textContent=(maint&&site.maintMsg?site.maintMsg+" ":"")+note;
+  document.getElementById("upd").textContent="Updated "+new Date().toLocaleTimeString()+" · refreshes every 30 seconds"}
+check();setInterval(check,30000);
+</script></body></html>
